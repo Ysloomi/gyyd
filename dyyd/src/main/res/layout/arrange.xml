@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <Button
+        android:id="@+id/arrange_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="#00000000"
+        android:drawableTop="@drawable/visit_confirm_icon" />
+    -->
+
+    <RelativeLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#4db0f6" >
+
+        <Button
+            android:id="@+id/arrange_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+    </RelativeLayout>
+
+  
+<!--          <Spinner
+        android:id="@+id/arrange_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextView01"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@drawable/text_bg1"
+        android:completionThreshold="1"
+        android:textColor="#000000" /> -->
+
+  
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="选择员工"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+ 
+
+    <AutoCompleteTextView
+        android:id="@+id/arrange_auto_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextView01"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/TextView01"
+        android:background="@drawable/text_bg"
+        android:completionThreshold="1"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/TextView01"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="工作内容"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/arrange_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@drawable/bigtext_bg"
+        android:gravity="top"
+        android:maxLines="6"
+        android:paddingLeft="2dp"
+        android:scrollbars="vertical"
+        android:textColor="#000000"
+        android:textSize="14sp" >
+
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

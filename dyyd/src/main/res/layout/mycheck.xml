@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="44dp" 
+        android:showWeekNumber="false"
+        android:dateTextAppearance="@android:style/TextAppearance.Large.Inverse"
+        android:focusedMonthDateColor="#ff00ff"
+        />
+    -->
+
+    <com.squareup.timessquare.CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/mymeans_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendar"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="有签到，日期为绿色；无签到，日期为灰色；红点标注表示迟到。"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/late_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_mac"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:textColor="#000000" />
+
+    <!--
+    <Button
+        android:id="@+id/mycheck_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="21dp"
+        android:text="我的考勤" />
+
+    <Button
+        android:id="@+id/subordinate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mycheck_button"
+        android:layout_alignBottom="@+id/mycheck_button"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="36dp"
+        android:text="下属考勤" />
+    -->
+
+</RelativeLayout>

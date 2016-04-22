@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.beessoft.dyyd.dailywork.NoteDealActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="部门" />
+
+            <TextView
+                android:id="@+id/txt_depart"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="姓名" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="日期:" />
+
+            <TextView
+                android:id="@+id/edt_start"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="至" />
+
+            <TextView
+                android:id="@+id/edt_end"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="地点" />
+
+            <TextView
+                android:id="@+id/txt_addr"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="走访计划" />
+
+            <TextView
+                android:id="@+id/txt_plan"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_question"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="发现问题" />
+
+            <EditText
+                android:id="@+id/edt_question"
+                style="@style/NoteText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_advise"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="提出措施及建议" />
+
+            <EditText
+                android:id="@+id/edt_advise"
+                style="@style/NoteText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reason"
+            style="@style/TextOutLayout"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="未走访原因" />
+
+            <EditText
+                android:id="@+id/edt_reason"
+                style="@style/NoteText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_effect"
+            style="@style/TextOutLayout"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="成效跟踪" />
+
+            <EditText
+                android:id="@+id/edt_effect"
+                style="@style/NoteText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout style="@style/RelativeBottom">
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+
+    </RelativeLayout>
+
+</LinearLayout>

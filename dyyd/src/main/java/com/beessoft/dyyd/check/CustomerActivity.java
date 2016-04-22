@@ -1,0 +1,126 @@
+package com.beessoft.dyyd.check;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.beessoft.dyyd.BaseActivity;
+import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.utils.Escape;
+
+import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ToastUtil;
+import com.beessoft.dyyd.utils.User;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class CustomerActivity extends BaseActivity {
+
+    private ListView listView;
+    private List<String> datas;
+    private List<HashMap<String,String>> latlngs;
+    private ProgressDialog progressDialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_customer);
+
+        context = CustomerActivity.this;
+        mac = GetInfo.getIMEI(context);
+        username = GetInfo.getUserName(context);
+
+        datas = new ArrayList<String>();
+        latlngs = new ArrayList<>();
+        String name = getIntent().getStringExtra("name");
+        initView();
+
+        progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+        visitServer(name);
+
+    }
+
+    private void initView() {
+        listView = (ListView) findViewById(R.id.list_view);
+    }
+
+    private void visitServer(String name) {
+
+        String httpUrl = User.mainurl + "sf/GetCustomer";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("name", Escape.escape(name));
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            String code = dataJson.getString("code");
+                            if (code.equals("0")) {
+                                JSONArray array = dataJson.getJSONArray("list");
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject obj = array.getJSONObject(i);
+                                    datas.add(obj.getString("ccusname"));
+                                    HashMap<String,String> map = new HashMap<String, String>();
+                                    map.put("lat",obj.getString("lat"));
+                                    map.put("lng",obj.getString("lng"));
+                                    map.put("scope",obj.getString("fw"));
+                                    map.put("ccuscode",obj.getString("ccuscode"));
+                                    latlngs.add(map);
+
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                                        R.layout.item_baselist,
+                                        datas);
+                                listView.setAdapter(adapter);
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Intent intent = new Intent();
+                                        intent.putExtra("name", datas.get(position));
+                                        HashMap<String,String> map = latlngs.get(position);
+                                        intent.putExtra("lat", map.get("lat"));
+                                        intent.putExtra("lng", map.get("lng"));
+                                        intent.putExtra("scope", map.get("scope"));
+                                        intent.putExtra("ccuscode", map.get("ccuscode"));
+                                        setResult(RESULT_OK,intent);
+                                        finish();
+                                    }
+                                });
+                            }else{
+                                ToastUtil.toast(context,"无内容");
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            progressDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+}

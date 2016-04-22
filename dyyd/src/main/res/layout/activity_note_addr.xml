@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.beessoft.dyyd.dailywork.NoteAddrActivity">
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="类型" />
+
+        <Spinner
+            android:id="@+id/spn_type"
+            style="@style/NoteSpinner"
+            android:background="@drawable/spinner_down" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="关键字" />
+
+        <EditText
+            android:id="@+id/edt_search"
+            style="@style/NoteText"
+            android:hint="请输入计划走访地点"/>
+
+        <TextView
+            android:id="@+id/txt_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            style="@style/MyTitle"
+            android:text="筛选" />
+
+    </LinearLayout>
+
+    <include layout="@layout/baselist_without_color" />
+
+</LinearLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <Button
+        android:id="@+id/mywork_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000" />
+    -->
+
+    <ListView
+        android:id="@+id/photoquery_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp" >
+    </ListView>
+    <!--
+           <Button
+        android:id="@+id/mywork_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000" />
+    -->
+
+
+    <!--
+         <Button
+        android:id="@+id/mywork_scan"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/mywork_list"
+        android:layout_alignParentRight="true"
+        android:background="#00000000" />
+    -->
+
+
+    <!--
+    <TextView
+        android:id="@+id/mywork_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/mywork_back"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="拜访记录"
+        android:textStyle="bold"
+        android:background="@drawable/title_bg"
+        android:gravity="center" />
+
+    <Spinner
+        android:id="@+id/mywork_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/mywork_num"
+        android:layout_toRightOf="@+id/mywork_num"
+        android:background="@drawable/text_bg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp" 
+        android:gravity="center"/>
+    -->
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="选择部门"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/departmenr_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@drawable/text_bg"
+        android:gravity="center" />
+
+</RelativeLayout>

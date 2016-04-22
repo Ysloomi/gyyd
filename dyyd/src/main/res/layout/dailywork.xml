@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/visitquery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/work_button"
+        android:layout_marginRight="35dp"
+        android:layout_toLeftOf="@+id/work_button"
+        android:background="#00000000"
+        android:drawableTop="@drawable/visitquery_icon"
+        android:text="拜访记录"
+        android:textColor="#4db0f6"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/query_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visitquery_button"
+        android:layout_below="@+id/visitquery_button"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/approvequery_icon"
+        android:text="审批查询"
+        android:textColor="#4db0f6" 
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/notice_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/work_button"
+        android:layout_marginTop="35dp"
+        android:layout_toRightOf="@+id/visitquery_button"
+        android:background="#00000000"
+        android:drawableTop="@drawable/notice_button"
+        android:text="通  知"
+        android:textColor="#4db0f6"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/notice_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/notice_button"
+        android:layout_alignTop="@+id/notice_button"
+        android:gravity="top"
+        android:textColor="#FF0000"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/workquery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mileage_button"
+        android:layout_below="@+id/mileage_button"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/workquery_icon1"
+        android:text="日志查询"
+        android:textColor="@color/blue"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/mymemo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/query_button"
+        android:layout_below="@+id/query_button"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/mymemo_icon"
+        android:text="备忘录"
+        android:textColor="#4db0f6" 
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/arrange_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/notice_button"
+        android:layout_below="@+id/notice_button"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/arrange_icon"
+        android:text="安排工作"
+        android:textColor="#4db0f6"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/mileage_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/mymileage_icon2"
+        android:text="我的里程"
+        android:textColor="#4db0f6"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/work_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:drawableTop="@drawable/mywork_icon3"
+        android:text="待办事项"
+        android:textColor="#4db0f6"
+        android:layout_marginTop="35dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/photo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:drawableTop="@drawable/photo_icon"
+        android:text="拍照上传"
+        android:textColor="#4db0f6"
+        android:layout_alignTop="@+id/work_button"
+        android:layout_toLeftOf="@+id/work_button"
+        android:layout_marginRight="35dp" />
+
+    <Button
+        android:id="@+id/worklocation_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:background="#00000000"
+        android:drawableTop="@drawable/worklocation_icon1"
+        android:text="员工位置"
+        android:textColor="#4db0f6"
+        android:layout_below="@+id/photo_button"
+        android:layout_alignLeft="@+id/photo_button"
+        android:layout_alignStart="@+id/photo_button" />
+
+    <Button
+        android:id="@+id/checkquery_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:drawableTop="@drawable/checkquery_icon"
+        android:text="考勤查询"
+        android:textColor="#4db0f6"
+        android:layout_alignTop="@+id/work_button"
+        android:layout_toRightOf="@+id/work_button"
+        android:layout_toEndOf="@+id/work_button"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp" />
+
+
+    <Button
+        android:id="@+id/btn_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:drawableTop="@drawable/note"
+        android:text="一线记事本"
+        android:textColor="#4db0f6"
+        android:layout_alignTop="@+id/worklocation_button"
+        android:layout_alignLeft="@+id/work_button"
+        android:layout_alignStart="@+id/work_button" />
+
+</RelativeLayout>

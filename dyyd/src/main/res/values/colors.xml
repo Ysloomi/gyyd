@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2008 ZXing authors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<resources>
+  <color name="contents_text">#ff000000</color>
+  <color name="encode_view">#ffffffff</color>
+  <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+  <color name="result_minor_text">#ffc0c0c0</color>
+  <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+  <color name="result_text">#ffffffff</color>
+  <color name="result_view">#b0000000</color>
+  <color name="status_text">#ffffffff</color>
+  <color name="transparent">#00000000</color>
+  <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+  <color name="viewfinder_mask">#60000000</color>
+  
+    <color name="light_grey">#f0f0f0</color>
+    <color name="super_light_grey">#f6f6f6</color>
+    <color name="blue">#4db0f6</color>
+    <color name="light_blue">#87CEFA</color>
+    
+     <color name="radiobg_press">#BDBDBD</color>
+    <color name="radiobg_normal">#990000</color>
+    <color name="title_bg">#999999</color>
+    <color name="nav_title_color">#333333</color>
+    <color name="grav_color">#999999</color>
+    <color name="lightwhite">#ddd</color>
+    
+    
+     <color name="txt_blue">#FF007CB0</color>
+    <color name="txt_gray">#FF575756</color>
+    <color name="txt_orange">#FFEB6100</color>
+    <color name="bg_gray">#FFE3E3E7</color>
+    <color name="orange">#FFE84E0E</color>
+    <color name="bg">#FFF39200</color>
+    <color name="lightblue">#FF007AA2</color>
+    <color name="lightorange">#FFACBA00</color>
+    <color name="red">#FFFF0000</color>
+    <color name="transparentdarkgray">#CC292929</color>
+    <color name="transparentgray">#CC666666</color>
+    <color name="transparent2">#55ffffff</color>
+    <color name="transparentblack">#88000000</color>
+    <color name="transparentblack2">#cc000000</color>
+    <color name="transparentblue">#445CACEE</color>
+    <color name="yellow">#FFD700</color>
+    <color name="gray">#ff333333</color>
+    <color name="light_blue1">#5CACEE</color>
+	<color name="light_gray">#87CEEB</color>
+	<color name="orange_red">#613030</color>
+	<color name="whiteGray">#ffC9CACB</color>
+	<color name="nomalGray">#838B83</color>
+	<color name="blue1">#436EEE</color>
+	 <color name="light_orange">#FFFCBA00</color>
+	 <color name="coffee">#622f1b</color>
+     <color name="click_color">#2b72d6</color>
+     
+     
+   <color name="buttom_top">#1e1e1e</color> 
+   <color name="buttom_centre">#303030</color> 
+   <color name="buttom_buttom">#000000</color>
+   <color name="yellowbg">#e5d84f</color>
+   <color name="graybg">#ececec</color>
+   
+   <color name="wangyibg">#f0f0f0</color>
+   <color name="wangyibg2">#E0E0E0</color>
+   <color name="younibg">#f6f6f6</color>
+   <color name="pathbg">#f1eee9</color>
+   <color name="pathbg2">#d0c3b7</color>
+   <color name="line_dark_grey">#B8B8B8</color>
+   
+   <color name="textyellow">#e6a446</color>
+
+
+    <color name="TopGray">#828282</color>
+    <color name="ChangeOrange">#e88943</color>
+    <color name="DeleteRed">#f33535</color>
+    <color name="Orange">#f64713</color>
+
+
+    <color name="fuxk_base_divide_line_color">#dcdcdc</color>
+
+
+</resources>

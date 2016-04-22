@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/code"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/code"
+        android:layout_below="@+id/code"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/phonenum"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/personname"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/phonenum"
+        android:layout_below="@+id/phonenum"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/addr"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/personname"
+        android:layout_below="@+id/personname"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/context"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/addr"
+        android:layout_below="@+id/addr"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>

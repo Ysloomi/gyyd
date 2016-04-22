@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/start"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp" />
+
+    <TextView
+        android:id="@+id/over"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/start"
+        android:layout_alignTop="@+id/start"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/start" />
+
+
+    <TextView
+        android:id="@+id/state"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/over"
+        android:layout_alignTop="@+id/over"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/over" />
+
+    <TextView
+        android:id="@+id/person"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start"
+        android:layout_below="@+id/start"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/isagree"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/person"
+        android:layout_alignTop="@+id/person"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/person" />
+
+    <TextView
+        android:id="@+id/reason"
+        style="@style/ListItemText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/isagree"
+        android:layout_alignTop="@+id/isagree"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/isagree" />
+
+</RelativeLayout>

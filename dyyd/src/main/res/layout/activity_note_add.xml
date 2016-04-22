@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.beessoft.dyyd.dailywork.NoteAddActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="部门" />
+
+            <TextView
+                android:id="@+id/txt_depart"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="姓名" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                style="@style/NoteText"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="日期:" />
+
+            <EditText
+                android:id="@+id/edt_start"
+                style="@style/NoteText"
+                android:gravity="left|center_vertical"
+                android:textSize="12sp"
+                android:background="@drawable/date" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="至" />
+
+            <EditText
+                android:id="@+id/edt_end"
+                style="@style/NoteText"
+                android:gravity="left|center_vertical"
+                android:textSize="12sp"
+                android:background="@drawable/date" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="地点" />
+
+            <TextView
+                android:id="@+id/txt_addr"
+                style="@style/NoteText"
+                android:background="@drawable/textshape"
+                android:drawableRight="@drawable/more"
+                android:hint="请点击选择"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="走访计划" />
+
+            <EditText
+                android:id="@+id/edt_plan"
+                style="@style/NoteText"
+                android:background="@drawable/textshape"
+                android:hint="请输入走访计划"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout style="@style/RelativeBottom">
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+
+    </RelativeLayout>
+
+</LinearLayout>

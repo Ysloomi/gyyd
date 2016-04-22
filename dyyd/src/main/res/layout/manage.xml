@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+	
+<!-- 		<Button
+		    android:id="@+id/acceptance_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentTop="true"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginTop="90dp"
+		    android:background="#00000000"
+		    android:drawableTop="@drawable/acceptance_icon1"
+		    android:text="项目验收"
+		    android:textColor="#000000" />
+       	
+
+
+		<Button
+		    android:id="@+id/dispatch_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/acceptance_button"
+		    android:layout_alignBottom="@+id/acceptance_button"
+		    android:layout_marginLeft="35dp"
+		    android:layout_toRightOf="@+id/acceptance_button"
+		    android:background="#00000000"
+		    android:drawableTop="@drawable/dispatch_icon1"
+		    android:text="派工"
+		    android:textColor="#000000" />
+
+		<Button
+		    android:id="@+id/photo_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/acceptance_button"
+		    android:layout_alignBottom="@+id/acceptance_button"
+		    android:layout_marginRight="35dp"
+		    android:layout_toLeftOf="@+id/acceptance_button"
+		    android:background="#00000000"
+		    android:drawableTop="@drawable/photo_icon1"
+		    android:text="拍照上传"
+		    android:textColor="#000000" />
+
+		<Button
+		    android:id="@+id/progress_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignLeft="@+id/photo_button"
+		    android:layout_below="@+id/photo_button"
+		    android:layout_marginTop="35dp"
+		    android:background="#00000000"
+		    android:drawableTop="@drawable/dailywork_icon"
+		    android:text="项目进度"
+		    android:textColor="#000000" /> -->
+
+    </RelativeLayout>

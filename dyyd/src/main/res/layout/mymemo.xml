@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="增加时间"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/updatetime_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title1"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title1"
+        android:layout_below="@+id/title1"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="完成日期"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title2"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/title3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title2"
+        android:layout_below="@+id/title2"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="完成时间"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title3"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/title4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title3"
+        android:layout_below="@+id/title3"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="内  容"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/memo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title4"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title4"
+        android:background="@drawable/bigtext_bg"
+        android:gravity="top"
+        android:textColor="#000000" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/title5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title4"
+        android:layout_below="@+id/result_text"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="状  态"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/state_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title5"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title5"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/title6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title5"
+        android:layout_below="@+id/memo_text"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="完成结果"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/result_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/title6"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/title6"
+        android:background="@drawable/text_bg"
+        android:textColor="#000000" />
+
+    <RelativeLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#4db0f6" >
+
+        <Button
+            android:id="@+id/mymemo_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        	android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="#00000000"
+            android:drawableTop="@drawable/complete_button1"/>
+
+        <Button
+            android:id="@+id/mymemo_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:background="#00000000"
+            android:drawableTop="@drawable/change_button2" />
+
+        <Button
+            android:id="@+id/mymemo_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+                        android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+
+            android:background="#00000000"
+            android:drawableTop="@drawable/add_button" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.beessoft.dyyd.dailywork.NoteQueryActivity">
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="部门" />
+
+        <Spinner
+            android:id="@+id/spn_depart"
+            style="@style/NoteSpinner" />
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="姓名" />
+
+        <Spinner
+            android:id="@+id/spn_name"
+            style="@style/NoteSpinner" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="日期:" />
+
+        <EditText
+            android:id="@+id/edt_start"
+            style="@style/NoteText"
+            android:textSize="12sp"
+            android:gravity="left|center_vertical"
+            android:background="@drawable/date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="至" />
+
+        <EditText
+            android:id="@+id/edt_end"
+            style="@style/NoteText"
+            android:textSize="12sp"
+            android:gravity="left|center_vertical"
+            android:background="@drawable/date" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/bg_gray">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="        日期        "/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="地点" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="走访计划" />
+
+    </LinearLayout>
+
+    <include layout="@layout/basepulllist_without_color" />
+
+
+</LinearLayout>

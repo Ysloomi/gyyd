@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="部门" />
+
+        <TextView
+            android:id="@+id/txt_depart"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="姓名" />
+
+        <TextView
+            android:id="@+id/txt_name"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="日期:" />
+
+        <TextView
+            android:id="@+id/txt_start"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="至" />
+
+        <TextView
+            android:id="@+id/txt_end"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="地点" />
+
+        <TextView
+            android:id="@+id/txt_addr"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey"
+            android:text="成都" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="走访计划" />
+
+        <TextView
+            android:id="@+id/txt_plan"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="创建时间" />
+
+        <TextView
+            android:id="@+id/txt_date"
+            style="@style/NoteText"
+            android:background="@drawable/textshape_grey" />
+
+    </LinearLayout>
+
+</LinearLayout>

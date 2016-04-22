@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!--
+                 <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/title_bg1"
+                android:gravity="center"
+                android:text="选择员工"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/person_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_toRightOf="@+id/textView2"
+                android:background="@drawable/text_bg1"
+                android:gravity="center" />
+            -->
+
+            <AutoCompleteTextView
+                android:id="@+id/subcheck_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/title"
+                android:background="@drawable/text_bg"
+                android:completionThreshold="1"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/subcheck_text"
+                android:layout_marginRight="19dp"
+                android:background="@drawable/title_bg"
+                android:gravity="center"
+                android:text="检 索"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/subcheck_button"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignBaseline="@+id/subcheck_text"
+                android:layout_alignBottom="@+id/subcheck_text"
+                android:layout_alignRight="@+id/title"
+                android:background="#00000000" />
+
+            <com.squareup.timessquare.CalendarView
+                android:id="@+id/calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subcheck_text"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/explain_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/calendar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="有签到，日期为绿色；无签到，日期为灰色；红点标注表示迟到"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/late_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/explain_text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

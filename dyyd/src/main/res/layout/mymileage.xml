@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <Button
+        android:id="@+id/mymileage_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000" />
+    -->
+
+    <ListView
+        android:id="@+id/mymileage_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="150dp">
+    </ListView>
+
+    <!--
+         <Button
+        android:id="@+id/mymileage_scan"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/mymileage_list"
+        android:layout_alignParentRight="true"
+        android:background="#00000000" />
+    -->
+
+
+    <!--
+         <TextView
+        android:id="@+id/mymileage_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="180dp"
+        android:layout_toRightOf="@+id/mymileage_back"
+        android:text="单价："
+        android:textStyle="bold" />
+    -->
+
+    <TextView
+        android:id="@+id/total_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView02"
+        android:layout_alignBottom="@+id/TextView02"
+        android:layout_toRightOf="@+id/TextView02"
+        android:background="@drawable/photo_bg"
+        android:ems="10"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/finish_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/total_text"
+        android:layout_alignTop="@+id/TextView03"
+        android:background="@drawable/photo_bg"
+        android:ems="10"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/left_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/finish_text"
+        android:layout_alignTop="@+id/TextView04"
+        android:background="@drawable/photo_bg"
+        android:ems="10"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <!--
+         <TextView
+        android:id="@+id/price_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mymileage_num"
+        android:layout_alignBottom="@+id/mymileage_num"
+        android:layout_toRightOf="@+id/mymileage_num"
+        android:background="@drawable/photo_bg"
+        android:ems="10"
+        android:gravity="center" />
+    -->
+
+    <TextView
+        android:id="@+id/TextView03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView02"
+        android:layout_below="@+id/total_text"
+        android:layout_marginTop="16dp"
+        android:text="已报金额："
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextView04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView03"
+        android:layout_below="@+id/finish_text"
+        android:layout_marginTop="10dp"
+        android:text="剩余金额："
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextView05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="20dp"
+        android:text="总有效里程："
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView05"
+        android:layout_below="@+id/mileage_text"
+        android:layout_marginTop="10dp"
+        android:text="油费总金额："
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mileage_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextView05"
+        android:layout_toRightOf="@+id/TextView02"
+        android:background="@drawable/photo_bg"
+        android:ems="10"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+</RelativeLayout>

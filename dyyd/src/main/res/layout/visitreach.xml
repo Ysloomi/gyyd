@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/TextView01"
+                style="@style/MyTitle"
+                android:text="客户类别" />
+
+            <Spinner
+                android:id="@+id/type_spinner"
+                style="@style/MyText" />
+
+        </LinearLayout>
+
+        <RelativeLayout style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/MyTitle"
+                android:text="拜访客户" />
+
+
+            <EditText
+                android:id="@+id/visit_customer"
+                style="@style/MyText"
+                android:layout_toRightOf="@+id/textView1"
+                android:background="@drawable/text_bg"/>
+
+
+            <ImageView
+                android:id="@+id/customer_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignRight="@+id/visit_customer"
+                android:layout_alignTop="@+id/visit_customer"
+                android:scaleType="matrix"
+                android:src="@drawable/search" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout style="@style/TextOutLayout"
+            android:id="@+id/inside_ll">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="有效范围"/>
+
+
+            <TextView
+                android:id="@+id/inside_tv"
+                style="@style/MyText"
+                android:hint="选择客户后判定"/>
+        </LinearLayout>
+
+        <LinearLayout style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/MyTitle"
+                android:text="拜访人员" />
+
+
+            <EditText
+                android:id="@+id/visit_person"
+                style="@style/MyText"
+                android:hint="请输入拜访客户中的人员"/>
+        </LinearLayout>
+
+        <RelativeLayout style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/MyTitle"
+                android:text="拜访目的" />
+
+            <EditText
+                android:id="@+id/visit_aim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/textView3"
+                android:background="@drawable/bigtext_bg"
+                android:gravity="top"
+                android:hint="到达现场的目的（酬金沟通，业务培训，上门检查等），书写时要简要说明培训业务内容、酬金类型、检查内容等。"
+                android:maxLines="6"
+                android:paddingLeft="2dp"
+                android:scrollbars="vertical"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:id="@+id/preserve_iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignBottom="@+id/visit_aim"
+                android:layout_alignLeft="@+id/preserve_button"
+                android:scaleType="matrix"
+                android:src="@drawable/preserve_button" />
+
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/MyTitle"
+                android:text="当前位置" />
+
+            <TextView
+                android:id="@+id/location_text"
+                style="@style/MyText"
+                android:layout_toRightOf="@+id/textView5" />
+
+            <ImageView
+                android:id="@+id/location_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignRight="@+id/location_text"
+                android:layout_alignTop="@+id/location_text"
+                android:scaleType="matrix"
+                android:src="@drawable/refresh_button" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearlayout"
+        style="@style/RelativeBottom"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/visit_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

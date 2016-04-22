@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/mymeans_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="单位"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/unit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/department_text"
+        android:layout_alignTop="@+id/mymeans_department"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/mymeans_department"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_unit"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/department_text"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="部门"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/department_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/mymeans_unit"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/mymeans_unit"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/mymeans_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_department"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/department_text"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="姓名"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mymeans_tel"
+        android:layout_alignLeft="@+id/department_text"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/mymeans_tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_name"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/department_text"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="电话"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tel_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/name_text"
+        android:layout_alignTop="@+id/mymeans_tel"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/mymeans_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_tel"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/department_text"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="SIM"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mac_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/mymeans_mac"
+        android:layout_alignLeft="@+id/tel_text"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/mymeans_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mymeans_mac"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/department_text"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="在线人数"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/online_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/mymeans_online"
+        android:layout_alignLeft="@+id/tel_text"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:visibility="gone" />
+
+    <!--
+         <Button
+        android:id="@+id/mymeans_scan"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#00000000" />
+    -->
+
+
+    <!--
+         <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/mac_text"
+        android:layout_alignTop="@+id/changepassword"
+        android:layout_marginRight="24dp"
+        android:src="@drawable/changepassword_icon" />
+    -->
+
+
+    <!--
+         <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/update"
+        android:layout_below="@+id/update"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/update_icon" />
+    -->
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/mymeans_mac"
+        android:layout_alignRight="@+id/mac_text"
+        android:layout_below="@+id/mymeans_online"
+        android:layout_marginTop="19dp"
+        android:background="@color/blue"
+        android:text="在线升级"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/changepassword"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/update"
+        android:layout_alignRight="@+id/update"
+        android:layout_below="@+id/update"
+        android:layout_marginTop="16dp"
+        android:background="@color/blue"
+        android:text="修改密码"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/advise_button"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/changepassword"
+        android:layout_alignRight="@+id/changepassword"
+        android:layout_below="@+id/changepassword"
+        android:layout_marginTop="16dp"
+        android:background="@color/blue"
+        android:text="意见反馈"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/online_text"
+        android:layout_alignTop="@+id/mymeans_online"
+        android:src="@drawable/detail_button"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/detail_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/online_text"
+        android:background="#00000000"
+        android:visibility="gone"/>
+
+</RelativeLayout>

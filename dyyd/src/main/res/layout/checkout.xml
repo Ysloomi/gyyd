@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_gravity="start"
+                    android:text="今日总结" />
+
+                <EditText
+                    android:id="@+id/summary_text"
+                    style="@style/Text"
+                    android:background="@drawable/bigtext_bg"
+                    android:gravity="top"
+                    android:paddingLeft="2dp"/>
+            </LinearLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/title1"
+                    style="@style/MyTitle"
+                    android:text="下个工作\n日计划" />
+
+                <EditText
+                    android:id="@+id/plan_text"
+                    style="@style/Text"
+                    android:layout_toRightOf="@+id/title1"
+                    android:background="@drawable/bigtext_bg"
+                    android:gravity="top"
+                    android:paddingLeft="2dp" />
+                <!--android:hint="书写的内容包含但不限于：
+                拟拜访的商家名称和拜访的原因（上门检查、上门培训、酬金沟通、
+                指标传达、帮扶整改），拟组织开展的促销活动，拟拜访的用户等。"-->
+
+                <ImageView
+                    android:id="@+id/iv_preserve"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_alignBottom="@+id/plan_text"
+                    android:layout_alignLeft="@+id/title1"
+                    android:scaleType="matrix"
+                    android:src="@drawable/preserve_button" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/MyTitle"
+                    android:text="当前位置" />
+
+                <TextView
+                    android:id="@+id/location_text"
+                    style="@style/Text"
+                    android:layout_toRightOf="@+id/textView5" />
+
+                <ImageView
+                    android:id="@+id/iv_refresh"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/location_text"
+                    android:scaleType="matrix"
+                    android:src="@drawable/refresh_button" />
+
+            </RelativeLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="是否有效范围"/>
+
+                <TextView
+                    style="@style/Text"
+                    android:id="@+id/txt_inside"/>
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="出行方式" />
+
+                <TextView
+                    style="@style/Text"
+                    android:id="@+id/type_text" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="里程说明"
+                    android:visibility="gone" />
+
+                <TextView
+                    style="@style/Text"
+                    android:id="@+id/distance_text"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+            <!--<TextView-->
+            <!--android:id="@+id/TextView01"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/distance_text"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_toLeftOf="@+id/distance_text"-->
+            <!--android:background="@drawable/title_bg"-->
+            <!--android:gravity="center"-->
+            <!--android:text="系统说明"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textStyle="bold" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/TextView02"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignLeft="@+id/location_text"-->
+            <!--android:layout_alignTop="@+id/TextView01"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@drawable/text_bg"-->
+            <!--android:text="本系统仅记录签到—签退之间的轨迹。"-->
+            <!--android:textColor="#000000" />-->
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        style="@style/RelativeBottom">
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+    </RelativeLayout>
+
+</LinearLayout>

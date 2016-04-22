@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <Spinner
+        android:id="@+id/advise_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center" />
+
+    <EditText
+        android:id="@+id/advise_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/advise_spinner"
+        android:layout_alignRight="@+id/advise_spinner"
+        android:layout_below="@+id/advise_spinner"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_bg"
+        android:hint="请输入反馈内容，必填" />
+
+<!--     <EditText
+        android:id="@+id/advise_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/advisetitle_edittext"
+        android:layout_alignRight="@+id/advisetitle_edittext"
+        android:layout_below="@+id/advisetitle_edittext"
+        android:layout_marginTop="10dp"
+        android:gravity="top|left"
+        android:background="@drawable/bigtext_bg1"
+        android:hint="请输入200字以内的标题，选填" /> -->
+
+    <Button
+        android:id="@+id/advise_button"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/advise_edittext"
+        android:layout_alignRight="@+id/advise_edittext"
+        android:layout_below="@+id/advise_edittext"
+        android:layout_marginTop="10dp"
+        android:background="@color/blue"
+        android:text="提交"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

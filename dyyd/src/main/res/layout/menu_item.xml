@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/qq_dimen_330px"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/qq_dimen_330px"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/light_grey"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/fuxk_base_divide_line_color" />
+
+        <TextView
+            android:id="@+id/action_result"
+            style="@style/MenuText"
+            android:drawableLeft="@drawable/menu_result"
+            android:text="走访结果" />
+
+        <View style="@style/menu_horizontal_seperator_layout" />
+
+
+        <TextView
+            android:id="@+id/action_effect"
+            style="@style/MenuText"
+            android:drawableLeft="@drawable/menu_effect"
+            android:text="成效跟踪" />
+
+        <View style="@style/menu_horizontal_seperator_layout" />
+
+        <TextView
+            android:id="@+id/action_change"
+            style="@style/MenuText"
+            android:drawableLeft="@drawable/menu_change"
+            android:text="修改计划" />
+
+        <View style="@style/menu_horizontal_seperator_layout" />
+    </LinearLayout>
+
+</RelativeLayout>

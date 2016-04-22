@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.beessoft.dyyd.dailywork.NoteQueryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout style="@style/TextOutLayout"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="地点" />
+
+            <include layout="@layout/baselist_without_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_state"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="走访情况" />
+
+            <Spinner
+                android:id="@+id/spn_state"
+                style="@style/NoteSpinner" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/txt_submit"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</LinearLayout>

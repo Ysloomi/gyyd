@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.beessoft.dyyd"
+    android:installLocation="auto"
+    android:largeHeap="true">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.screen.landscape" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <!-- SDK1.5需要android.permission.GET_TASKS权限判断本程序是否为当前运行的应用? -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
+    <!-- 【必须】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 【可选】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+
+    <application
+        android:name=".LocationApplication"
+        android:icon="@drawable/dyyd_icon"
+        android:label="@string/app_name"
+        android:theme="@style/MyActionBarTheme"
+        tools:replace="android:icon,android:theme">
+
+        <!-- meta-data需要写在application中 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="XnstOzNoi695azCiU5ZeD8ut" />
+
+        <!-- android:hardwareAccelerated = "false" -->
+        <activity
+            android:name=".LoadingActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Loading">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.CheckInActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkin"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.CheckOutActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkout"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.VisitReachActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_visitreach"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.VisitLeaveActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_visitleave"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.CheckQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.NewCheckQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.CheckQueryDetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.MapActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_location"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.QueryMapActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.CollectActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_collect"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.AskLeaveActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_askleave"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.AskLeaveQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_askleavequery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.MyWorkActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_mywork"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.MyMileageActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_mymileage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ApproveActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_approve"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".material.WorkBookActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_workbook"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mymeans.ChangePasswordActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_changepassword"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ApproveListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_approve"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.AskLeaveApproveListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_askleaveapprove"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.AskLeaveApproveActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_askleaveapprove"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.TodoListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_todo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.TodoActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_todo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ApproveQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_approvequery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ApproveQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_approvequery"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".material.SalesWorkBookActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_sales"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".material.BossWorkBookActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_boss"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.WorkQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_workquery"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.WorkQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_workquery"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.WorkLocationActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_location"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.VisitQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_visitquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.VisitQueryListDetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_visitquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.VisitQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_visitquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ShareActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_share"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".material.CompanyTargetActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_company"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".material.BranchTargetActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_branch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.CheckApproveListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkapprove"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.CheckApproveActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_checkapprove"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.PhotoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_photo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.PhotoQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_photoquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.PhotoQueryListDetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_photoquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.PhotoQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_photoquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ArrangeActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_arrange"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.ArrangeQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_arrangequery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ArrangeQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_arrangequery"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.MyMemoListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_mymemo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.MyMemoActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_mymemo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.NoticeListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_notice"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".material.TerminalActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_terminal"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".material.TargetQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_targetquery"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ConfirmListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_confirm"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ConfirmActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_confirm"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.ReadActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_read"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dailywork.VisitReadActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_read"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LeaveInfoActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_leaveinfo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mymeans.AdviseActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_advise"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".mymeans.AdviseTypeActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_advise"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".mymeans.AdviseListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_advise"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".mymeans.AdviseDetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_advise"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.CustomerActivity"
+            android:icon="@drawable/top_logo"
+            android:label="客户搜索"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.NoteActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
+        <activity
+            android:name=".dailywork.NoteAddActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note_add"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.NoteAddrActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note_addr"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.NoteQueryActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note_query"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.NoteQueryDetailActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note_query_detail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".dailywork.NoteDealActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/title_activity_note_deal"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+
+        <receiver android:name=".utils.AlarmReceiver">
+            <intent-filter>
+                <action android:name="Test" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".utils.MemoAlarmReceiver">
+            <intent-filter>
+                <action android:name="Memo" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" />
+            </intent-filter>
+        </service>
+
+        <!-- Polling Service -->
+        <service android:name=".utils.MemoAlarmService">
+            <intent-filter>
+                <action android:name=".service.MemoAlarmService" />
+            </intent-filter>
+        </service>
+
+        <!-- 【必须】 信鸽receiver广播接收 -->
+        <receiver
+            android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v2">
+            <intent-filter android:priority="0x7fffffff">
+
+                <!-- 【必须】 信鸽SDK的内部广播 -->
+                <action android:name="com.tencent.android.tpush.action.SDK" />
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+                <!-- 【必须】 系统广播：开屏和网络切换 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理 -->
+        <activity
+            android:name="com.tencent.android.tpush.XGPushActivity"
+            android:exported="true">
+            <intent-filter>
+
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
+                <action android:name="android.intent.action" />
+            </intent-filter>
+        </activity>
+
+        <!-- 【必须】 信鸽service -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushService"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v2" />
+
+        <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
+        <service
+            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.beessoft.dyyd.PUSH_ACTION" />
+            </intent-filter>
+        </service>
+
+        <!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100158301" />
+        <!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="A5EV5JR1M46I" />
+
+
+    </application>
+
+</manifest>

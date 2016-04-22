@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!--
+         <Button
+        android:id="@+id/visitquery_back"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/textView3"
+        android:background="#00000000" />
+    -->
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="拜访客户"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/visitquery_customer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/visitquery_person"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="拜访目的"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/visitquery_aim"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="拜访结果"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/visitquery_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/TextView01"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/TextView01"
+        android:background="@drawable/bigtext_bg"
+        android:gravity="top"
+        android:maxLines="6"
+        android:paddingLeft="2dp"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/TextView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView01"
+        android:layout_below="@+id/visitquery_result"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="照片信息"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <!--
+         <Button
+        android:id="@+id/photo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/TextView02"
+        android:background="#00000000"/>
+    -->
+
+
+    <!--
+            <Button
+           android:id="@+id/visitquery_location"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBaseline="@+id/location_text"
+           android:layout_alignBottom="@+id/location_text"
+           android:layout_alignParentRight="true"
+		   android:background="#00000000"/>
+    -->
+
+
+    <!--
+            <Button
+           android:id="@+id/visitquery_material"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentTop="true"
+           android:text="资料库"
+           android:background="#00000000"/>
+    -->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="拜访人员"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/visitquery_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visitquery_customer"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/visitquery_aim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visitquery_person"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:textColor="#000000" />
+
+    <!--
+            <ImageView
+           android:id="@+id/imageView1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignRight="@+id/location_text"
+           android:layout_alignTop="@+id/photo_button"
+           android:src="@drawable/photo_button" />
+    -->
+
+    <ImageView
+        android:id="@+id/visitquery_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignTop="@+id/TextView02"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <!--
+            <ImageView
+           android:id="@+id/imageView2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignRight="@+id/location_text"
+           android:layout_alignTop="@+id/location_text"
+           android:src="@drawable/refresh_button" />
+    -->
+
+
+    <!--
+            <Button
+           android:id="@+id/visitquery_material"
+           android:layout_width="40dp"
+           android:layout_height="50dp"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentTop="true"
+           android:background="#00000000" />
+    -->
+
+    <TextView
+        android:id="@+id/leavetime_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="离开时间:"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/reachtime_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/leavetime_text"
+        android:layout_alignLeft="@+id/leavetime_text"
+        android:text="到达时间:"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView02"
+        android:layout_below="@+id/reachlocation_text"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="离开位置"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visitquery_result"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+    <ProgressBar
+        android:id="@+id/photo_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/visitquery_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/visitquery_result"
+        android:layout_alignTop="@+id/visitquery_image"
+        android:src="@drawable/download_button" />
+
+    <Button
+        android:id="@+id/download_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_alignTop="@+id/imageView1"
+        android:background="#00000000" />
+    
+    
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView02"
+        android:layout_below="@+id/visitquery_image"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/title_bg"
+        android:gravity="center"
+        android:text="到达位置"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/reachlocation_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/visitquery_result"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/textView6"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/text_bg"
+        android:gravity="center"
+        android:textColor="#000000" />
+
+</RelativeLayout>
