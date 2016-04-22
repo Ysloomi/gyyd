@@ -184,7 +184,7 @@
         <item name="android:background">@drawable/textshape</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">3dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 

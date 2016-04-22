@@ -1,8 +1,5 @@
 package com.beessoft.dyyd.mymeans;
 
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,10 +15,11 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
 public class ChangePasswordActivity extends BaseActivity {
 	
 	private EditText editText1, editText2, editText3;
-	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

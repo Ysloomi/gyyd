@@ -1,119 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txt_title_addr"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_gray"
-        android:padding="5dp" />
-
-    <LinearLayout
-        android:id="@+id/ll_addr"
-        style="@style/TextOutLayout">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp">
 
         <TextView
+            android:id="@+id/txt_title_addr"
             style="@style/MyTitle"
-            android:text="地点" />
-
-        <TextView
-            android:id="@+id/txt_addr"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
+            android:padding="5dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_question"
-        style="@style/TextOutLayout">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/textshape_grey"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/MyTitle"
-            android:text="发现问题" />
+        <LinearLayout
+            android:id="@+id/ll_addr"
+            style="@style/TextOutLayout">
 
-        <TextView
-            android:id="@+id/txt_question"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="地点:"
+                android:textColor="@android:color/black" />
 
+            <TextView
+                android:id="@+id/txt_addr"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_question"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="发现问题:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_question"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_advise"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="提出措施及建议:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_advise"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_reason"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="未走访原因:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_reason"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_date"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="编辑时间:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_date"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_effect"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="成效跟踪:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_effect"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_effect_date"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:background="@android:color/transparent"
+                android:text="成效编辑时间:"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/txt_effect_date"
+                style="@style/NoteText"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_advise"
-        style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="提出措施及建议" />
-
-        <TextView
-            android:id="@+id/txt_advise"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_reason"
-        style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="未走访原因" />
-
-        <TextView
-            android:id="@+id/txt_reason"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_date"
-        style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="编辑时间" />
-
-        <TextView
-            android:id="@+id/txt_date"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_effect"
-        style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="成效跟踪" />
-
-        <TextView
-            android:id="@+id/txt_effect"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_effect_date"
-        style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="成效编辑时间" />
-
-        <TextView
-            android:id="@+id/txt_effect_date"
-            style="@style/NoteText"
-            android:background="@drawable/textshape_grey" />
-
-    </LinearLayout>
-
 </LinearLayout>

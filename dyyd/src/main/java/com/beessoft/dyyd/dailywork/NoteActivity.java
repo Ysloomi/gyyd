@@ -58,7 +58,6 @@ public class NoteActivity extends BaseActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.note_actions, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -87,7 +86,6 @@ public class NoteActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
-
 
         context = NoteActivity.this;
         mac = GetInfo.getIMEI(context);
@@ -152,7 +150,6 @@ public class NoteActivity extends BaseActivity
         });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -180,8 +177,6 @@ public class NoteActivity extends BaseActivity
         start = startEdit.getText().toString();
         end = endEdit.getText().toString();
     }
-
-
 
     private void visitRefresh() {
 

@@ -6,10 +6,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 public class User {
 
-//	public static final String mainurl = "http://wq-app.dyg3.com:8000/wqapp/";
+	public static final String mainurl = "http://wq-app.dyg3.com:8000/wqapp/";
 //	public static final String mainurl = "http://hwq.dyg3.com:8001/";
 //	public static final String mainurl = "http://hwq-app.dyg3.com:8001/";//邮政银行
-	public static final String mainurl = "http://223.86.31.75:8000/dy10086/";
+//	public static final String mainurl = "http://223.86.31.75:8000/dy10086/";
 //	public static final String mainurl = "http://192.168.199.143:8080/dy10086/";
 	public static final String version = "中国移动德阳公司  v";
 	public static final String xml = "upapk/dyydversion.xml";

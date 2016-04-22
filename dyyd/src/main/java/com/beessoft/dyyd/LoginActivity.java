@@ -1,12 +1,10 @@
 package com.beessoft.dyyd;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -20,7 +18,6 @@ import com.baidu.location.LocationClient;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -34,6 +31,7 @@ import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class LoginActivity extends Activity {
@@ -45,7 +43,7 @@ public class LoginActivity extends Activity {
 	private ImageButton imgBtn;
 	private CheckBox savePassword;
 	private EditText editText1, editText2;
-	private TextView textView1;
+	private TextView versionTxt;
 	private String IMSI;
 	private String user, pass;
 
@@ -53,9 +51,10 @@ public class LoginActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
-		context=this;
+
+		context=LoginActivity.this;
 		
-		textView1 = (TextView) findViewById(R.id.version_text);
+		versionTxt = (TextView) findViewById(R.id.version_text);
 		savePassword = (CheckBox) findViewById(R.id.remember_password);
 		editText1 = (EditText) findViewById(R.id.editText1);
 		editText2 = (EditText) findViewById(R.id.editText2);
@@ -66,7 +65,7 @@ public class LoginActivity extends Activity {
 
 		Mac = GetInfo.getIMEI(LoginActivity.this);
 
-		textView1.setText(User.version + User.getVersionName(this));
+		versionTxt.setText(User.version + User.getVersionName(this));
 
 		Gps gps = new Gps(context);
 		gps.openGPSSettings(context);
@@ -74,8 +73,7 @@ public class LoginActivity extends Activity {
 			Gps.GPS_do(mLocationClient, 8000);
 		}
 
-		IMSI = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE))
-				.getSubscriberId();
+		IMSI = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getSubscriberId();
 
 		editText1.setText(PreferenceUtil.readString(context, "username"));
 		Boolean isCheck = PreferenceUtil.readBoolean(context, "isCheck");
@@ -148,13 +146,14 @@ public class LoginActivity extends Activity {
 		parameters_userInfo.put("sim", IMSI);
 		parameters_userInfo.put("version", User.getVersionCode(context)+"");
 
+//		Logger.e(httpUrl+"?"+parameters_userInfo);
 		client_request.get(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-//							Logger.e(dataJson.toString());
+//							Logger.e("login"+dataJson);
 							switch (dataJson.getString("code")) {
 							case "0":
 								PreferenceUtil.write(context, "username", user);
@@ -162,13 +161,24 @@ public class LoginActivity extends Activity {
 									PreferenceUtil.write(context, "password", pass);
 								}
 								registerXGPush(user);
-								String role = dataJson.getString("role");
-								PreferenceUtil.write(context, "role", role);
+//								String role = dataJson.getString("role");
+//								PreferenceUtil.write(context, "role", role);
 								String ifCheck = dataJson.getString("kq");//0考，1不
 								PreferenceUtil.write(context, "ifCheck", ifCheck);
 
 								int ifgps = dataJson.getInt("ifgps");//ifgps 0 允许室外签到 1不允许
 								PreferenceUtil.write(context, "ifgps", ifgps);
+
+								int roleCode = dataJson.getInt("rolecode");
+								if (roleCode==0){
+									JSONArray array = dataJson.getJSONArray("roleList");
+									for (int i = 0; i < array.length(); i++) {
+										JSONObject object = array.getJSONObject(i);
+										String buttonCode = object.getString("code");
+										String role1 = object.getString("role");
+										PreferenceUtil.write(context,"rolebuttoncode"+buttonCode,role1);
+									}
+								}
 								CrashReport.setUserId(user);
 								visitServer_PersonInfo();
 								break;
@@ -231,7 +241,7 @@ public class LoginActivity extends Activity {
 						}finally{
 							ToastUtil.toast(context, "登陆成功");
 							Intent intent = new Intent();
-							intent.setClass(LoginActivity.this,MainActivity.class);
+							intent.setClass(context,MainActivity.class);
 							startActivity(intent);
 						}
 					}
