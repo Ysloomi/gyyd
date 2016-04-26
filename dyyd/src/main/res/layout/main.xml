@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/material_unselected2" />
+                    android:src="@drawable/material_unselected" />
 
                 <TextView
                     android:id="@+id/material_text"
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/mymeans_unselected2" />
+                    android:src="@drawable/mymeans_unselected" />
 
                 <TextView
                     android:id="@+id/mymeans_text"

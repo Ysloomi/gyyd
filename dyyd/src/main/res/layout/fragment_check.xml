@@ -12,7 +12,7 @@
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/checkout_button"
         android:background="#00000000"
-        android:drawableTop="@drawable/checkin_icon"
+        android:drawableTop="@drawable/checkin"
         android:text="上班签到"
         android:textColor="#4db0f6" />
 
@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:background="#00000000"
-        android:drawableTop="@drawable/checkout_icon3"
+        android:drawableTop="@drawable/checkout"
         android:text="下班签退"
         android:textColor="#4db0f6" />
 
@@ -36,7 +36,7 @@
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/checkout_button"
         android:background="#00000000"
-        android:drawableTop="@drawable/visitreach_icon"
+        android:drawableTop="@drawable/visitreach"
         android:text="到达现场"
         android:textColor="#4db0f6" />
 
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00000000"
-        android:drawableTop="@drawable/visitleave_icon"
+        android:drawableTop="@drawable/leave"
         android:text="离开现场"
         android:textColor="#4db0f6"
         android:layout_below="@+id/checkin_button"

@@ -238,14 +238,14 @@ public class GetInfo {
 
     public static void getButtonRole(Context context, Button button, String type,String from) {
         if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode" + type))) {
-            int a= R.drawable.checkin_untap_icon;
+            int a= R.drawable.checkin_untap;
             if ("1".equals(type)||"2".equals(type)){
                  if ("checkout".equals(from)){
-                    a = R.drawable.checkout_untap_icon;
+                    a = R.drawable.checkout_untap;
                 }else if ("reach".equals(from)){
-                     a = R.drawable.reach_untap_icon;
+                     a = R.drawable.reach_untap;
                 }else if ("leave".equals(from)){
-                     a = R.drawable.leave_untap_icon;
+                     a = R.drawable.leave_untap;
                 }
             }else{
                 switch (type) {
@@ -256,16 +256,16 @@ public class GetInfo {
                         a = R.drawable.askleave_untap;
                         break;
                     case "5":
-                        a = R.drawable.photo_untap_icon;
+                        a = R.drawable.photo_untap;
                         break;
                     case "6":
-                        a = R.drawable.mywork_untap_icon;
+                        a = R.drawable.mywork_untap;
                         break;
                     case "7":
-                        a = R.drawable.checkquery_untap_icon;
+                        a = R.drawable.checkquery_untap;
                         break;
                     case "8":
-                        a = R.drawable.photo_untap_icon;
+                        a = R.drawable.photo_untap;
                         break;
                     case "9":
                         a = R.drawable.note_untap;

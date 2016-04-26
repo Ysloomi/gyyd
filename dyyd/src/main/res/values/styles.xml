@@ -43,7 +43,7 @@
     </style>
 
     <style name="Loading" parent="@android:style/Theme.Holo.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/loading_page1</item>
+        <item name="android:windowBackground">@drawable/loading_page</item>
     </style>
 
     <style name="MyButton" parent="@android:style/Widget.Holo.Light.Button">

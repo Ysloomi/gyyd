@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.beessoft.dyyd.utils.GetInfo;
+
 public class BaseActivity extends Activity {
 	public Context context;
 	public String mac;
@@ -31,6 +33,9 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context= this;
+		mac = GetInfo.getIMEI(context);
+		username= GetInfo.getUserName(context);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);// 使导航栏出现返回按钮
 	}

@@ -10,7 +10,7 @@
         android:layout_alignTop="@+id/editText1"
         android:layout_toLeftOf="@+id/editText1"
         android:background="#00000000"
-        android:src="@drawable/login_account_icon1" />
+        android:src="@drawable/login_account_icon" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/editText2"
         android:layout_toLeftOf="@+id/editText2"
-        android:src="@drawable/login_password_icon1" />
+        android:src="@drawable/login_password_icon" />
 
 
     <ImageButton
@@ -66,7 +66,7 @@
         android:layout_alignLeft="@+id/editText1"
         android:layout_below="@+id/editText1"
         android:layout_marginTop="20dp"
-        android:background="@drawable/login_password_bg1"
+        android:background="@drawable/login_password_bg"
         android:inputType="textPassword"
         android:paddingLeft="1dp"
         android:textColor="#000000"
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/login_account_bg1"
+        android:background="@drawable/login_account_bg"
         android:inputType="textPersonName"
         android:paddingLeft="1dp"
         android:textColor="#000000"

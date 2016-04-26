@@ -12,7 +12,7 @@
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/boss_button"
         android:background="#00000000"
-        android:drawableTop="@drawable/workbook_icon1"
+        android:drawableTop="@drawable/workbook"
         android:text="员工手册"
         android:textColor="#4db0f6" />
 
@@ -24,7 +24,7 @@
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/boss_button"
         android:background="#00000000"
-        android:drawableTop="@drawable/salesworkbook_icon1"
+        android:drawableTop="@drawable/sales"
         android:text="店员手册"
         android:textColor="#4db0f6" />
 
@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:background="#00000000"
-        android:drawableTop="@drawable/bossworkbook_icon2"
+        android:drawableTop="@drawable/boss"
         android:text="老板手册"
         android:textColor="#4db0f6" />
 
@@ -48,7 +48,7 @@
         android:layout_below="@+id/boss_button"
         android:layout_marginTop="35dp"
         android:background="#00000000"
-        android:drawableTop="@drawable/branchtarget_icon1"
+        android:drawableTop="@drawable/branch"
         android:text="分局日报"
         android:textColor="#4db0f6" />
 
@@ -84,7 +84,7 @@
         android:layout_below="@+id/companytarget_button"
         android:layout_marginTop="35dp"
         android:background="#00000000"
-        android:drawableTop="@drawable/targetquery_icon1"
+        android:drawableTop="@drawable/targetquery"
         android:text="目标查询"
         android:textColor="#4db0f6" />
 

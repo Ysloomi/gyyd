@@ -180,11 +180,11 @@ public class MainActivity extends FragmentActivity {
 						break;
 //				case 2:
 //					materialImage
-//							.setImageResource(R.drawable.material_selected2);
+//							.setImageResource(R.drawable.material_selected);
 //					// materialText.setTextColor(Color.parseColor("#4db0f6"));
 //					break;
 					case 2:
-						mymeansImage.setImageResource(R.drawable.mymeans_selected2);
+						mymeansImage.setImageResource(R.drawable.mymeans_selected);
 						// mymeansText.setTextColor(Color.parseColor("#4db0f6"));
 						break;
 				}
@@ -199,11 +199,11 @@ public class MainActivity extends FragmentActivity {
 						break;
 //				case 1:
 //					materialImage
-//							.setImageResource(R.drawable.material_selected2);
+//							.setImageResource(R.drawable.material_selected);
 //					// materialText.setTextColor(Color.parseColor("#4db0f6"));
 //					break;
 					case 1:
-						mymeansImage.setImageResource(R.drawable.mymeans_selected2);
+						mymeansImage.setImageResource(R.drawable.mymeans_selected);
 						// mymeansText.setTextColor(Color.parseColor("#4db0f6"));
 						break;
 				}
@@ -240,9 +240,9 @@ public class MainActivity extends FragmentActivity {
 		checkText.setTextColor(Color.WHITE);
 		dailyworkImage.setImageResource(R.drawable.dailywork_unselected);
 		dailyworkText.setTextColor(Color.WHITE);
-//		materialImage.setImageResource(R.drawable.material_unselected2);
+//		materialImage.setImageResource(R.drawable.material_unselected);
 //		materialText.setTextColor(Color.WHITE);
-		mymeansImage.setImageResource(R.drawable.mymeans_unselected2);
+		mymeansImage.setImageResource(R.drawable.mymeans_unselected);
 		mymeansText.setTextColor(Color.WHITE);
 	}
 

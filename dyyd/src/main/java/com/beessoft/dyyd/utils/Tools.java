@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.util.Xml;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
@@ -15,8 +14,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.R;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,52 +66,6 @@ public class Tools {
 		bos.toByteArray();
 		return BitmapFactory.decodeByteArray(bos.toByteArray(), 0,
 				bos.toByteArray().length);
-	}
-
-	/**
-	 * 解析XML文件
-	 * 
-	 * @param imgpath
-	 * @return
-	 * @throws Exception
-	 */
-
-	public List<Imge> GetXMLData(String imgpath) throws Exception {
-		Imge imge = null;
-		List<Imge> imges = new ArrayList<Imge>();
-		InputStream is = getWebInputStream(imgpath);
-		XmlPullParser parser = Xml.newPullParser();
-		parser.setInput(is, "UTF-8");
-		System.out.println(parser);
-		int event = parser.getEventType();
-
-		while (event != XmlPullParser.END_DOCUMENT) {
-			switch (event) {
-			case XmlPullParser.START_DOCUMENT:
-				imge = new Imge();
-				break;
-			case XmlPullParser.START_TAG:
-				if (parser.getName().equals("imge")) {
-					imge.setId(parser.getAttributeValue(0));
-				}
-				if (parser.getName().equals("imgename")) {
-					imge.setImgName(parser.nextText());
-				} else if (parser.getName().equals("imgpath")) {
-					imge.setImgUrl(parser.nextText());
-					System.out.println(imge);
-				}
-				break;
-			case XmlPullParser.END_TAG:
-				if ("imge".equals(parser.getName()) && imge != null) {
-					imges.add(imge);
-					imge = new Imge();
-				}
-				break;
-			}
-			event = parser.next();
-		}
-		return imges;
-
 	}
 
 	/**
