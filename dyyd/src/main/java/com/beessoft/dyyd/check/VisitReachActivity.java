@@ -218,7 +218,6 @@ public class VisitReachActivity extends BaseActivity {
 								}else{
 									confirmInfo();
 								}
-
 //							} else {
 //								inputIfExamineDialog();
 //							}
@@ -396,8 +395,7 @@ public class VisitReachActivity extends BaseActivity {
 		mThread = new Thread(runnable);
 		if (Gps.exist(VisitReachActivity.this, "distance.db")) {
 			addrText.setText("正在定位...");
-			distanceHelper = new DistanceDatabaseHelper(
-					getApplicationContext(), "distance.db", 1);
+			distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
 			longtitude = Gps.getJd(distanceHelper);
 			latitude = Gps.getWd(distanceHelper);
 			type = Gps.getType(distanceHelper);

@@ -230,6 +230,24 @@ public class GetInfo {
                 noteQuery.setAddrCode(objWait.getString("id"));
                 noteQueries.add(noteQuery);
             }
+            JSONArray arrayReach = object.getJSONArray("reach");
+            for (int j = 0; j < arrayReach.length(); j++) {
+                JSONObject objWait = arrayReach.getJSONObject(j);
+                NoteQuery noteQuery = new NoteQuery();
+                noteQuery.setType("已拜访");
+                noteQuery.setAddr(objWait.getString("customer"));
+                noteQuery.setAddrCode(objWait.getString("id"));
+                noteQueries.add(noteQuery);
+            }
+            JSONArray arrayLeave = object.getJSONArray("leave");
+            for (int j = 0; j < arrayLeave.length(); j++) {
+                JSONObject objWait = arrayLeave.getJSONObject(j);
+                NoteQuery noteQuery = new NoteQuery();
+                noteQuery.setType("已离开");
+                noteQuery.setAddr(objWait.getString("customer"));
+                noteQuery.setAddrCode(objWait.getString("id"));
+                noteQueries.add(noteQuery);
+            }
             note.setNoteQueries(noteQueries);
             mDatas.add(note);
         }

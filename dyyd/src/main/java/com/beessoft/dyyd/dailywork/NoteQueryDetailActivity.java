@@ -2,6 +2,7 @@ package com.beessoft.dyyd.dailywork;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.BaseActivity;
@@ -26,7 +26,6 @@ import com.beessoft.dyyd.adapter.NoteQueryAdapter;
 import com.beessoft.dyyd.bean.Note;
 import com.beessoft.dyyd.bean.NoteAddr;
 import com.beessoft.dyyd.bean.NoteQuery;
-import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Constant;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -54,14 +53,18 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
     private String addr="";
     private String addrCode="";
 
-    private List<NoteAddr> noteAddrs = new ArrayList<>();
+    private List<NoteAddr> waitNoteAddrs = new ArrayList<>();
     private List<NoteAddr> effectNoteAddrs = new ArrayList<>();
+    private List<NoteAddr> visitNoteAddrs = new ArrayList<>();
+    private List<NoteAddr> leaveNoteAddrs = new ArrayList<>();
     private NoteAddrAdapter noteAddrAdapter;
 
     private Note note;
     private boolean allWait = true;
 
-    private  AlertDialog alertDialog ;
+    private  AlertDialog alertDialog;
+    private  AlertDialog alertDialog1;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //条用基类的方法，以便调出系统菜单（如果有的话）
@@ -162,76 +165,12 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         listView.setAdapter(noteQueryAdapter);
     }
 
-
-//    private void getData(String id) {
-//
-//        String httpUrl = User.mainurl + "sf/lxmx";
-//        AsyncHttpClient client_request = new AsyncHttpClient();
-//        RequestParams parameters_userInfo = new RequestParams();
-//
-//        parameters_userInfo.put("mac", mac);
-//        parameters_userInfo.put("usercode", username);
-//        parameters_userInfo.put("id", id);
-//
-//        client_request.post(httpUrl, parameters_userInfo,
-//                new AsyncHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(String response) {
-//                        try {
-//                            JSONObject dataJson = new JSONObject(response);
-//                            int code = dataJson.getInt("code");
-//                            String msg = dataJson.getString("msg");
-//                            noteQueries.clear();
-//                            if (code == 0) {
-//                                departText.setText(dataJson.getString(""));
-//                                nameText.setText(dataJson.getString(""));
-//                                startText.setText(dataJson.getString(""));
-//                                endText.setText(dataJson.getString(""));
-//                                addr = dataJson.getString("addr");
-//                                addrText.setText(dataJson.getString(""));
-//                                planText.setText(dataJson.getString(""));
-//                                noteQueries = getData(dataJson);
-//                            }
-//                            noteQueryAdapter.notifyDataSetChanged();
-//                            ToastUtil.toast(context, msg);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }finally {
-//                            ProgressDialogUtil.closeProgressDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable error, String data) {
-//                        ToastUtil.toast(context, "网络错误，请重试");
-//                        ProgressDialogUtil.closeProgressDialog();
-//                    }
-//                });
-//    }
-//
-//
-//    @NonNull
-//    private List<NoteQuery> getData(JSONObject jsonObject) throws JSONException {
-//        JSONArray array = jsonObject.getJSONArray("list");
-//        List<NoteQuery> mDatas = new ArrayList<>();
-//        for (int i = 0; i < array.length(); i++) {
-//            JSONObject obj = array.getJSONObject(i);
-//            NoteQuery noteQuery = new NoteQuery();
-//            noteQuery.setType(obj.getString("id"));
-//            noteQuery.setAddr(obj.getString("id"));
-//            noteQuery.setQuestion(obj.getString("id"));
-//            noteQuery.setAdvise(obj.getString("beginTime"));
-//            noteQuery.setEffect(obj.getString("customer"));
-//            mDatas.add(noteQuery);
-//        }
-//        return mDatas;
-//    }
-
-
     private void showSpinner(View view) {
 
-        noteAddrs.clear();
+        waitNoteAddrs.clear();
         effectNoteAddrs.clear();
+        visitNoteAddrs.clear();
+        leaveNoteAddrs.clear();
         addr ="";
         addrCode ="";
         allWait = true;
@@ -242,7 +181,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 noteAddr.setName(noteQuery.getAddr());
                 noteAddr.setCode(noteQuery.getAddrCode());
                 noteAddr.setIscheck("0");
-                noteAddrs.add(noteAddr);
+                waitNoteAddrs.add(noteAddr);
             }
             if ("已走访".equals(noteQuery.getType())){
                 NoteAddr noteAddr = new NoteAddr();
@@ -250,6 +189,22 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 noteAddr.setCode(noteQuery.getAddrCode());
                 noteAddr.setIscheck("0");
                 effectNoteAddrs.add(noteAddr);
+                allWait = false;
+            }
+            if ("已拜访".equals(noteQuery.getType())){
+                NoteAddr noteAddr = new NoteAddr();
+                noteAddr.setName(noteQuery.getAddr());
+                noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setIscheck("0");
+                visitNoteAddrs.add(noteAddr);
+                allWait = false;
+            }
+            if ("已离开".equals(noteQuery.getType())){
+                NoteAddr noteAddr = new NoteAddr();
+                noteAddr.setName(noteQuery.getAddr());
+                noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setIscheck("0");
+                leaveNoteAddrs.add(noteAddr);
                 allWait = false;
             }
             if ("未走访".equals(noteQuery.getType())){
@@ -264,14 +219,28 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         pw.setFocusable(true);
         pw.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         pw.showAsDropDown(view);
+        TextView visitTxt = (TextView) v.findViewById(R.id.action_result);
+        TextView leaveTxt = (TextView) v.findViewById(R.id.action_result);
         TextView resultText = (TextView) v.findViewById(R.id.action_result);
         TextView effectText = (TextView) v.findViewById(R.id.action_effect);
         TextView changeText = (TextView) v.findViewById(R.id.action_change);
 
-        if (noteAddrs.size()>0){
+        if (waitNoteAddrs.size()>0){
             resultText.setVisibility(View.VISIBLE);
+            visitTxt.setVisibility(View.VISIBLE);
         }else {
             resultText.setVisibility(View.GONE);
+            visitTxt.setVisibility(View.GONE);
+        }
+        if (visitNoteAddrs.size()>0){
+            leaveTxt.setVisibility(View.VISIBLE);
+        }else {
+            leaveTxt.setVisibility(View.GONE);
+        }
+        if (effectNoteAddrs.size()>0){
+            effectText.setVisibility(View.VISIBLE);
+        }else {
+            effectText.setVisibility(View.GONE);
         }
         if (effectNoteAddrs.size()>0){
             effectText.setVisibility(View.VISIBLE);
@@ -300,67 +269,143 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
 
         });
 
+        visitTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pw.dismiss();
+                type = "visit";
+                View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr,null);
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(context).setView(view);
+                alertDialog = builder.create();
+                alertDialog.show();
+
+                ListView listView = (ListView) view.findViewById(R.id.list_view);
+                noteAddrAdapter = new NoteAddrAdapter(context,waitNoteAddrs,false);
+                listView.setAdapter(noteAddrAdapter);
+                listView.setOnItemClickListener(NoteQueryDetailActivity.this);
+
+                TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
+                submitTxt.setVisibility(View.GONE);
+            }
+        });
+
+        leaveTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pw.dismiss();
+                type = "leave";
+                View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr,null);
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(context).setView(view);
+                alertDialog = builder.create();
+                alertDialog.show();
+
+                ListView listView = (ListView) view.findViewById(R.id.list_view);
+                noteAddrAdapter = new NoteAddrAdapter(context,visitNoteAddrs,false);
+                listView.setAdapter(noteAddrAdapter);
+                listView.setOnItemClickListener(NoteQueryDetailActivity.this);
+
+                TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
+                submitTxt.setVisibility(View.GONE);
+            }
+        });
+
         resultText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pw.dismiss();
                 type = "result";
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr,null);
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(context)
+                        .setTitle("选择状态")
+                        .setPositiveButton("已走访", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                state = "已走访";
+                                View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr, null);
 
-                AlertDialog.Builder builder=new AlertDialog.Builder(context)
-                        .setView(view);
-                alertDialog = builder.create();
-                alertDialog.show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(view);
+                                alertDialog = builder.create();
+                                alertDialog.show();
 
-                ListView listView = (ListView) view.findViewById(R.id.list_view);
-                noteAddrAdapter = new NoteAddrAdapter(context,noteAddrs,true);
-                listView.setAdapter(noteAddrAdapter);
-                listView.setOnItemClickListener(NoteQueryDetailActivity.this);
+                                ListView listView = (ListView) view.findViewById(R.id.list_view);
+                                noteAddrAdapter = new NoteAddrAdapter(context, leaveNoteAddrs, true);
+                                listView.setAdapter(noteAddrAdapter);
+                                listView.setOnItemClickListener(NoteQueryDetailActivity.this);
 
-                Spinner stateSpinner = (Spinner) view.findViewById(R.id.spn_state);
-                final List<String> states = new ArrayList<>();
-                states.add("已走访");
-                states.add("未走访");
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,R.layout.spinner_item,states);
-                stateSpinner.setAdapter(arrayAdapter);
-                stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        state = states.get(position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-
-                TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
-                submitTxt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        for (int j = 0;j<noteAddrs.size();j++){
-                            NoteAddr noteAddr = noteAddrs.get(j);
-                            if ("1".equals(noteAddr.getIscheck())){
-                                addr += noteAddr.getName()+",";
-                                addrCode += noteAddr.getCode()+",";
+                                TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
+                                submitTxt.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        for (int j = 0; j < leaveNoteAddrs.size(); j++) {
+                                            NoteAddr noteAddr = leaveNoteAddrs.get(j);
+                                            if ("1".equals(noteAddr.getIscheck())) {
+                                                addr += noteAddr.getName() + ",";
+                                                addrCode += noteAddr.getCode() + ",";
+                                            }
+                                        }
+                                        Intent intent = new Intent();
+                                        intent.setClass(context, NoteDealActivity.class);
+                                        Bundle b = new Bundle();
+                                        b.putParcelable("note", note);
+                                        intent.putExtra("bundle", b);
+                                        intent.putExtra("state", state);
+                                        intent.putExtra("addr", addr);
+                                        intent.putExtra("addrCode", addrCode);
+                                        intent.putExtra("from", type);
+                                        startActivity(intent);
+                                        if (alertDialog != null) {
+                                            alertDialog.dismiss();
+                                        }
+                                    }
+                                });
                             }
-                        }
-                        Intent intent = new Intent();
-                        intent.setClass(context, NoteDealActivity.class);
-                        Bundle b = new Bundle();
-                        b.putParcelable("note", note);
-                        intent.putExtra("bundle", b);
-                        intent.putExtra("state", state);
-                        intent.putExtra("addr", addr);
-                        intent.putExtra("addrCode", addrCode);
-                        intent.putExtra("from", "plan");
-                        startActivity(intent);
-                        if (alertDialog != null){
-                            alertDialog.dismiss();
-                        }
-                    }
-                });
+                        }).setNegativeButton("未走访", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                state = "未走访";
+                                View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr, null);
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(view);
+                                alertDialog = builder.create();
+                                alertDialog.show();
+
+                                ListView listView = (ListView) view.findViewById(R.id.list_view);
+                                noteAddrAdapter = new NoteAddrAdapter(context, waitNoteAddrs, true);
+                                listView.setAdapter(noteAddrAdapter);
+                                listView.setOnItemClickListener(NoteQueryDetailActivity.this);
+
+                                TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
+                                submitTxt.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        for (int j = 0; j < waitNoteAddrs.size(); j++) {
+                                            NoteAddr noteAddr = waitNoteAddrs.get(j);
+                                            if ("1".equals(noteAddr.getIscheck())) {
+                                                addr += noteAddr.getName() + ",";
+                                                addrCode += noteAddr.getCode() + ",";
+                                            }
+                                        }
+                                        Intent intent = new Intent();
+                                        intent.setClass(context, NoteDealActivity.class);
+                                        Bundle b = new Bundle();
+                                        b.putParcelable("note", note);
+                                        intent.putExtra("bundle", b);
+                                        intent.putExtra("state", state);
+                                        intent.putExtra("addr", addr);
+                                        intent.putExtra("addrCode", addrCode);
+                                        intent.putExtra("from", type);
+                                        startActivity(intent);
+                                        if (alertDialog != null) {
+                                            alertDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                alertDialog1 = builder1.create();
+                alertDialog1.show();
             }
         });
 
@@ -381,9 +426,6 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 listView.setAdapter(noteAddrAdapter);
                 listView.setOnItemClickListener(NoteQueryDetailActivity.this);
 
-                LinearLayout stateLl = (LinearLayout) view.findViewById(R.id.ll_state);
-                stateLl.setVisibility(View.GONE);
-
                 TextView submitTxt = (TextView) view.findViewById(R.id.txt_submit);
                 submitTxt.setVisibility(View.GONE);
             }
@@ -394,8 +436,8 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
             public void onClick(View v) {
                 pw.dismiss();
                 if (allWait){
-                    for (int j = 0;j<noteAddrs.size();j++){
-                        NoteAddr noteAddr = noteAddrs.get(j);
+                    for (int j = 0; j< waitNoteAddrs.size(); j++){
+                        NoteAddr noteAddr = waitNoteAddrs.get(j);
                         addr += noteAddr.getName()+",";
                         addrCode += noteAddr.getCode()+",";
                     }
@@ -420,14 +462,14 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         switch (parent.getId()){
             case R.id.list_view:
                 if ("result".equals(type)){
-                    NoteAddr noteAddr = noteAddrs.get(position);
+                    NoteAddr noteAddr = waitNoteAddrs.get(position);
                     if ("0".equals(noteAddr.getIscheck())) {
                         noteAddr.setIscheck("1");
                     } else {
                         noteAddr.setIscheck("0");
                     }
                     noteAddrAdapter.notifyDataSetChanged();
-                }else {
+                }else if ("effect".equals(type)){
                     NoteQuery noteQuery = note.getNoteQueries().get(position);
 //                    Logger.e("noteQuery.getEffect()>>>"+noteQuery.getEffect());
                     if (Tools.isEmpty(noteQuery.getEffect())){
@@ -450,20 +492,36 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                     } else {
                         ToastUtil.toast(context,"已填写成效跟踪");
                     }
+                } else if ("visit".equals(type)){
+                    NoteAddr noteAddr = waitNoteAddrs.get(position);
+                    Intent intent = new Intent();
+                    intent.setClass(context, NoteDealActivity.class);
+                    Bundle b = new Bundle();
+                    b.putParcelable("note", note);
+                    intent.putExtra("bundle", b);
+                    intent.putExtra("addr", noteAddr.getName());
+                    intent.putExtra("addrCode", noteAddr.getCode());
+                    intent.putExtra("from", type);
+                    startActivity(intent);
+                    if (alertDialog != null) {
+                        alertDialog.dismiss();
+                    }
+                } else if ("leave".equals(type)){
+                    NoteAddr noteAddr = visitNoteAddrs.get(position);
+                    Intent intent = new Intent();
+                    intent.setClass(context, NoteDealActivity.class);
+                    Bundle b = new Bundle();
+                    b.putParcelable("note", note);
+                    intent.putExtra("bundle", b);
+                    intent.putExtra("addr", noteAddr.getName());
+                    intent.putExtra("addrCode", noteAddr.getCode());
+                    intent.putExtra("from", type);
+                    startActivity(intent);
+                    if (alertDialog != null) {
+                        alertDialog.dismiss();
+                    }
                 }
                 break;
         }
     }
-
-//    @Override
-//    public void changeCheck(int position, boolean isChecked) {
-//        NoteAddr noteAddr = noteAddrs.get(position);
-//        if (isChecked) {
-//            noteAddr.setIscheck("1");
-//        } else {
-//            noteAddr.setIscheck("0");
-//        }
-//        noteAddrAdapter.notifyDataSetChanged();
-//    }
-
 }

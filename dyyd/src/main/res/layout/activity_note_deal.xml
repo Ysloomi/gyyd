@@ -90,6 +90,31 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_location"
+            style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/txt_location_title"
+                style="@style/MyTitle"
+                android:text="当前地址" />
+
+            <TextView
+                android:id="@+id/txt_location"
+                style="@style/NoteText"
+                android:layout_toRightOf="@+id/txt_location_title"
+                android:background="@drawable/textshape_grey" />
+
+            <ImageView
+                android:id="@+id/img_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:scaleType="matrix"
+                android:src="@drawable/refresh_button" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/ll_question"
             style="@style/TextOutLayout">
@@ -148,6 +173,46 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_photo"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="成效跟踪" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout style="@style/TextOutLayout"
+            android:id="@+id/rl_photo">
+
+
+            <TextView
+                android:id="@+id/txt_photo_title"
+                style="@style/MyTitle"
+                android:text="照片信息" />
+
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/img_take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:scaleType="matrix"
+                android:src="@drawable/photo_button" />
+        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout style="@style/RelativeBottom">

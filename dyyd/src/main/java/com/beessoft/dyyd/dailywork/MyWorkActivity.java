@@ -81,7 +81,7 @@ public class MyWorkActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									MyWorkActivity.this,
 									datas,// 数据源
-									R.layout.mywork_item,// 显示布局
+									R.layout.item_mywork,// 显示布局
 									new String[] { "name", "message" },
 									new int[] { R.id.name, R.id.message });
 							listView.setAdapter(simAdapter);
