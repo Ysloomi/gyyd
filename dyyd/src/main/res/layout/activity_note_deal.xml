@@ -90,8 +90,8 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_location"
+        <LinearLayout
+            android:id="@+id/ll_location"
             style="@style/TextOutLayout">
 
             <TextView
@@ -105,15 +105,28 @@
                 android:layout_toRightOf="@+id/txt_location_title"
                 android:background="@drawable/textshape_grey" />
 
-            <ImageView
-                android:id="@+id/img_refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:scaleType="matrix"
-                android:src="@drawable/refresh_button" />
+            <TextView
+                android:id="@id/txt_refresh"
+                style="@style/TapText"
+                android:text="刷新" />
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_ifinside"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="是否有效范围" />
+
+            <TextView
+                android:id="@+id/txt_ifinside"
+                style="@style/NoteText"
+                android:layout_toRightOf="@+id/txt_location_title"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_question"
@@ -188,8 +201,9 @@
         </LinearLayout>
 
 
-        <RelativeLayout style="@style/TextOutLayout"
-            android:id="@+id/rl_photo">
+        <RelativeLayout
+            android:id="@+id/rl_photo"
+            style="@style/TextOutLayout">
 
 
             <TextView

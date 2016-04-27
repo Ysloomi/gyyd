@@ -18,11 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Note;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.Logger;
@@ -36,6 +39,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +48,7 @@ import java.io.File;
 public class NoteDealActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView locationTxt;
+    private TextView ifInsideTxt;
     private TextView departText;
     private TextView nameText;
     private TextView addrText;
@@ -51,7 +56,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private TextView endText;
     private TextView planText;
 
-    private RelativeLayout locationRl;
+    private LinearLayout locationLl;
+    private LinearLayout ifInsideLl;
     private LinearLayout questionLl;
     private LinearLayout adviseLl;
     private LinearLayout reasonLl;
@@ -88,6 +94,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
     private boolean ifLocation = false;
 
+    private String leavetype="未采集";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +128,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private void initView() {
 
         locationTxt = (TextView) findViewById(R.id.txt_location);
+        ifInsideTxt = (TextView) findViewById(R.id.txt_ifinside);
         departText = (TextView) findViewById(R.id.txt_depart);
         nameText = (TextView) findViewById(R.id.txt_name);
         addrText = (TextView) findViewById(R.id.txt_addr);
@@ -127,7 +136,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         endText = (TextView) findViewById(R.id.edt_end);
         planText = (TextView) findViewById(R.id.txt_plan);
 
-        locationRl = (RelativeLayout) findViewById(R.id.rl_location);
+        locationLl = (LinearLayout) findViewById(R.id.ll_location);
+        ifInsideLl= (LinearLayout) findViewById(R.id.ll_ifinside);
         questionLl = (LinearLayout) findViewById(R.id.ll_question);
         adviseLl = (LinearLayout) findViewById(R.id.ll_advise);
         reasonLl = (LinearLayout) findViewById(R.id.ll_reason);
@@ -168,7 +178,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 reasonLl.setVisibility(View.GONE);
                 effectLl.setVisibility(View.GONE);
             }
-            locationRl.setVisibility(View.GONE);
+            locationLl.setVisibility(View.GONE);
+            ifInsideLl.setVisibility(View.GONE);
             photoRl.setVisibility(View.GONE);
         }else if ("effect".equals(from)){
             question = getIntent().getStringExtra("question");
@@ -183,10 +194,12 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             adviseEdt.setBackground(getResources().getDrawable(R.drawable.textshape_grey));
             reasonLl.setVisibility(View.GONE);
             effectLl.setVisibility(View.VISIBLE);
-            locationRl.setVisibility(View.GONE);
+            locationLl.setVisibility(View.GONE);
+            ifInsideLl.setVisibility(View.GONE);
             photoRl.setVisibility(View.GONE);
         }else if ("visit".equals(from)){
-            locationRl.setVisibility(View.VISIBLE);
+            locationLl.setVisibility(View.VISIBLE);
+            ifInsideLl.setVisibility(View.VISIBLE);
             questionLl.setVisibility(View.GONE);
             adviseLl.setVisibility(View.GONE);
             reasonLl.setVisibility(View.GONE);
@@ -194,7 +207,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             photoRl.setVisibility(View.VISIBLE);
             getAddrLocation();
         }else if ("leave".equals(from)){
-            locationRl.setVisibility(View.VISIBLE);
+            locationLl.setVisibility(View.VISIBLE);
+            ifInsideLl.setVisibility(View.VISIBLE);
             questionLl.setVisibility(View.VISIBLE);
             adviseLl.setVisibility(View.VISIBLE);
             reasonLl.setVisibility(View.GONE);
@@ -203,6 +217,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             getAddrLocation();
         }
         addrText.setText(addr);
+
+        getIfInside();
     }
 
     @Override
@@ -513,4 +529,63 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             }
         }
     };
+
+
+
+    private void getIfInside() {
+
+        String httpUrl = User.mainurl + "sf/GetCustomer";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("name", addrCode);
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            String code = dataJson.getString("code");
+                            if (code.equals("0")) {
+                                JSONArray array = dataJson.getJSONArray("list");
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject obj = array.getJSONObject(i);
+                                    String lat = obj.getString("lat");
+                                    String lng = obj.getString("lng");
+                                    int scope = obj.getInt("fw");
+                                    if (Tools.isEmpty(lat)||Tools.isEmpty(lng)){
+                                        leavetype = "未采集";
+                                        ifInsideTxt.setText(leavetype);
+                                    }else{
+                                        if (!Tools.isEmpty(latitude)){
+                                            LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
+                                            LatLng p2 = new LatLng(Double.valueOf(lat),Double.valueOf(lng));
+                                            double distance = DistanceUtil. getDistance(p1, p2);
+                                            leavetype = distance < scope ? "是" : "否" ;
+                                            ifInsideTxt.setText(leavetype);
+                                        }else{
+                                            ToastUtil.toast(context,"请先等待获取位置信息");
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ProgressDialogUtil.closeProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        ToastUtil.toast(context,"网络连接错误");
+                        ProgressDialogUtil.closeProgressDialog();
+                    }
+                });
+    }
 }
