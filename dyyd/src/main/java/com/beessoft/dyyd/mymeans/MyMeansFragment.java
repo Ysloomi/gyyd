@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.DetailActivity;
@@ -16,7 +17,8 @@ import com.beessoft.dyyd.update.UpdateManager;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 
 public class MyMeansFragment extends Fragment {
-	private TextView textView1, textView2, textView3, textView4, textView5, textView6;
+	private TextView unitTxt, departTxt, nameTxt, telTxt, macTxt, onlineTxt;
+	private Button updateBtn;
 	private UpdateManager mUpdateManager;
 	private Context context;
 
@@ -31,23 +33,24 @@ public class MyMeansFragment extends Fragment {
 	
 	private void initview(View view) {
 
-		textView1 = (TextView) view.findViewById(R.id.unit_text);
-		textView2 = (TextView) view.findViewById(R.id.department_text);
-		textView3 = (TextView) view.findViewById(R.id.name_text);
-		textView4 = (TextView) view.findViewById(R.id.tel_text);
-		textView5 = (TextView) view.findViewById(R.id.mac_text);
-//		textView6 = (TextView) getActivity().findViewById(R.id.online_text);
+		unitTxt = (TextView) view.findViewById(R.id.unit_text);
+		departTxt = (TextView) view.findViewById(R.id.department_text);
+		nameTxt = (TextView) view.findViewById(R.id.name_text);
+		telTxt = (TextView) view.findViewById(R.id.tel_text);
+		macTxt = (TextView) view.findViewById(R.id.mac_text);
+		onlineTxt = (TextView) view.findViewById(R.id.online_text);
+		updateBtn = (Button) view.findViewById(R.id.btn_update);
+		updateBtn.setOnClickListener(onClickListener);
 
-		view.findViewById(R.id.update).setOnClickListener(onClickListener);
-		view.findViewById(R.id.changepassword).setOnClickListener(onClickListener);
-		view.findViewById(R.id.detail_button).setOnClickListener(onClickListener);
-		view.findViewById(R.id.advise_button).setOnClickListener(onClickListener);
+		view.findViewById(R.id.btn_changepassword).setOnClickListener(onClickListener);
+		view.findViewById(R.id.btn_advise).setOnClickListener(onClickListener);
+		view.findViewById(R.id.txt_detail).setOnClickListener(onClickListener);
 		
-		textView1.setText(PreferenceUtil.readString(context, "dw"));
-		textView2.setText(PreferenceUtil.readString(context, "cdepname"));
-		textView3.setText(PreferenceUtil.readString(context, "name"));
-		textView4.setText(PreferenceUtil.readString(context, "tel"));
-		textView5.setText(PreferenceUtil.readString(context, "sim"));
+		unitTxt.setText(PreferenceUtil.readString(context, "dw"));
+		departTxt.setText(PreferenceUtil.readString(context, "cdepname"));
+		nameTxt.setText(PreferenceUtil.readString(context, "name"));
+		telTxt.setText(PreferenceUtil.readString(context, "tel"));
+		macTxt.setText(PreferenceUtil.readString(context, "sim"));
 	}
 
 	
@@ -56,20 +59,20 @@ public class MyMeansFragment extends Fragment {
 		public void onClick(View v) {
 			Intent intent = new Intent();
 			switch (v.getId()) {
-			case R.id.update:
-				mUpdateManager = new UpdateManager(getActivity());
+			case R.id.btn_update:
+				mUpdateManager = new UpdateManager(context);
 				mUpdateManager.checkUpdate(true);
 				break;
-			case R.id.changepassword:
-				intent.setClass(getActivity(), ChangePasswordActivity.class);
+			case R.id.btn_changepassword:
+				intent.setClass(context, ChangePasswordActivity.class);
 				startActivity(intent);
 				break;
-			case R.id.detail_button:
-				intent.setClass(getActivity(), DetailActivity.class);
+			case R.id.txt_detail:
+				intent.setClass(context, DetailActivity.class);
 				startActivity(intent);
 				break;
-			case R.id.advise_button:
-				intent.setClass(getActivity(), AdviseTypeActivity.class);
+			case R.id.btn_advise:
+				intent.setClass(context, AdviseTypeActivity.class);
 				startActivity(intent);
 				break;
 			default:

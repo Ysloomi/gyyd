@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
@@ -230,9 +229,9 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
-							PreferenceUtil.write(context, "dw", dataJson.getString("cdepname"));
-							PreferenceUtil.write(context, "cdepname", dataJson.getString("dw"));
+							JSONObject dataJson = new JSONObject(response);
+							PreferenceUtil.write(context, "dw", dataJson.getString("dw"));
+							PreferenceUtil.write(context, "cdepname", dataJson.getString("cdepname"));
 							PreferenceUtil.write(context, "name", dataJson.getString("name"));
 							PreferenceUtil.write(context, "tel", dataJson.getString("tel"));
 							PreferenceUtil.write(context, "sim", dataJson.getString("sim"));

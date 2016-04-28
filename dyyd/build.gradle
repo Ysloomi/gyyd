@@ -37,8 +37,6 @@ dependencies {
     compile files('libs/jg_filter_sdk_1.1.jar')
     compile files('libs/wup-1.0.0-SNAPSHOT.jar')
     compile files('libs/mid-sdk-2.20.jar')
-    compile files('libs/baidumapapi_v3_1_1.jar')
-    compile files('libs/locSDK_4.2.jar')
     compile files('libs/BaiduLBS_Android.jar')
     compile project(':library')
 }

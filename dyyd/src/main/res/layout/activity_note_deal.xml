@@ -91,47 +91,6 @@
         </LinearLayout>
 
         <LinearLayout
-<<<<<<< Updated upstream
-=======
-            android:id="@+id/ll_location"
-            style="@style/TextOutLayout">
-
-            <TextView
-                android:id="@+id/txt_location_title"
-                style="@style/MyTitle"
-                android:text="当前地址" />
-
-            <TextView
-                android:id="@+id/txt_location"
-                style="@style/NoteText"
-                android:layout_toRightOf="@+id/txt_location_title"
-                android:background="@drawable/textshape_grey" />
-
-            <TextView
-                android:id="@+id/txt_refresh"
-                style="@style/TapText"
-                android:text="刷新" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_ifinside"
-            style="@style/TextOutLayout">
-
-            <TextView
-                style="@style/MyTitle"
-                android:text="是否有效范围" />
-
-            <TextView
-                android:id="@+id/txt_ifinside"
-                style="@style/NoteText"
-                android:layout_toRightOf="@+id/txt_location_title"
-                android:background="@drawable/textshape_grey" />
-
-        </LinearLayout>
-
-        <LinearLayout
->>>>>>> Stashed changes
             android:id="@+id/ll_question"
             style="@style/TextOutLayout">
 
