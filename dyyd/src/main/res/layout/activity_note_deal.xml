@@ -106,7 +106,7 @@
                 android:background="@drawable/textshape_grey" />
 
             <TextView
-                android:id="@id/txt_refresh"
+                android:id="@+id/txt_refresh"
                 style="@style/TapText"
                 android:text="刷新" />
 
@@ -186,21 +186,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_photo"
-            style="@style/TextOutLayout">
-
-            <TextView
-                style="@style/MyTitle"
-                android:text="成效跟踪" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-
         <RelativeLayout
             android:id="@+id/rl_photo"
             style="@style/TextOutLayout">
@@ -213,20 +198,20 @@
 
             <ImageView
                 android:id="@+id/img_photo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter" />
 
-            <ImageView
-                android:id="@+id/img_take_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/txt_take_photo"
+                style="@style/TapText"
                 android:layout_alignParentRight="true"
-                android:scaleType="matrix"
-                android:src="@drawable/photo_button" />
+                android:text="照相"/>
+
         </RelativeLayout>
+
     </LinearLayout>
 
     <RelativeLayout style="@style/RelativeBottom">

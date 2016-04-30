@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,6 +53,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
     private String type="";
     private String addr="";
     private String addrCode="";
+    private String rtCode="";
 
     private List<NoteAddr> waitNoteAddrs = new ArrayList<>();
     private List<NoteAddr> effectNoteAddrs = new ArrayList<>();
@@ -104,9 +106,9 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         mac = GetInfo.getIMEI(context);
         username = GetInfo.getUserName(context);
 
-        from = getIntent().getStringExtra("from");
-        Bundle b = getIntent().getBundleExtra("bundle");
+        Bundle b = getIntent().getExtras();
         note = b.getParcelable("note");
+        from = b.getString("from");
 
         initView();
         initData();
@@ -142,23 +144,47 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         dateTxt.setText(note.getDate());
 
         List<NoteQuery> noteQueries = new ArrayList<>();
-        NoteQuery noteQuery1 = new NoteQuery();
-        String addr ="";
-        String addrCode= "";
+        NoteQuery noteQueryReach = new NoteQuery();
+        NoteQuery noteQueryLeave = new NoteQuery();
+        NoteQuery noteQueryWait = new NoteQuery();
+        String addrWait ="";
+        String addrCodeWait= "";
+        String addrReach ="";
+        String addrCodeReach= "";
+        String addrLeave ="";
+        String addrCodeLeave = "";
         for (int i = 0;i<note.getNoteQueries().size();i++){
             NoteQuery noteQuery = note.getNoteQueries().get(i);
             if ("待走访".equals(noteQuery.getType())){
-                addr += noteQuery.getAddr()+",";
-                addrCode += noteQuery.getAddrCode()+",";
-            }else{
+                addrWait += noteQuery.getAddr()+",";
+                addrCodeWait += noteQuery.getAddrCode()+",";
+            } else if("已拜访".equals(noteQuery.getType())){
+                addrReach += noteQuery.getAddr()+",";
+                addrCodeReach += noteQuery.getAddrCode()+",";
+            } else if("已离开".equals(noteQuery.getType())){
+                addrLeave += noteQuery.getAddr()+",";
+                addrCodeLeave += noteQuery.getAddrCode()+",";
+            } else {
                 noteQueries.add(noteQuery);
             }
         }
-        if (!Tools.isEmpty(addr)){
-            noteQuery1.setType("待走访");
-            noteQuery1.setAddr(addr);
-            noteQuery1.setAddrCode(addrCode);
-            noteQueries.add(noteQuery1);
+        if (!Tools.isEmpty(addrReach)){
+            noteQueryReach.setType("已拜访");
+            noteQueryReach.setAddr(addrReach);
+            noteQueryReach.setAddrCode(addrCodeReach);
+            noteQueries.add(noteQueryReach);
+        }
+        if (!Tools.isEmpty(addrLeave)){
+            noteQueryLeave.setType("已离开");
+            noteQueryLeave.setAddr(addrLeave);
+            noteQueryLeave.setAddrCode(addrCodeLeave);
+            noteQueries.add(noteQueryLeave);
+        }
+        if (!Tools.isEmpty(addrWait)){
+            noteQueryWait.setType("待走访");
+            noteQueryWait.setAddr(addrWait);
+            noteQueryWait.setAddrCode(addrCodeWait);
+            noteQueries.add(noteQueryWait);
         }
 
         noteQueryAdapter = new NoteQueryAdapter(context,noteQueries);
@@ -180,6 +206,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 NoteAddr noteAddr = new NoteAddr();
                 noteAddr.setName(noteQuery.getAddr());
                 noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setRtCode(noteQuery.getRtCode());
                 noteAddr.setIscheck("0");
                 waitNoteAddrs.add(noteAddr);
             }
@@ -187,6 +214,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 NoteAddr noteAddr = new NoteAddr();
                 noteAddr.setName(noteQuery.getAddr());
                 noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setRtCode(noteQuery.getRtCode());
                 noteAddr.setIscheck("0");
                 effectNoteAddrs.add(noteAddr);
                 allWait = false;
@@ -195,6 +223,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 NoteAddr noteAddr = new NoteAddr();
                 noteAddr.setName(noteQuery.getAddr());
                 noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setRtCode(noteQuery.getRtCode());
                 noteAddr.setIscheck("0");
                 visitNoteAddrs.add(noteAddr);
                 allWait = false;
@@ -203,6 +232,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                 NoteAddr noteAddr = new NoteAddr();
                 noteAddr.setName(noteQuery.getAddr());
                 noteAddr.setCode(noteQuery.getAddrCode());
+                noteAddr.setRtCode(noteQuery.getRtCode());
                 noteAddr.setIscheck("0");
                 leaveNoteAddrs.add(noteAddr);
                 allWait = false;
@@ -219,8 +249,8 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         pw.setFocusable(true);
         pw.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         pw.showAsDropDown(view);
-        TextView visitTxt = (TextView) v.findViewById(R.id.action_result);
-        TextView leaveTxt = (TextView) v.findViewById(R.id.action_result);
+        TextView visitTxt = (TextView) v.findViewById(R.id.action_reach);
+        TextView leaveTxt = (TextView) v.findViewById(R.id.action_leave);
         TextView resultText = (TextView) v.findViewById(R.id.action_result);
         TextView effectText = (TextView) v.findViewById(R.id.action_effect);
         TextView changeText = (TextView) v.findViewById(R.id.action_change);
@@ -229,18 +259,17 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
             resultText.setVisibility(View.VISIBLE);
             visitTxt.setVisibility(View.VISIBLE);
         }else {
-            resultText.setVisibility(View.GONE);
+            if (leaveNoteAddrs.size() > 0){
+                resultText.setVisibility(View.VISIBLE);
+            }else{
+                resultText.setVisibility(View.GONE);
+            }
             visitTxt.setVisibility(View.GONE);
         }
         if (visitNoteAddrs.size()>0){
             leaveTxt.setVisibility(View.VISIBLE);
         }else {
             leaveTxt.setVisibility(View.GONE);
-        }
-        if (effectNoteAddrs.size()>0){
-            effectText.setVisibility(View.VISIBLE);
-        }else {
-            effectText.setVisibility(View.GONE);
         }
         if (effectNoteAddrs.size()>0){
             effectText.setVisibility(View.VISIBLE);
@@ -273,7 +302,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 pw.dismiss();
-                type = "visit";
+                type = "reach";
                 View view = LayoutInflater.from(context).inflate(R.layout.dialog_note_addr,null);
 
                 AlertDialog.Builder builder=new AlertDialog.Builder(context).setView(view);
@@ -342,20 +371,26 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                                             if ("1".equals(noteAddr.getIscheck())) {
                                                 addr += noteAddr.getName() + ",";
                                                 addrCode += noteAddr.getCode() + ",";
+                                                rtCode += noteAddr.getRtCode() + ",";
                                             }
                                         }
-                                        Intent intent = new Intent();
-                                        intent.setClass(context, NoteDealActivity.class);
-                                        Bundle b = new Bundle();
-                                        b.putParcelable("note", note);
-                                        intent.putExtra("bundle", b);
-                                        intent.putExtra("state", state);
-                                        intent.putExtra("addr", addr);
-                                        intent.putExtra("addrCode", addrCode);
-                                        intent.putExtra("from", type);
-                                        startActivity(intent);
-                                        if (alertDialog != null) {
-                                            alertDialog.dismiss();
+                                        if (!TextUtils.isEmpty(addr)){
+                                            Intent intent = new Intent();
+                                            intent.setClass(context, NoteDealActivity.class);
+                                            Bundle b = new Bundle();
+                                            b.putParcelable("note", note);
+                                            b.putString("state", state);
+                                            b.putString("addr", addr);
+                                            b.putString("addrCode", addrCode);
+                                            b.putString("from", type);
+                                            b.putString("rtCode", rtCode);
+                                            intent.putExtras(b);
+                                            startActivity(intent);
+                                            if (alertDialog != null) {
+                                                alertDialog.dismiss();
+                                            }
+                                        }else{
+                                            ToastUtil.toast(context,"请选择地点");
                                         }
                                     }
                                 });
@@ -386,18 +421,22 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                                                 addrCode += noteAddr.getCode() + ",";
                                             }
                                         }
-                                        Intent intent = new Intent();
-                                        intent.setClass(context, NoteDealActivity.class);
-                                        Bundle b = new Bundle();
-                                        b.putParcelable("note", note);
-                                        intent.putExtra("bundle", b);
-                                        intent.putExtra("state", state);
-                                        intent.putExtra("addr", addr);
-                                        intent.putExtra("addrCode", addrCode);
-                                        intent.putExtra("from", type);
-                                        startActivity(intent);
-                                        if (alertDialog != null) {
-                                            alertDialog.dismiss();
+                                        if (!TextUtils.isEmpty(addr)) {
+                                            Intent intent = new Intent();
+                                            intent.setClass(context, NoteDealActivity.class);
+                                            Bundle b = new Bundle();
+                                            b.putParcelable("note", note);
+                                            b.putString("state", state);
+                                            b.putString("addr", addr);
+                                            b.putString("addrCode", addrCode);
+                                            b.putString("from", type);
+                                            intent.putExtras(b);
+                                            startActivity(intent);
+                                            if (alertDialog != null) {
+                                                alertDialog.dismiss();
+                                            }
+                                        } else {
+                                            ToastUtil.toast(context, "请选择地点");
                                         }
                                     }
                                 });
@@ -445,10 +484,10 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                     intent.setClass(context, NoteAddActivity.class);
                     Bundle b = new Bundle();
                     b.putParcelable("note", note);
-                    intent.putExtra("bundle", b);
-                    intent.putExtra("addr", addr);
-                    intent.putExtra("addrCode", addrCode);
-                    intent.putExtra("from", "change");
+                    b.putString("addr", addr);
+                    b.putString("addrCode", addrCode);
+                    b.putString("from", "change");
+                    intent.putExtras(b);
                     startActivity(intent);
                 }else {
                     ToastUtil.toast(context,"已走访或未走访，不能修改");
@@ -462,29 +501,39 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         switch (parent.getId()){
             case R.id.list_view:
                 if ("result".equals(type)){
-                    NoteAddr noteAddr = waitNoteAddrs.get(position);
-                    if ("0".equals(noteAddr.getIscheck())) {
-                        noteAddr.setIscheck("1");
+                    if ("已走访".equals(state)) {
+                        NoteAddr noteAddr = leaveNoteAddrs.get(position);
+                        if ("0".equals(noteAddr.getIscheck())) {
+                            noteAddr.setIscheck("1");
+                        } else {
+                            noteAddr.setIscheck("0");
+                        }
                     } else {
-                        noteAddr.setIscheck("0");
+                        NoteAddr noteAddr = waitNoteAddrs.get(position);
+                        if ("0".equals(noteAddr.getIscheck())) {
+                            noteAddr.setIscheck("1");
+                        } else {
+                            noteAddr.setIscheck("0");
+                        }
                     }
                     noteAddrAdapter.notifyDataSetChanged();
                 }else if ("effect".equals(type)){
-                    NoteQuery noteQuery = note.getNoteQueries().get(position);
+                    NoteQuery noteQuery = note.getNoteQueries().get(position);//因为在最上面所以可以直接用notequery获取
+//                    NoteAddr noteAddr = effectNoteAddrs.get(position);
 //                    Logger.e("noteQuery.getEffect()>>>"+noteQuery.getEffect());
                     if (Tools.isEmpty(noteQuery.getEffect())){
                         Intent intent = new Intent();
                         intent.setClass(context, NoteDealActivity.class);
                         Bundle b = new Bundle();
                         b.putParcelable("note", note);
-                        intent.putExtra("bundle", b);
-                        intent.putExtra("rtCode", noteQuery.getRtCode());
-                        intent.putExtra("state", "");
-                        intent.putExtra("addr", noteQuery.getAddr());
-                        intent.putExtra("addrCode", noteQuery.getAddrCode());
-                        intent.putExtra("question", noteQuery.getQuestion());
-                        intent.putExtra("advise", noteQuery.getAdvise());
-                        intent.putExtra("from", type);
+                        b.putString("rtCode", noteQuery.getRtCode());
+                        b.putString("state", "");
+                        b.putString("addr", noteQuery.getAddr());
+                        b.putString("addrCode", noteQuery.getAddrCode());
+                        b.putString("question", noteQuery.getQuestion());
+                        b.putString("advise", noteQuery.getAdvise());
+                        b.putString("from", type);
+                        intent.putExtras(b);
                         startActivity(intent);
                         if (alertDialog != null){
                             alertDialog.dismiss();
@@ -492,16 +541,16 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                     } else {
                         ToastUtil.toast(context,"已填写成效跟踪");
                     }
-                } else if ("visit".equals(type)){
+                } else if ("reach".equals(type)){
                     NoteAddr noteAddr = waitNoteAddrs.get(position);
                     Intent intent = new Intent();
                     intent.setClass(context, NoteDealActivity.class);
                     Bundle b = new Bundle();
                     b.putParcelable("note", note);
-                    intent.putExtra("bundle", b);
-                    intent.putExtra("addr", noteAddr.getName());
-                    intent.putExtra("addrCode", noteAddr.getCode());
-                    intent.putExtra("from", type);
+                    b.putString("addr", noteAddr.getName());
+                    b.putString("addrCode", noteAddr.getCode());
+                    b.putString("from", type);
+                    intent.putExtras(b);
                     startActivity(intent);
                     if (alertDialog != null) {
                         alertDialog.dismiss();
@@ -512,10 +561,11 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
                     intent.setClass(context, NoteDealActivity.class);
                     Bundle b = new Bundle();
                     b.putParcelable("note", note);
-                    intent.putExtra("bundle", b);
-                    intent.putExtra("addr", noteAddr.getName());
-                    intent.putExtra("addrCode", noteAddr.getCode());
-                    intent.putExtra("from", type);
+                    b.putString("addr", noteAddr.getName());
+                    b.putString("addrCode", noteAddr.getCode());
+                    b.putString("from", type);
+                    b.putString("rtCode", noteAddr.getRtCode());
+                    intent.putExtras(b);
                     startActivity(intent);
                     if (alertDialog != null) {
                         alertDialog.dismiss();

@@ -20,7 +20,7 @@
             android:id="@+id/action_reach"
             style="@style/MenuText"
             android:drawableLeft="@drawable/menu_result"
-            android:text="拜访" />
+            android:text="到达现场" />
 
         <View style="@style/menu_horizontal_seperator_layout" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/action_leave"
             style="@style/MenuText"
             android:drawableLeft="@drawable/menu_result"
-            android:text="离开" />
+            android:text="离开现场" />
 
         <View style="@style/menu_horizontal_seperator_layout" />
 

@@ -31,7 +31,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
     private Button noteBTn;
     private TextView textView;
     private Context context;
-    private String itype ="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -207,7 +206,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.photo_button:
-                itype = "askleave";
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode5"))) {
                     intent.setClass(context, PhotoActivity.class);
                     startActivity(intent);
@@ -216,7 +214,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.work_button:
-                itype = "askleave";
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode6"))) {
                     intent.setClass(context, MyWorkActivity.class);
                     startActivity(intent);
@@ -225,7 +222,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.checkquery_button:
-                itype = "askleave";
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode7"))) {
                     intent.setClass(context, NewCheckQueryActivity.class);
                     startActivity(intent);
@@ -234,7 +230,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.worklocation_button:
-                itype = "askleave";
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode8"))) {
                     intent.setClass(context, WorkLocationActivity.class);
                     startActivity(intent);
@@ -243,18 +238,16 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.btn_note:
-                itype = "askleave";
-                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode9"))) {
-                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
+//                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode9"))) {
+//                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
                         intent.setClass(context, NoteActivity.class);
-                    }else{
-                        intent.setClass(context, NoteQueryActivity.class);
-                    }
+//                    }else{
+//                        intent.setClass(context, NoteQueryActivity.class);
+//                    }
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
-
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
                 break;
             default:
                 break;

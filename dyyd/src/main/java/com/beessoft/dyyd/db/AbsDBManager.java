@@ -79,7 +79,8 @@ public abstract class AbsDBManager {
 		public static final String DATABASE_NAME = "dyyd.db";
 		
 		public static final String TABLE_NOTEPAD_ADDR = "addr";
-		
+		public static final String TABLE_DISTANCE = "distance";
+
 		private AbsDBManager dbManager;
 		
 		public DyydDbHelper(Context context, AbsDBManager dbManager, int version) {
@@ -103,12 +104,8 @@ public abstract class AbsDBManager {
 		public void createTables(SQLiteDatabase db) {
 			//创建记事本
 			createAddrTable(db);
-//			//创建用户设置表
-//			createUserSettingsTable(db);
-//			//创建会话背景表
-//			createConversationBgTable(db);
-//			//创建草稿表
-//			createDraftMsgTable(db);
+			//创建记事本
+			createDistanceTable(db);
 		}
 
 		private void createAddrTable(SQLiteDatabase db) {
@@ -123,6 +120,26 @@ public abstract class AbsDBManager {
 //			CustomLog.d("execute createDraftMsgTable sql = "+sql);
 			db.execSQL(sql);
 		}
+
+		private void createDistanceTable(SQLiteDatabase db) {
+			String sql = "CREATE TABLE IF NOT EXISTS " +
+					TABLE_DISTANCE
+					+ " ("
+					+ DistanceColumn._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ DistanceColumn._TIME +" TEXT, "
+					+ DistanceColumn._JD +" TEXT, "
+					+ DistanceColumn._WD +" TEXT, "
+					+ DistanceColumn._ADDR +" TEXT,"
+					+ DistanceColumn._DISTANCE +" TEXT,"
+					+ DistanceColumn._TOTALDISTANCE +" TEXT,"
+					+ DistanceColumn._TYPE +" TEXT,"
+					+ DistanceColumn._IFLAG +" TEXT,"
+					+ DistanceColumn._SPEED +" TEXT"
+					+")";
+//			CustomLog.d("execute createDraftMsgTable sql = "+sql);
+			db.execSQL(sql);
+		}
+
 //		private void createConversationBgTable(SQLiteDatabase db) {
 //			String sql = "CREATE TABLE IF NOT EXISTS " +
 //					TABLE_CONVERSATION_BG
@@ -203,5 +220,24 @@ public abstract class AbsDBManager {
 		public static final String _NAME = "_name";
 		public static final String _CODE = "_code";
 		public static final String _ISCHECK = "_ischeck";
+	}
+
+	/**
+	 * @Title DistanceColumn
+	 * @Description 记录轨迹
+	 * @Company beessoft
+	 * @author wxl
+	 * @date
+	 */
+	public static class DistanceColumn extends BaseColumn{
+		public static final String _TIME = "_time";
+		public static final String _JD = "_jd";
+		public static final String _WD = "_wd";
+		public static final String _ADDR = "_addr";
+		public static final String _DISTANCE = "_distance";
+		public static final String _TOTALDISTANCE = "_totaldistance";
+		public static final String _TYPE = "_type";
+		public static final String _IFLAG = "_ifag";
+		public static final String _SPEED = "_speed";
 	}
 }

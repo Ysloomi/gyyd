@@ -39,7 +39,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,7 +93,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
     private boolean ifLocation = false;
 
-    private String leavetype="未采集";
+    private String leavetype="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
         if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
 //			Log.i(TAG, "拍摄异常，获取原来的shot_path");
-            Logger.e("拍摄异常，获取原来的shot_path");
+//            Logger.e("拍摄异常，获取原来的shot_path");
             imgPath = savedInstanceState.getString("imgPath");
         }
 
@@ -113,13 +112,14 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
-        from = getIntent().getStringExtra("from");
-        Bundle b = getIntent().getBundleExtra("bundle");
+
+        Bundle b = getIntent().getExtras();
         note = b.getParcelable("note");
-        state = getIntent().getStringExtra("state");
-        addr = getIntent().getStringExtra("addr");
-        addrCode = getIntent().getStringExtra("addrCode");
-        rtCode = getIntent().getStringExtra("rtCode");
+        from = b.getString("from");
+        state = b.getString("state");
+        addr = b.getString("addr");
+        addrCode = b.getString("addrCode");
+        rtCode = b.getString("rtCode");
 
         initView();
         initData();
@@ -152,8 +152,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         photoImage = (ImageView) findViewById(R.id.img_photo);
 
         photoImage.setOnClickListener(this);
-        findViewById(R.id.img_take_photo).setOnClickListener(this);
-        findViewById(R.id.img_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_take_photo).setOnClickListener(this);
+        findViewById(R.id.txt_refresh).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
     }
 
@@ -172,11 +172,13 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 adviseLl.setVisibility(View.GONE);
                 reasonLl.setVisibility(View.VISIBLE);
                 effectLl.setVisibility(View.GONE);
+                setTitle("未走访处理");
             }else if ("已走访".equals(state)){
                 questionLl.setVisibility(View.VISIBLE);
                 adviseLl.setVisibility(View.VISIBLE);
                 reasonLl.setVisibility(View.GONE);
                 effectLl.setVisibility(View.GONE);
+                setTitle("已走访处理");
             }
             locationLl.setVisibility(View.GONE);
             ifInsideLl.setVisibility(View.GONE);
@@ -197,7 +199,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             locationLl.setVisibility(View.GONE);
             ifInsideLl.setVisibility(View.GONE);
             photoRl.setVisibility(View.GONE);
-        }else if ("visit".equals(from)){
+            setTitle("成效跟踪处理");
+        }else if ("reach".equals(from)){
             locationLl.setVisibility(View.VISIBLE);
             ifInsideLl.setVisibility(View.VISIBLE);
             questionLl.setVisibility(View.GONE);
@@ -205,6 +208,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             reasonLl.setVisibility(View.GONE);
             effectLl.setVisibility(View.GONE);
             photoRl.setVisibility(View.VISIBLE);
+            setTitle("到达现场处理");
             getAddrLocation();
         }else if ("leave".equals(from)){
             locationLl.setVisibility(View.VISIBLE);
@@ -214,11 +218,10 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             reasonLl.setVisibility(View.GONE);
             effectLl.setVisibility(View.GONE);
             photoRl.setVisibility(View.VISIBLE);
+            setTitle("离开现场处理");
             getAddrLocation();
         }
         addrText.setText(addr);
-
-        getIfInside();
     }
 
     @Override
@@ -229,14 +232,14 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                     PhotoHelper.openPictureDialog(context, imgPath);
                 }
                 break;
-            case R.id.img_take_photo:
+            case R.id.txt_take_photo:
                 if (Tools.isSDCardExit()) {
                     takePhoto();
                 } else {
                     ToastUtil.toast(context, "内存卡不存在不能拍照");
                 }
                 break;
-            case R.id.img_refresh:
+            case R.id.txt_refresh:
                 getAddrLocation();
                 break;
             case R.id.btn_submit:
@@ -248,12 +251,14 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 if ("result".equals(from)) {
                     if ("未走访".equals(state)) {
                         if (!Tools.isEmpty(reason)) {
+                            ProgressDialogUtil.showProgressDialog(context);
                             saveData(quesioton, advise, reason, effect,addr);
                         } else {
                             ToastUtil.toast(context, "请填写原因");
                         }
                     } else {
                         if (!Tools.isEmpty(quesioton) && !Tools.isEmpty(advise)) {
+                            ProgressDialogUtil.showProgressDialog(context);
                             saveData(quesioton, advise, reason, effect,addr);
                         } else {
                             ToastUtil.toast(context, "请填写问题以及措施");
@@ -261,18 +266,21 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                     }
                 } else if ("effect".equals(from)) {
                     if (!Tools.isEmpty(effect)) {
+                        ProgressDialogUtil.showProgressDialog(context);
                         saveData(quesioton, advise, reason, effect,addr);
                     } else {
                         ToastUtil.toast(context, "请填写成效跟踪");
                     }
                 } else if ("reach".equals(from)) {
-                    if (!Tools.isEmpty(addr)||!"正在定位...".equals(addr)){
+                    if (!Tools.isEmpty(addr)&&!"正在定位...".equals(addr)&&!Tools.isEmpty(leavetype)){
+                        ProgressDialogUtil.showProgressDialog(context);
                         saveData(quesioton, advise, reason, effect,addr);
                     }else{
                         ToastUtil.toast(context,"请等待定位");
                     }
-                }else if ("reach".equals(from)) {
-                    if (!Tools.isEmpty(addr) || !"正在定位...".equals(addr)) {
+                }else if ("leave".equals(from)) {
+                    if (!Tools.isEmpty(addr) && !"正在定位...".equals(addr)&&!Tools.isEmpty(leavetype)) {
+                        ProgressDialogUtil.showProgressDialog(context);
                         saveData(quesioton, advise, reason, effect, addr);
                     } else {
                         ToastUtil.toast(context, "请等待定位");
@@ -286,8 +294,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private void saveData(String quesioton, String advise,
                           String reason, String effect,String addr) {
 
-        String httpUrl = User.mainurl+"notePad/MyNoteServlet";
-
+//        String httpUrl = User.mainurl+"notePad/MyNoteServlet";
+        String httpUrl ="";
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
@@ -303,20 +311,28 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         parameters_userInfo.put("type", from);
         if ("result".equals(from)){
             if ("未走访".equals(state)){
+                httpUrl = User.mainurl+"notePad/MyNoteServlet";
                 parameters_userInfo.put("tmp", "unfinish");
                 parameters_userInfo.put("problem",reason );
+                parameters_userInfo.put("id", note.getId());
+                parameters_userInfo.put("rdcode", note.getRdCode());
+                parameters_userInfo.put("opinion", advise);
+                parameters_userInfo.put("ccuscode", addrCode);
             }else{
-                parameters_userInfo.put("tmp", "finish");
+//                parameters_userInfo.put("tmp", "finish");
+//                parameters_userInfo.put("problem",quesioton );
+                parameters_userInfo.put("opinion", advise);
+                httpUrl = User.mainurl+"app/StateUpdate";
+                parameters_userInfo.put("rtcode", rtCode);
                 parameters_userInfo.put("problem",quesioton );
+                parameters_userInfo.put("opinion", advise);
             }
-            parameters_userInfo.put("id", note.getId());
-            parameters_userInfo.put("rdcode", note.getRdCode());
-            parameters_userInfo.put("opinion", advise);
-            parameters_userInfo.put("ccuscode", addrCode);
         }else if ("effect".equals(from)){
+            httpUrl = User.mainurl+"notePad/MyNoteServlet";
             parameters_userInfo.put("rtcode", rtCode);
             parameters_userInfo.put("effect", effect);
         }else if ("reach".equals(from)){
+            httpUrl = User.mainurl+"app/StateUpdate";
             parameters_userInfo.put("id", note.getId());
             parameters_userInfo.put("rdcode", note.getRdCode());
             parameters_userInfo.put("ccuscode", addrCode);
@@ -324,7 +340,10 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("lng", longtitude);
             parameters_userInfo.put("addr", addr);
             parameters_userInfo.put("image", uploadBuffer);
+            parameters_userInfo.put("inside", leavetype);
         }else if ("leave".equals(from)){
+            httpUrl = User.mainurl+"app/StateUpdate";
+            parameters_userInfo.put("rtcode", rtCode);
             parameters_userInfo.put("id", note.getId());
             parameters_userInfo.put("rdcode", note.getRdCode());
             parameters_userInfo.put("ccuscode", addrCode);
@@ -334,9 +353,10 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("lng", longtitude);
             parameters_userInfo.put("addr", addr);
             parameters_userInfo.put("image", uploadBuffer);
+            parameters_userInfo.put("inside", leavetype);
         }
 
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
+        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -354,6 +374,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }finally {
+                            ProgressDialogUtil.closeProgressDialog();
                         }
                     }
 
@@ -449,7 +471,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     public void getAddrLocation() {
         mThread = new Thread(runnable);
         if (Gps.exist(context, "distance.db")) {
-            addrText.setText("正在定位...");
+            locationTxt.setText("正在定位...");
             distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
             longtitude = Gps.getJd(distanceHelper);
             latitude = Gps.getWd(distanceHelper);
@@ -458,7 +480,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             mThread.start();// 线程启动
             distanceHelper.close();
         } else {
-            addrText.setText("正在定位...");
+            locationTxt.setText("正在定位...");
             if (!mLocationClient.isStarted()) {
                 Gps.GPS_do(mLocationClient, 1100);
             } else {
@@ -506,7 +528,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 }
             } else {
                 if (Tools.isEmpty(location)) {
-                    mHandler.obtainMessage(MSG_FAILURE).sendToTarget();// 获取图片失败
+                    mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
                 } else {
                     mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
                 }
@@ -521,10 +543,12 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         public void handleMessage(Message msg) {// 此方法在ui线程运行
             switch (msg.what) {
                 case MSG_SUCCESS:
-                    addrText.setText("[" + type + "]" + location);// textView显示从定位获取到的地址
+                    locationTxt.setText("[" + type + "]" + location);// textView显示从定位获取到的地址
+                    ProgressDialogUtil.showProgressDialog(context);
+                    getIfInside();
                     break;
                 case MSG_FAILURE:
-                    addrText.setText("请重新定位");
+                    locationTxt.setText("请重新定位");
                     break;
             }
         }
@@ -534,14 +558,17 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
     private void getIfInside() {
 
-        String httpUrl = User.mainurl + "sf/GetCustomer";
+        String httpUrl = User.mainurl + "app/StateUpdate";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
-        parameters_userInfo.put("name", addrCode);
+        parameters_userInfo.put("ccuscode", addrCode);
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("type", "fw");
+
+        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -549,14 +576,14 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(Escape.unescape(response));
-                            String code = dataJson.getString("code");
-                            if (code.equals("0")) {
-                                JSONArray array = dataJson.getJSONArray("list");
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONObject obj = array.getJSONObject(i);
-                                    String lat = obj.getString("lat");
-                                    String lng = obj.getString("lng");
-                                    int scope = obj.getInt("fw");
+                            int code = dataJson.getInt("code");
+                            if (code==0) {
+//                                JSONArray array = dataJson.getJSONArray("list");
+//                                for (int i = 0; i < array.length(); i++) {
+//                                    JSONObject obj = array.getJSONObject(i);
+                                    String lat = dataJson.getString("lat");
+                                    String lng = dataJson.getString("lng");
+                                    int scope = dataJson.getInt("fw");
                                     if (Tools.isEmpty(lat)||Tools.isEmpty(lng)){
                                         leavetype = "未采集";
                                         ifInsideTxt.setText(leavetype);
@@ -571,7 +598,10 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                                             ToastUtil.toast(context,"请先等待获取位置信息");
                                         }
                                     }
-                                }
+//                                }
+                            }else{
+                                leavetype = "未采集";
+                                ifInsideTxt.setText(leavetype);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
