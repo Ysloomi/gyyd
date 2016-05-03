@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.dailywork;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -36,21 +35,22 @@ public class ConfirmListActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.confirmlist);
+		setContentView(R.layout.activity_base_list);
 		context = ConfirmListActivity.this;
 		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 
-		listView = (ListView) findViewById(R.id.confirm_list);
+		listView = (ListView) findViewById(R.id.list_view);
 	}
 
 	@Override
 	protected void onStart() {
-		ProgressDialogUtil.showProgressDialog(context);
-		visitServer(ConfirmListActivity.this);
 		super.onStart();
+		ProgressDialogUtil.showProgressDialog(context);
+		visitServer();
 	}
 
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/check_confirmlist";
 		String pass = GetInfo.getPass(context);
 		AsyncHttpClient client_request = new AsyncHttpClient();
@@ -75,8 +75,7 @@ public class ConfirmListActivity extends BaseActivity {
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
-									map.put("id", j);
-									map.put("idTarget", obj.getString("id"));
+									map.put("id", obj.getString("id"));
 									map.put("date", obj.getString("iday"));
 									map.put("verifier",
 											"审批人:" + obj.getString("verifier"));
@@ -100,7 +99,7 @@ public class ConfirmListActivity extends BaseActivity {
 									ListView listView = (ListView) parent;
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
-									String idTarget = map.get("idTarget");
+									String idTarget = map.get("id");
 									Intent intent = new Intent(ConfirmListActivity.this,ConfirmActivity.class);
 									intent.putExtra("idTarget", idTarget);
 									startActivity(intent);
