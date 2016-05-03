@@ -7,6 +7,7 @@ import android.widget.SimpleAdapter;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -32,6 +33,10 @@ public class TodoActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_list);
+
+        context = TodoActivity.this;
+        mac = GetInfo.getIMEI(context);
+        username = GetInfo.getUserName(context);
 
         listView = (ListView) findViewById(R.id.list_view);
 

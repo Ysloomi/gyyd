@@ -1,8 +1,5 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.Tools;
@@ -25,6 +21,9 @@ import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @SuppressLint("NewApi")
 public class PhotoQueryActivity extends BaseActivity {
@@ -42,7 +41,7 @@ public class PhotoQueryActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photoquery);
+		setContentView(R.layout.activity_photoquery);
 
 		textView1 = (TextView) findViewById(R.id.location_text);
 		textView2 = (TextView) findViewById(R.id.phototype_text);
@@ -79,26 +78,19 @@ public class PhotoQueryActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-//						System.out.println("response:" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 
 							if (dataJson.getString("code").equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(new String(obj
-											.getString("iadd")));
-									textView2.setText(new String(obj
-											.getString("imgtype")));
-									textView3.setText(new String(obj
-											.getString("context")));
-									textView4.setText(new String(obj
-											.getString("itime")));
+									textView1.setText(obj.getString("iadd"));
+									textView2.setText(obj.getString("imgtype"));
+									textView3.setText(obj.getString("context"));
+									textView4.setText(obj.getString("itime"));
 
-									photo = User.mainurl
-											+ obj.getString("imgfile");
+									photo = User.mainurl + obj.getString("imgfile");
 									mThread = new Thread(runnable);
 									mThread.start();
 								}

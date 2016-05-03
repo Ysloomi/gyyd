@@ -1,14 +1,5 @@
 package com.beessoft.dyyd.dailywork;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,50 +13,54 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class ApproveQueryListActivity extends BaseActivity {
 
-	private String MacAddr;
-
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
-
 	private ListView listView;
-
-	private ProgressDialog progressDialog;
-
 	private SimpleAdapter simAdapter;
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.approvequerylist);
-		
-		listView = (ListView) findViewById(R.id.query_list);
-		MacAddr = GetInfo.getIMEI(ApproveQueryListActivity.this);
+		setContentView(R.layout.activity_base_list);
+
+		context = ApproveQueryListActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
+		listView = (ListView) findViewById(R.id.list_view);
+
 	}
 
 	@Override
 	protected void onStart() {
-		
-		cleanlist();
-		// / 显示ProgressDialog
-		progressDialog = ProgressDialog.show(ApproveQueryListActivity.this,
-				"载入中...", "请等待...", true, false);
-		visitServer(ApproveQueryListActivity.this, MacAddr);
 		super.onStart();
+		ProgressDialogUtil.showProgressDialog(context);
+		visitServer();
 	}
 
-	// 访问服务器http post
-	private void visitServer(Context context, String MacAddr) {
+	private void visitServer() {
+
 		String httpUrl = User.mainurl + "sf/checklist";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		parameters_userInfo.put("mac", MacAddr);
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", "1");// 查询人
 		parameters_userInfo.put("btn", "0");
 
@@ -76,16 +71,16 @@ public class ApproveQueryListActivity extends BaseActivity {
 						try {
 							JSONObject dataJson = new JSONObject(Escape
 									.unescape(response));
-							if (dataJson.getString("code").equals("1")) {
+							int code = dataJson.getInt("code");
+							if (code ==1) {
 								Toast.makeText(ApproveQueryListActivity.this,
 										"没有相关信息", Toast.LENGTH_SHORT).show();
-							} else if (dataJson.getString("code").equals("0")) {
+							} else if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
-									map.put("id", j);
-									map.put("idTarget", obj.getString("id"));
+									map.put("id", obj.getString("id"));
 									map.put("name", obj.getString("username"));
 									map.put("date", obj.getString("iday"));
 									map.put("verifier","审批人:" + obj.getString("verifier"));
@@ -97,7 +92,7 @@ public class ApproveQueryListActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									ApproveQueryListActivity.this,
 									datas,// 数据源
-									R.layout.approvelist_item,// 显示布局
+									R.layout.item_approvelist,// 显示布局
 									new String[] { "date", "name",
 											"verifier","state","readtime" },
 									new int[] {
@@ -114,37 +109,26 @@ public class ApproveQueryListActivity extends BaseActivity {
 									ListView listView = (ListView) parent;
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
-									String idTarget = map.get("idTarget");
+									String idTarget = map.get("id");
 									Intent intent = new Intent(
-											ApproveQueryListActivity.this,
+											context,
 											ApproveQueryActivity.class);
-									intent.putExtra("idTarget", idTarget);
+									intent.putExtra("id", idTarget);
 									startActivity(intent);
 								}
 							});
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
-
-	// 清除处理
-	private void cleanlist() {
-		int size = datas.size();
-		if (size > 0) {
-			datas.removeAll(datas);
-			simAdapter.notifyDataSetChanged();
-			listView.setAdapter(simAdapter);
-		}
-	}
-
 }

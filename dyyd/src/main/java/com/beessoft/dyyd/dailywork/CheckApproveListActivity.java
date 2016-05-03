@@ -95,7 +95,7 @@ public class CheckApproveListActivity extends BaseActivity {
 								simAdapter = new SimpleAdapter(
 										CheckApproveListActivity.this, 
 										datas,// 数据源
-										R.layout.checkapprovelist_item,// 显示布局
+										R.layout.item_checkapprovelist,// 显示布局
 										new String[] { "date", "name",
 												"explanation" }, 
 										new int[] {

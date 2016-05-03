@@ -158,7 +158,7 @@ public class MyMemoListActivity extends BaseActivity {
 								}
 								simAdapter = new SimpleAdapter(
 										MyMemoListActivity.this, datas,// 数据源
-										R.layout.mymemo_item,// 显示布局
+										R.layout.item_mymemo,// 显示布局
 										new String[] { "idate", "itime",
 												"state", "memo" }, new int[] {
 												R.id.date, R.id.time,

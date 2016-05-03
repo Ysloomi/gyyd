@@ -25,9 +25,7 @@ public class AdviseTypeActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
+
 		case R.id.action_advise:
 			Intent intent = new Intent(this, AdviseActivity.class);
 			startActivity(intent);
@@ -39,9 +37,7 @@ public class AdviseTypeActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.checkquery);
-
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 设置为Tab模式
+		setContentView(R.layout.activity_checkquery);
 
 		initView();
 	}

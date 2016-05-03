@@ -1,10 +1,5 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,18 +17,21 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class ApproveActivity extends BaseActivity {
 	private Button button;
 	private TextView textView1, textView2, textView3, textView4, textView5, textView6;
 	private EditText editText1;
-	private String mac, advise, id, time;
-	private ProgressDialog progressDialog;
-	
+	private String  advise, id, time;
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -44,9 +42,7 @@ public class ApproveActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
+
 		case R.id.action_mileage:
 			Intent intent = new Intent(ApproveActivity.this,
 					MapActivity.class);
@@ -78,7 +74,7 @@ public class ApproveActivity extends BaseActivity {
 		id = getIntent().getStringExtra("idTarget");
 
 		mac = GetInfo.getIMEI(ApproveActivity.this);
-		visitServer(ApproveActivity.this);
+		visitServer();
 
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -89,11 +85,8 @@ public class ApproveActivity extends BaseActivity {
 							Toast.LENGTH_SHORT).show();
 				} else {
 					if (TextUtils.isEmpty(time.trim())) {
-						// 开启ProgressDialog
-						progressDialog = ProgressDialog.show(
-								ApproveActivity.this, "载入中...", "请等待...", true,
-								false);
-						visitServer_comfirm(ApproveActivity.this);
+						ProgressDialogUtil.showProgressDialog(context);
+						visitServer_comfirm();
 					} else {
 						Toast.makeText(ApproveActivity.this, "已审批，请勿重复提交",
 								Toast.LENGTH_SHORT).show();
@@ -103,7 +96,7 @@ public class ApproveActivity extends BaseActivity {
 		});
 	}
 
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/fragment_check";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -116,27 +109,19 @@ public class ApproveActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							if (dataJson.getString("code").equals("0")) {
-
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(new String(obj
-											.getString("username")));
-									textView2.setText(new String(obj
-											.getString("cmakertime")));
-									textView3.setText(new String(obj
-											.getString("ytomplan")));
-									textView4.setText(new String(obj
-											.getString("todsummary")));
-									textView5.setText(new String(obj
-											.getString("tomplan")));
-									editText1.setText(new String(obj
-											.getString("veropinion")));
-									textView6.setText(new String(obj
-											.getString("checktime")));
+									textView1.setText(obj.getString("username"));
+									textView2.setText(obj.getString("cmakertime"));
+									textView3.setText(obj.getString("ytomplan"));
+									textView4.setText(obj.getString("todsummary"));
+									textView5.setText(obj.getString("tomplan"));
+									editText1.setText(obj.getString("veropinion"));
+									textView6.setText(obj.getString("checktime"));
 								}
 							} else {
 								Toast.makeText(ApproveActivity.this, "请重新上传",
@@ -149,7 +134,7 @@ public class ApproveActivity extends BaseActivity {
 				});
 	}
 
-	private void visitServer_comfirm(Context context) {
+	private void visitServer_comfirm() {
 		String httpUrl = User.mainurl + "sf/check_save";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -163,10 +148,9 @@ public class ApproveActivity extends BaseActivity {
 					public void onSuccess(String response) {
 
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								Toast.makeText(ApproveActivity.this,
 										"工作审批数据上传成功", Toast.LENGTH_SHORT)
 										.show();
@@ -180,14 +164,14 @@ public class ApproveActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

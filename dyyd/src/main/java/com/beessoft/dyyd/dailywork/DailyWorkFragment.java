@@ -35,7 +35,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View dailywork = inflater.inflate(R.layout.dailywork, container, false);
+        View dailywork = inflater.inflate(R.layout.fragment_dailywork, container, false);
         context = getActivity();
         initView(dailywork);
         return dailywork;

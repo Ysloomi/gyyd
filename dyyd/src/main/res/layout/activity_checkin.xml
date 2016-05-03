@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/title1"
+                    style="@style/MyTitle"
+                    android:text="当前地址" />
+
+                <TextView
+                    android:id="@+id/location_text"
+                    style="@style/MyText"
+                    android:layout_toRightOf="@+id/title1" />
+
+                <ImageView
+                    android:id="@+id/imageView_image2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/location_text"
+                    android:layout_alignTop="@+id/location_text"
+                    android:src="@drawable/refresh_button" />
+
+                <Button
+                    android:id="@+id/checkin_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/location_text"
+                    android:layout_alignBottom="@+id/location_text"
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000" />
+
+            </RelativeLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="北京时间" />
+
+                <Chronometer
+                    android:id="@+id/chronometer1"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="是否有效\n范围内" />
+
+                <TextView
+                    android:id="@+id/ifinside_text"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="不在有效\n范围类别" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/class_text"
+                    style="@style/MyText"
+                    android:completionThreshold="1" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="签到异常\n说明" />
+
+                <EditText
+                    android:id="@+id/explain_text"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+
+                    android:text="出行方式" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/journey_type"
+                    style="@style/MyText"
+                    android:completionThreshold="1" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="照片要求" />
+
+                <TextView
+                    android:id="@+id/photo_text"
+                    style="@style/MyText"
+                    android:text="开车拍车牌、骑车拍车子、乘车无要求" />
+            </LinearLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/title8"
+                    style="@style/MyTitle"
+                    android:text="照片信息" />
+
+                <ImageView
+                    android:id="@+id/checkin_image"
+                    android:layout_width="150dp"
+                    android:layout_height="120dp"
+                    android:layout_alignTop="@+id/title8"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/photo_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/checkin_image"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/photo_button" />
+
+                <Button
+                    android:id="@+id/checkin_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/checkin_image"
+                    android:background="#00000000" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="系统说明" />
+
+                <TextView
+                    style="@style/MyText"
+                    android:text="本系统仅记录签到—签退之间的轨迹。\n本系统支持Gps和Wifi签到。\n如果不在有效范围请刷新。" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout style="@style/RelativeBottom">
+
+        <Button
+            android:id="@+id/checkin_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+    </RelativeLayout>
+
+</LinearLayout>

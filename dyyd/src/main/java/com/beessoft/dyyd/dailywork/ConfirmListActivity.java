@@ -86,7 +86,7 @@ public class ConfirmListActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									ConfirmListActivity.this,
 									datas,// 数据源
-									R.layout.confirmlist_item,// 显示布局
+									R.layout.item_confirmlist,// 显示布局
 									new String[] { "date", "verifier"},
 									new int[] {R.id.date, R.id.verifier });
 							listView.setAdapter(simAdapter);

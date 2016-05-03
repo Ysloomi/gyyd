@@ -2,7 +2,6 @@ package com.beessoft.dyyd.dailywork;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +36,7 @@ import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -56,7 +56,7 @@ public class PhotoActivity extends BaseActivity {
 	private TextView addrText;
 	private TextView requireText;
 	private EditText editText1;
-	private String mac, location, contextLoca, longitude, latitude, addr,
+	private String longtitude, latitude, addr,
 			type, imageType;
 	private Button button2, button3, button5;
 
@@ -66,14 +66,12 @@ public class PhotoActivity extends BaseActivity {
 	private static final int MSG_FAILURE = 1;// 获取定位失败的标识
 
 	private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
-	private ProgressDialog progressDialog;
+
 	 private Spinner typeSpinner;
 //	private AutoCompleteTextView autoCompleteTextView;
 
 	private LocationClient mLocationClient;
 	private ArrayList<String> requireList ;
-	private Context context;
-
 
 	//照相
 	private Bitmap bitmap;
@@ -108,11 +106,8 @@ public class PhotoActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
 		case R.id.action_photo:
-			startActivity(new Intent(PhotoActivity.this,
+			startActivity(new Intent(context,
 					PhotoQueryListActivity.class));
 			return true;
 		}
@@ -122,7 +117,7 @@ public class PhotoActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photo);
+		setContentView(R.layout.activity_photo);
 
 		if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
 //			Log.i(TAG, "拍摄异常，获取原来的shot_path");
@@ -130,34 +125,31 @@ public class PhotoActivity extends BaseActivity {
 			imgPath = savedInstanceState.getString("imgPath");
 		}
 		context = PhotoActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
-		mac = GetInfo.getIMEI(PhotoActivity.this);
+
 		requireList = new ArrayList<String>();
 
 		initView();
 		// 获取定位地址
 		getAddrLocation();
 		// 获取
-		visitServer_get(PhotoActivity.this);
+		visitServer_get();
 
 		button2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// // 清空spinner
-				// ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				// PhotoActivity.this, R.layout.spinner_item);
-				// spinner.setAdapter(adapter);
 				getAddrLocation();
 			}
 		});
 
 		button3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-
-				location = addrText.getText().toString();
+				String location = addrText.getText().toString();
 				imageType = typeSpinner.getSelectedItem().toString();
 //				imageType = autoCompleteTextView.getText().toString();
-				contextLoca = editText1.getText().toString();
+				String contextLoca = editText1.getText().toString();
 				 if(addr==null) {
 					ToastUtil.toast(context, "请刷新定位再提交");
 				}else if (uploadBuffer == null) {
@@ -167,8 +159,8 @@ public class PhotoActivity extends BaseActivity {
 				} else if (TextUtils.isEmpty(contextLoca.trim())) {
 					ToastUtil.toast(context, "请填写照片说明再上传");
 				} else {
-					progressDialog = ProgressDialog.show(context,"载入中...", "请等待...", true, true);
-					visitServer(longitude, latitude,location, imageType, contextLoca);
+					 ProgressDialogUtil.showProgressDialog(context);
+					visitServer(location, imageType, contextLoca);
 				}
 			}
 		});
@@ -278,11 +270,11 @@ public class PhotoActivity extends BaseActivity {
 			addrText.setText("正在定位...");
 			distanceHelper = new DistanceDatabaseHelper(
 					getApplicationContext(), "distance.db", 1);
-			longitude = Gps.getJd(distanceHelper);
+			longtitude = Gps.getJd(distanceHelper);
 			latitude = Gps.getWd(distanceHelper);
 			type = Gps.getType(distanceHelper);
 
-			visitServer_getaddr(PhotoActivity.this, longitude, latitude);
+			visitServer_getaddr(PhotoActivity.this, longtitude, latitude);
 
 			mThread.start();// 线程启动
 
@@ -298,10 +290,9 @@ public class PhotoActivity extends BaseActivity {
 		@Override
 		public void run() 
 		{// run()在新的线程中运行
-			// db1
 			int sleepcount = 1600;
 			if (!Gps.exist(PhotoActivity.this, "distance.db")) {// 未签到时，延长定位时间，以便获取到更准确的定位方式
-				sleepcount = 6600;
+				sleepcount = 3300;
 			}
 			try {
 				Thread.sleep(sleepcount);
@@ -309,15 +300,14 @@ public class PhotoActivity extends BaseActivity {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			// db1
 			if (!Gps.exist(PhotoActivity.this, "distance.db")) {
 				LocationApplication myApp = (LocationApplication) getApplication();
 				addr = myApp.getaddr();
-				longitude = myApp.getjd();
+				longtitude = myApp.getjd();
 				latitude = myApp.getwd();
 				type = myApp.getType();
 				if (addr == null) {
-					visitServer_getaddr(PhotoActivity.this, longitude, latitude);
+					visitServer_getaddr(PhotoActivity.this, longtitude, latitude);
 					try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e) {
@@ -329,15 +319,13 @@ public class PhotoActivity extends BaseActivity {
 
 				if (addr == null) {
 					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
-					return;
 				} else {
 					// 向ui线程发送MSG_SUCCESS标识
 					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 				}
 			} else {
 				if (addr == null) {
-					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();// 获取图片失败
-					return;
+					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 				} else {
 					// 向ui线程发送MSG_SUCCESS标识
 					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
@@ -346,27 +334,24 @@ public class PhotoActivity extends BaseActivity {
 		}
 	};
 
+	private void visitServer_get() {
 
-
-
-
-	// 访问服务器http post
-	private void visitServer_get(Context context) {
 		String httpUrl = User.mainurl + "app/getimgtype";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		// parameters_userInfo.put("mac", mac);
+
+		 parameters_userInfo.put("mac", mac);
+		 parameters_userInfo.put("usercode", username);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-//							Log.d("dyyd", dataJson.toString());
-							String code = dataJson.getString("code");
-							if ("0".equals(code)) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray arrayType = dataJson.getJSONArray("list");
 								// 构建list
 								ArrayList<String> list = new ArrayList<String>();
@@ -383,7 +368,7 @@ public class PhotoActivity extends BaseActivity {
 										R.layout.spinner_item,
 										list);
 								typeSpinner.setAdapter(adapter);
-							} else if ("1".equals(code)) {
+							} else if (1==code) {
 								Toast.makeText(PhotoActivity.this, "没有图片类型",
 										Toast.LENGTH_SHORT).show();
 							}
@@ -395,15 +380,15 @@ public class PhotoActivity extends BaseActivity {
 	}
 
 	// 访问服务器http post
-	private void visitServer(String longitude,
-			String latitude, String addr, String imageType, String contextLoca) {
+	private void visitServer(String addr, String imageType, String contextLoca) {
 		String httpUrl = User.mainurl + "app/save_image";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("cmaker", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("addr", Escape.escape(addr));
-		parameters_userInfo.put("jd", longitude);
+		parameters_userInfo.put("jd", longtitude);
 		parameters_userInfo.put("wd", latitude);
 		parameters_userInfo.put("image", uploadBuffer);
 		parameters_userInfo.put("imgtype", Escape.escape(imageType));
@@ -415,9 +400,9 @@ public class PhotoActivity extends BaseActivity {
 					public void onSuccess(String response) {
 
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								ToastUtil.toast(context, "数据上传成功");
 								finish();
 							} else {
@@ -426,29 +411,23 @@ public class PhotoActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
 
-
-	// 访问服务器http post
 	public void visitServer_getaddr(Context context, String longitude,
 			String latitude) {
-		String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
+		String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
-
-//		PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-//		client_request.setCookieStore(myCookieStore);
-
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("ak", "jfPNMgVWhuLSzggtryKGSchd");

@@ -116,7 +116,7 @@ public class CheckInActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.checkin);
+        setContentView(R.layout.activity_checkin);
         if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
 //			Log.i(TAG, "拍摄异常，获取原来的shot_path");
             Logger.e("拍摄异常，获取原来的shot_path");

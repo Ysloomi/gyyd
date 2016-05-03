@@ -7,8 +7,8 @@ import android.widget.EditText;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -19,24 +19,26 @@ import org.json.JSONObject;
 
 public class ChangePasswordActivity extends BaseActivity {
 	
-	private EditText editText1, editText2, editText3;
+	private EditText passEdt, newpassEdt, onceEdt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.changepassword);
+		setContentView(R.layout.activity_changepassword);
 		
 		context = ChangePasswordActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 		
-		editText1 = (EditText) findViewById(R.id.password_text);
-		editText2 = (EditText) findViewById(R.id.new_text);
-		editText3 = (EditText) findViewById(R.id.once_text);
+		passEdt = (EditText) findViewById(R.id.edt_pass);
+		newpassEdt = (EditText) findViewById(R.id.edt_newpass);
+		onceEdt = (EditText) findViewById(R.id.edt_once);
 
-		findViewById(R.id.changepassword_confirm).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				String password = editText1.getText().toString();
-				String newpassword = editText2.getText().toString();
-				String once = editText3.getText().toString();
+				String password = passEdt.getText().toString();
+				String newpassword = newpassEdt.getText().toString();
+				String once = onceEdt.getText().toString();
 				if (TextUtils.isEmpty(password.trim())
 						|| TextUtils.isEmpty(newpassword.trim())
 						|| TextUtils.isEmpty(once.trim())) {
@@ -44,6 +46,7 @@ public class ChangePasswordActivity extends BaseActivity {
 				}else if(!newpassword.equals(once)){
 					ToastUtil.toast(context, "两次密码不一致");
 				} else {
+					ProgressDialogUtil.showProgressDialog(context);
 					visitServer(password,newpassword);
 				}
 			}
@@ -57,7 +60,8 @@ public class ChangePasswordActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		
-		parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("old", password);
 		parameters_userInfo.put("newpass", newpassword);
 		
@@ -66,9 +70,9 @@ public class ChangePasswordActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								ToastUtil.toast(context, "修改密码成功");
 								finish();
 							} else {
@@ -76,6 +80,8 @@ public class ChangePasswordActivity extends BaseActivity {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 				});

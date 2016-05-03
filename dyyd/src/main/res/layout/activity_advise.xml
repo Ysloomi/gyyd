@@ -26,18 +26,6 @@
         android:background="@drawable/text_bg"
         android:hint="请输入反馈内容，必填" />
 
-<!--     <EditText
-        android:id="@+id/advise_edittext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/advisetitle_edittext"
-        android:layout_alignRight="@+id/advisetitle_edittext"
-        android:layout_below="@+id/advisetitle_edittext"
-        android:layout_marginTop="10dp"
-        android:gravity="top|left"
-        android:background="@drawable/bigtext_bg1"
-        android:hint="请输入200字以内的标题，选填" /> -->
-
     <Button
         android:id="@+id/advise_button"
         android:layout_width="fill_parent"

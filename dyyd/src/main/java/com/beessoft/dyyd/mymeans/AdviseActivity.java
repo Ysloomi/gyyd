@@ -1,12 +1,5 @@
 package com.beessoft.dyyd.mymeans;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,34 +15,39 @@ import com.beessoft.dyyd.bean.Advise;
 import com.beessoft.dyyd.db.AdviseDao;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdviseActivity extends BaseActivity {
 
-	private String mac, pass, type, advise;
+	private String pass, type, advise;
 	private Button button;
 	private EditText editText;
 	private Spinner spinner;
-	private ProgressDialog progressDialog;
-	private Context mContext;
-	private AdviseDao adviseDao;
 
+	private AdviseDao adviseDao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.advise);
+		setContentView(R.layout.activity_advise);
 
-		mContext = AdviseActivity.this;
+		context = AdviseActivity.this;
 
 		initView();
 
-		mac = GetInfo.getIMEI(mContext);
-		pass = GetInfo.getPass(mContext);
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+		pass = GetInfo.getPass(context);
 
 		adviseDao = new AdviseDao(this);
 
@@ -62,7 +60,7 @@ public class AdviseActivity extends BaseActivity {
 			else
 				list.add(advises.get(j).getAdviseType());
 		}
-		ArrayAdapter<String> adapterType = new ArrayAdapter<>(mContext,
+		ArrayAdapter<String> adapterType = new ArrayAdapter<>(context,
 				R.layout.spinner_item, list);
 		spinner.setAdapter(adapterType);
 
@@ -82,55 +80,51 @@ public class AdviseActivity extends BaseActivity {
 			type = spinner.getSelectedItem().toString();
 			if (!TextUtils.isEmpty(advise.trim())) {
 				if ("选择".equals(type)) {
-					ToastUtil.toast(mContext, "请选择反馈类型");
+					ToastUtil.toast(context, "请选择反馈类型");
 				} else {
-					// 显示ProgressDialog
-					progressDialog = ProgressDialog.show(mContext, "载入中...",
-							"请等待...", true, false);
-					visitServer_save(mContext);
+					ProgressDialogUtil.showProgressDialog(context);
+					saveData();
 				}
 			} else {
-				ToastUtil.toast(mContext, "意见不能为空");
+				ToastUtil.toast(context, "意见不能为空");
 			}
 		}
 	}
 
-	// 访问服务器http post
-	private void visitServer_save(Context context) {
+	private void saveData() {
 		String httpUrl = User.mainurl + "sf/advise_save";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("pass", pass);
 		parameters_userInfo.put("type", Escape.escape(type));
-		parameters_userInfo.put("advise", Escape.escape(advise));
+		parameters_userInfo.put("activity_advise", Escape.escape(advise));
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response:"+response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if ("1".equals(code)) {
-								ToastUtil.toast(mContext, "没有相关信息");
+								ToastUtil.toast(AdviseActivity.this.context, "没有相关信息");
 							} else if ("0".equals(code)) {
-								ToastUtil.toast(mContext, "提交成功");
+								ToastUtil.toast(AdviseActivity.this.context, "提交成功");
 								finish();
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

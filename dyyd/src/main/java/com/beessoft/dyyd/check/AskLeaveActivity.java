@@ -189,6 +189,7 @@ public class AskLeaveActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
 
         client_request.get(httpUrl, parameters_userInfo, new AsyncHttpResponseHandler() {
             @Override
@@ -225,13 +226,13 @@ public class AskLeaveActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("idate", start);
         parameters_userInfo.put("idate2", over);
         parameters_userInfo.put("am", am);
         parameters_userInfo.put("pm", pm);
         parameters_userInfo.put("cmemo", Escape.escape(reason));
         parameters_userInfo.put("state", Escape.escape(type));
-
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

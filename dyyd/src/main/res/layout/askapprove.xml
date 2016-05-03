@@ -1,250 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginTop="10dp" >
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="人员姓名"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-            <TextView
-                android:id="@+id/person_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="人员姓名" />
 
-            <TextView
-                android:id="@+id/title0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/title"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="开始时期"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/person_text"
+                    style="@style/MyText" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/start_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title0"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title0"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+            <LinearLayout style="@style/TextOutLayout">
 
-            <TextView
-                android:id="@+id/over_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title1"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="开始时期" />
 
-            <TextView
-                android:id="@+id/days_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title2"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title2"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+                <TextView
+                    android:id="@+id/start_text"
+                    style="@style/MyText"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/title2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/title1"
-                android:layout_below="@+id/over_text"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="天数"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-            <TextView
-                android:id="@+id/title1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/title0"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="结束日期"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/title3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/title2"
-                android:layout_below="@+id/title2"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="请假类型"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="结束日期" />
 
-            <TextView
-                android:id="@+id/title4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/title3"
-                android:layout_below="@+id/type_text"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="请假事由"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/over_text"
+                    style="@style/MyText"/>
 
-            <TextView
-                android:id="@+id/explain_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/title4"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title4"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/title7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title4"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/explain_text"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="审批人"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-            <TextView
-                android:id="@+id/title8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title7"
-                android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/explain_text"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="审批时间"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="天数"/>
 
-            <TextView
-                android:id="@+id/title9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/title"
-                android:layout_below="@+id/title8"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/title_bg"
-                android:gravity="center"
-                android:text="审批结果"
-                android:textColor="#ffffff"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/days_text"
+                    style="@style/MyText" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/approveman_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title7"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title7"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+            <LinearLayout style="@style/TextOutLayout">
 
-            <TextView
-                android:id="@+id/type_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/days_text"
-                android:layout_alignTop="@+id/title3"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/text_bg"
-                android:completionThreshold="1"
-                android:gravity="center"
-                android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="请假类型"/>
 
-            <TextView
-                android:id="@+id/approvetime_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title8"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title8"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+                <TextView
+                    android:id="@+id/type_text"
+                    style="@style/MyText" />
 
-            <TextView
-                android:id="@+id/approveresult_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/title9"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp"
-                android:layout_toRightOf="@+id/title9"
-                android:background="@drawable/text_bg"
-                android:gravity="center"
-                android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="请假事由"/>
+
+                <TextView
+                    android:id="@+id/explain_text"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="审批人"/>
+
+                <TextView
+                    android:id="@+id/approveman_text"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="审批时间" />
+
+                <TextView
+                    android:id="@+id/approvetime_text"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="审批结果" />
+
+                <TextView
+                    android:id="@+id/approveresult_text"
+                    style="@style/MyText" />
+
+            </LinearLayout>
 
             <ProgressBar
                 android:id="@+id/photo_progressbar"
@@ -253,17 +129,12 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="13dp"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 
     <RelativeLayout
-        android:id="@+id/linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="#4db0f6" >
+        style="@style/RelativeBottom">
 
         <Button
             android:id="@+id/agree_button"
@@ -286,4 +157,4 @@
             android:drawableTop="@drawable/refuse_button" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

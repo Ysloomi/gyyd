@@ -1,10 +1,6 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,142 +20,131 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.model.GetJSON;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
 public class ArrangeActivity extends BaseActivity {
 
-	private Button button1;
-	private EditText editText;
-	private String mac, person, message;
+    private Button button1;
+    private EditText editText;
+    private String mac, person, message;
 
-	private ProgressDialog progressDialog;
+    private AutoCompleteTextView autoCompleteTextView;
 
-//	private Spinner spinner;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.arrange_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-	private AutoCompleteTextView autoCompleteTextView;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_arrange:
+                Intent intent = new Intent(ArrangeActivity.this,
+                        ArrangeQueryListActivity.class);
+                intent.putExtra("itype", "1");// 标示为安排人查看自己的安排
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.arrange_actions, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_arrange);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+        context = ArrangeActivity.this;
+        mac = GetInfo.getIMEI(context);
+        username = GetInfo.getUserName(context);
 
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		case R.id.action_arrange:
-			Intent intent = new Intent(ArrangeActivity.this,
-					ArrangeQueryListActivity.class);
-			intent.putExtra("itype", "1");// 标示为安排人查看自己的安排
-			startActivity(intent);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        initView();
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.arrange);
+        GetJSON.visitServer_GetInfo(ArrangeActivity.this, autoCompleteTextView, mac);
 
-		initView();
+        button1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // person = spinner.getSelectedItem().toString();
+                person = autoCompleteTextView.getText().toString();
+                message = editText.getText().toString();
 
-		mac = GetInfo.getIMEI(ArrangeActivity.this);
-		
-		GetJSON.visitServer_GetInfo(ArrangeActivity.this, autoCompleteTextView, mac);
-		
-		button1.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				// person = spinner.getSelectedItem().toString();
-				person = autoCompleteTextView.getText().toString();
-				message = editText.getText().toString();
+                if ("[全部人员]".equals(person)) {
+                    Toast.makeText(ArrangeActivity.this, "请选择人员",
+                            Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(message.trim())) {
+                    Toast.makeText(ArrangeActivity.this, "数据不能为空",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    ProgressDialogUtil.showProgressDialog(context);
+                    visitServer();
+                }
+            }
+        });
+        autoCompleteTextView.setOnTouchListener(new OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                autoCompleteTextView.showDropDown();// 显示下拉列表
+                return false;
+            }
+        });
+    }
 
-				if ("[全部人员]".equals(person)) {
-					Toast.makeText(ArrangeActivity.this, "请选择人员",
-							Toast.LENGTH_SHORT).show();
-				} else if (TextUtils.isEmpty(message.trim())) {
-					Toast.makeText(ArrangeActivity.this, "数据不能为空",
-							Toast.LENGTH_SHORT).show();
-				} else {
+    public void initView() {
+        button1 = (Button) findViewById(R.id.arrange_confirm);
+        editText = (EditText) findViewById(R.id.arrange_text);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.arrange_auto_text);
+    }
 
-					// 显示ProgressDialog
-					progressDialog = ProgressDialog.show(ArrangeActivity.this,
-							"载入中...", "请等待...", true, false);
+    private void visitServer() {
+        String httpUrl = User.mainurl + "sf/upwork_up";
 
-					visitServer(ArrangeActivity.this);
-				}
-			}
-		});
-		autoCompleteTextView.setOnTouchListener(new OnTouchListener() {
-			@SuppressLint("ClickableViewAccessibility")
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				autoCompleteTextView.showDropDown();// 显示下拉列表
-				return false;
-			}
-		});
-	}
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
 
-	public void initView() {
-		button1 = (Button) findViewById(R.id.arrange_confirm);
-		editText = (EditText) findViewById(R.id.arrange_text);
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("workuser", Escape.escape(person));
+        parameters_userInfo.put("uptxt", Escape.escape(message));
 
-//		button2 = (Button) findViewById(R.id.arrange_button);
-		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.arrange_auto_text);
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+                            int code = dataJson.getInt("code");
+                            if (code==0) {
+                                Toast.makeText(ArrangeActivity.this,
+                                        "安排工作数据上传成功", Toast.LENGTH_SHORT)
+                                        .show();
+                                finish();
+                            } else if (code==1) {
+                                Toast.makeText(ArrangeActivity.this, "上传失败",
+                                        Toast.LENGTH_SHORT).show();
+                            } else if (code==-2) {
+                                Toast.makeText(ArrangeActivity.this, "无权限",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ProgressDialogUtil.closeProgressDialog();
+                        }
+                    }
 
-	}
-
-	// 访问服务器http post
-	private void visitServer(Context context) {
-		String httpUrl = User.mainurl + "sf/upwork_up";
-		String pass = GetInfo.getPass(context);
-		AsyncHttpClient client_request = new AsyncHttpClient();
-		RequestParams parameters_userInfo = new RequestParams();
-		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
-		parameters_userInfo.put("workuser", Escape.escape(person));
-		parameters_userInfo.put("uptxt", Escape.escape(message));
-
-		client_request.post(httpUrl, parameters_userInfo,
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onSuccess(String response) {
-						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							if (dataJson.getString("code").equals("0")) {
-								Toast.makeText(ArrangeActivity.this,
-										"安排工作数据上传成功", Toast.LENGTH_SHORT)
-										.show();
-
-								finish();
-							} else if (dataJson.getString("code").equals("1")) {
-								Toast.makeText(ArrangeActivity.this, "上传失败",
-										Toast.LENGTH_SHORT).show();
-							} else if (dataJson.getString("code").equals("-2")) {
-								Toast.makeText(ArrangeActivity.this, "无权限",
-										Toast.LENGTH_SHORT).show();
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-							progressDialog.dismiss();
-						}
-					}
-
-					@Override
-					public void onFailure(Throwable error, String data) {
-						error.printStackTrace(System.out);
-						progressDialog.dismiss();
-					}
-				});
-	}
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        ProgressDialogUtil.closeProgressDialog();
+                    }
+                });
+    }
 }

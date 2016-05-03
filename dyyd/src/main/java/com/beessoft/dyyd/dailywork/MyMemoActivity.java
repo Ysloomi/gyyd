@@ -1,14 +1,7 @@
 package com.beessoft.dyyd.dailywork;
 
-import java.util.Calendar;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -24,42 +17,37 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Calendar;
+
 public class MyMemoActivity extends BaseActivity {
 
-	private String mac, idate, itime, memo, state, idTarget, result, pass, btn;
+	private String idate, itime, memo, state, idTarget, result, pass, btn;
 	private Button button1, button2, button3;
 	private EditText editText1, editText2, editText3, editText4;
-	private ProgressDialog progressDialog;
+
 	private TextView textView1, textView2;
 	Calendar calendar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mymemo);
+		setContentView(R.layout.activity_mymemo);
 
-		editText1 = (EditText) findViewById(R.id.date_text);
-		editText1.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
-		editText2 = (EditText) findViewById(R.id.time_text);
-		editText2.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
-		editText3 = (EditText) findViewById(R.id.memo_text);
-		editText4 = (EditText) findViewById(R.id.result_text);
-
-		button1 = (Button) findViewById(R.id.mymemo_add);
-		button2 = (Button) findViewById(R.id.mymemo_confirm);
-		button3 = (Button) findViewById(R.id.mymemo_change);
-
-		textView1 = (TextView) findViewById(R.id.state_text);
-		textView2 = (TextView) findViewById(R.id.updatetime_text);
-
-		mac = GetInfo.getIMEI(MyMemoActivity.this);
+		context = MyMemoActivity.this;
+		mac = GetInfo.getIMEI(context);
 		idTarget = getIntent().getStringExtra("idTarget");
 		pass = GetInfo.getPass(this);
+
+		initView();
 
 		button1.setOnClickListener(new OnClickListener() {
 			@Override
@@ -67,9 +55,8 @@ public class MyMemoActivity extends BaseActivity {
 				idate = editText1.getText().toString();
 				itime = editText2.getText().toString();
 				memo = editText3.getText().toString();
-				progressDialog = ProgressDialog.show(MyMemoActivity.this,
-						"载入中...", "请等待...", true, false);
-				visitServer_add(MyMemoActivity.this);
+				ProgressDialogUtil.showProgressDialog(context);
+				visitServer_add();
 			}
 		});
 		button2.setOnClickListener(new OnClickListener() {
@@ -80,9 +67,8 @@ public class MyMemoActivity extends BaseActivity {
 				memo = editText3.getText().toString();
 				result = editText4.getText().toString();
 				btn = "1";// 完成
-				progressDialog = ProgressDialog.show(MyMemoActivity.this,
-						"载入中...", "请等待...", true, false);
-				visitServer_comfirm(MyMemoActivity.this);
+				ProgressDialogUtil.showProgressDialog(context);
+				visitServer_comfirm();
 			}
 		});
 
@@ -94,9 +80,8 @@ public class MyMemoActivity extends BaseActivity {
 				memo = editText3.getText().toString();
 				result = editText4.getText().toString();
 				btn = "0";// 修改
-				progressDialog = ProgressDialog.show(MyMemoActivity.this,
-						"载入中...", "请等待...", true, false);
-				visitServer_comfirm(MyMemoActivity.this);
+				ProgressDialogUtil.showProgressDialog(context);
+				visitServer_comfirm();
 			}
 		});
 
@@ -107,7 +92,6 @@ public class MyMemoActivity extends BaseActivity {
 		editText1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				new DatePickerDialog(MyMemoActivity.this,
 						new DatePickerDialog.OnDateSetListener() {
 
@@ -167,11 +151,31 @@ public class MyMemoActivity extends BaseActivity {
 			}
 		});
 
+
+	}
+
+	private void initView() {
+		editText1 = (EditText) findViewById(R.id.date_text);
+		editText1.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
+		editText2 = (EditText) findViewById(R.id.time_text);
+		editText2.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
+		editText3 = (EditText) findViewById(R.id.memo_text);
+		editText4 = (EditText) findViewById(R.id.result_text);
+
+		button1 = (Button) findViewById(R.id.mymemo_add);
+		button2 = (Button) findViewById(R.id.mymemo_confirm);
+		button3 = (Button) findViewById(R.id.mymemo_change);
+
+		textView1 = (TextView) findViewById(R.id.state_text);
+		textView2 = (TextView) findViewById(R.id.updatetime_text);
+
+
 		if (!"add".equals(idTarget)) {
 			// editText1.setKeyListener(null);
 			// editText2.setKeyListener(null);
 			button1.setVisibility(View.GONE);
-			visitServer_get(MyMemoActivity.this);
+			ProgressDialogUtil.showProgressDialog(context);
+			visitServer_get();
 		} else {
 			button2.setVisibility(View.GONE);
 			button3.setVisibility(View.GONE);
@@ -182,7 +186,7 @@ public class MyMemoActivity extends BaseActivity {
 		}
 	}
 
-	private void visitServer_get(Context context) {
+	private void visitServer_get() {
 		String httpUrl = User.mainurl + "sf/memo_show";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
@@ -196,33 +200,18 @@ public class MyMemoActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
-
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									editText1.setText(new String(obj
-											.getString("date")));
-									editText2.setText(new String(obj
-											.getString("time")));
-									editText3.setText(new String(obj
-											.getString("item")));
-									textView1.setText(new String(obj
-											.getString("state")));
-									textView2.setText(new String(obj
-											.getString("cmakertime")));
-									editText4.setText(new String(obj
-											.getString("result")));
-									// textView6.setText(new String(obj
-									// .getString("state")));
-
-									// System.out.println("idate:"+obj
-									// .getString("date")+",itime:"+obj
-									// .getString("time"));
+									editText1.setText(obj.getString("date"));
+									editText2.setText(obj.getString("time"));
+									editText3.setText(obj.getString("item"));
+									textView1.setText(obj.getString("state"));
+									textView2.setText(obj.getString("cmakertime"));
+									editText4.setText(obj.getString("result"));
 								}
 								state = textView1.getText().toString();
 								if ("已完成".equals(state)) {
@@ -231,13 +220,20 @@ public class MyMemoActivity extends BaseActivity {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
+						@Override
+						public void onFailure(Throwable error, String data) {
+							error.printStackTrace(System.out);
+							ProgressDialogUtil.closeProgressDialog();
+						}
+
 				});
 	}
 
-	// 访问服务器http post
-	private void visitServer_add(Context context) {
+	private void visitServer_add() {
 		String httpUrl = User.mainurl + "sf/memo_up";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -277,14 +273,14 @@ public class MyMemoActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
@@ -299,14 +295,13 @@ public class MyMemoActivity extends BaseActivity {
 	// am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
 	// }
 
-	private void visitServer_comfirm(Context context) {
+	private void visitServer_comfirm() {
 		String httpUrl = User.mainurl + "sf/memo_do";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("pass", pass);
 		parameters_userInfo.put("id", idTarget);
-		// System.out.println("idate:"+idate+",itime:"+itime);
 		parameters_userInfo.put("date", idate);
 		parameters_userInfo.put("time", itime);
 		parameters_userInfo.put("item", Escape.escape(memo));
@@ -317,12 +312,9 @@ public class MyMemoActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
-
 							if ("0".equals(code)) {
 								Toast.makeText(MyMemoActivity.this,
 										"备忘录数据上传成功", Toast.LENGTH_SHORT).show();
@@ -344,14 +336,14 @@ public class MyMemoActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

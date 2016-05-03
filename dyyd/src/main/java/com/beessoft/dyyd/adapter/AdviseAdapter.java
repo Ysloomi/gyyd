@@ -41,9 +41,9 @@ public class AdviseAdapter extends SimpleAdapter {
 //									@Override
 //									public void onClick(DialogInterface dialog,
 //											int which) {
-//										HashMap<String, String> map =(HashMap<String, String>) mDataList.get(position);
-//										String customer = map.get("customer");
-//										String name = map.get("name");
+//										HashMap<String, String> activity_map =(HashMap<String, String>) mDataList.get(position);
+//										String customer = activity_map.get("customer");
+//										String name = activity_map.get("name");
 //										
 //										OrderDao orderDao = new OrderDao(context);
 //										orderDao.delete(customer,name);

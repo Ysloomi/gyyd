@@ -15,7 +15,7 @@ public class CheckQueryActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.checkquery);
+		setContentView(R.layout.activity_checkquery);
 		initView();
 	}
 

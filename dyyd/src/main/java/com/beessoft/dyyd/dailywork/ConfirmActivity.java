@@ -31,7 +31,7 @@ public class ConfirmActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.confirm);
+		setContentView(R.layout.activity_confirm);
 		initView();
 
 		id = getIntent().getStringExtra("idTarget");

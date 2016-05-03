@@ -50,7 +50,7 @@ public class CheckApproveActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.checkapprove);
+		setContentView(R.layout.activity_checkapprove);
 
 		initView();
 

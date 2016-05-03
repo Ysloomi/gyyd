@@ -98,7 +98,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.checkout);
+		setContentView(R.layout.activity_checkout);
 
 		context =CheckOutActivity.this;
 		mac = GetInfo.getIMEI(context);

@@ -4,14 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-<!--     <Button
-        android:id="@+id/workquerylist_back"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="#00000000" /> -->
-
     <ListView
         android:id="@+id/workquery_list"
         android:layout_width="match_parent"

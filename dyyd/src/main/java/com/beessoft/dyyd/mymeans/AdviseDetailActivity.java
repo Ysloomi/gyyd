@@ -1,13 +1,5 @@
 package com.beessoft.dyyd.mymeans;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,16 +13,22 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class AdviseDetailActivity extends BaseActivity {
 
 	private String mac, pass, mId = "", advise,state;
-	private ProgressDialog progressDialog;
 
 	private ListView listView;
 	private EditText editText;
@@ -44,13 +42,17 @@ public class AdviseDetailActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.advisedetail);
-		initView();
 
-		mac = GetInfo.getIMEI(this);
-		pass = GetInfo.getPass(this);
+		context = AdviseDetailActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+		pass = GetInfo.getPass(context);
 
 		mId = getIntent().getStringExtra("idTarget");
 		state = getIntent().getStringExtra("state");
+
+		initView();
+
 		if(!"2".equals(state)){
 			editText.setVisibility(View.GONE);
 			button.setVisibility(View.GONE);
@@ -58,10 +60,8 @@ public class AdviseDetailActivity extends BaseActivity {
 		// 构建list
 		datas = new ArrayList<HashMap<String, String>>();
 
-		// 显示ProgressDialog
-		progressDialog = ProgressDialog.show(this, "载入中...", "请等待...", true,
-				false);
-		getAnswerList(this);
+		ProgressDialogUtil.showProgressDialog(context);
+		getAnswerList();
 
 		button.setOnClickListener(new ClickListener());
 	}
@@ -77,15 +77,15 @@ public class AdviseDetailActivity extends BaseActivity {
 		public void onClick(View v) {
 			advise = editText.getText().toString();
 			if (!TextUtils.isEmpty(advise.trim())) {
-				saveAnswer(AdviseDetailActivity.this);
+				ProgressDialogUtil.showProgressDialog(context);
+				saveAnswer();
 			} else {
 				ToastUtil.toast(AdviseDetailActivity.this, "请填写意见");
 			}
 		}
 	}
 
-	// 访问服务器http post
-	private void getAnswerList(final Context context) {
+	private void getAnswerList() {
 		String httpUrl = User.mainurl + "sf/answerlist";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -97,12 +97,9 @@ public class AdviseDetailActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response:" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
-
 							if ("1".equals(code)) {
 								ToastUtil.toast(AdviseDetailActivity.this,
 										"没有相关信息");
@@ -143,20 +140,19 @@ public class AdviseDetailActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
 
-	// 访问服务器http post
-	private void saveAnswer(Context context) {
+	private void saveAnswer() {
 		String httpUrl = User.mainurl + "sf/advise_answer_save";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -186,14 +182,14 @@ public class AdviseDetailActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

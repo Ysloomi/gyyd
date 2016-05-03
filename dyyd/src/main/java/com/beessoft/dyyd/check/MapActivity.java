@@ -2,7 +2,6 @@ package com.beessoft.dyyd.check;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.overlayutil.OverlayManager;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -33,11 +31,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +61,7 @@ public class MapActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SDKInitializer.initialize(getApplicationContext());
-		setContentView(R.layout.map);
+		setContentView(R.layout.activity_map);
 
 		context= MapActivity.this;
 

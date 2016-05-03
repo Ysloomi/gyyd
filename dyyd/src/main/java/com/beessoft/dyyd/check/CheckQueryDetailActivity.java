@@ -5,26 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.TextOptions;
-import com.baidu.mapapi.model.LatLng;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.dailywork.CheckApproveActivity;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
-import com.beessoft.dyyd.utils.Logger;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -63,7 +51,7 @@ public class CheckQueryDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mycheck);
+		setContentView(R.layout.activity_mycheck);
 
 		context = CheckQueryDetailActivity.this;
 		mac = GetInfo.getIMEI(context);
@@ -80,10 +68,8 @@ public class CheckQueryDetailActivity extends BaseActivity {
 		initView();
 		initEvent();
 
-		Logger.e(person+"    "+btn);
-
+		ProgressDialogUtil.showProgressDialog(context);
 		visitServer(person);
-
 	}
 
 	private void initView() {
@@ -289,6 +275,8 @@ public class CheckQueryDetailActivity extends BaseActivity {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 				});

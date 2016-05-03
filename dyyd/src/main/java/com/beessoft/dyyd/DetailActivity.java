@@ -60,7 +60,7 @@ public class DetailActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.detail);
+		setContentView(R.layout.activity_detail);
 		
 		context = DetailActivity.this;
 		listView = (ListView) findViewById(R.id.detail_list);
@@ -107,7 +107,7 @@ public class DetailActivity extends BaseActivity {
 								simAdapter = new SimpleAdapter(
 										DetailActivity.this,
 										datas,// 数据源
-										R.layout.detail_item,// 显示布局
+										R.layout.item_detail,// 显示布局
 										new String[] { "department", "name",
 												"offtime" }, new int[] {
 												R.id.department, R.id.person,

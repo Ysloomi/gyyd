@@ -1,12 +1,7 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,11 +22,15 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class VisitQueryActivity extends BaseActivity {
 
@@ -53,9 +52,6 @@ public class VisitQueryActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
 		case R.id.action_read:
 			Intent intent =new Intent(this,VisitReadActivity.class);
 			intent.putExtra("idTarget", id);
@@ -67,31 +63,22 @@ public class VisitQueryActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.visitquery);
-		
+		setContentView(R.layout.activity_visitquery);
 
-		textView1 = (TextView) findViewById(R.id.visitquery_customer);
-		textView2 = (TextView) findViewById(R.id.visitquery_person);
-		textView3 = (TextView) findViewById(R.id.visitquery_aim);
-		textView4 = (TextView) findViewById(R.id.visitquery_result);
-		imageView = (ImageView) findViewById(R.id.visitquery_image);
-		textView5 = (TextView) findViewById(R.id.location_text);
-		textView6 = (TextView) findViewById(R.id.reachtime_text);
-		textView7 = (TextView) findViewById(R.id.leavetime_text);
-		textView8 = (TextView) findViewById(R.id.reachlocation_text);
-		
-		button = (Button) findViewById(R.id.download_image);
-		progressBar = (ProgressBar) findViewById(R.id.photo_progressbar);
+		context = VisitQueryActivity.this;
+		mac= GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
+		initView();
 		
 		//使textview可以滚动
 		textView4.setMovementMethod(ScrollingMovementMethod.getInstance());
 
-		SharedPreferences sharedPre = getSharedPreferences("idVisit",
-				MODE_PRIVATE);
-		id = sharedPre.getString("id", "");
-		mac= GetInfo.getIMEI(this);
-		
-		visitServer(VisitQueryActivity.this);
+		id = getIntent().getStringExtra("id");
+
+
+		ProgressDialogUtil.showProgressDialog(context);
+		visitServer();
 		
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -108,8 +95,22 @@ public class VisitQueryActivity extends BaseActivity {
 		});
 	}
 
-	// 访问服务器http post
-	private void visitServer(Context context) {
+	private void initView() {
+		textView1 = (TextView) findViewById(R.id.visitquery_customer);
+		textView2 = (TextView) findViewById(R.id.visitquery_person);
+		textView3 = (TextView) findViewById(R.id.visitquery_aim);
+		textView4 = (TextView) findViewById(R.id.visitquery_result);
+		imageView = (ImageView) findViewById(R.id.visitquery_image);
+		textView5 = (TextView) findViewById(R.id.location_text);
+		textView6 = (TextView) findViewById(R.id.reachtime_text);
+		textView7 = (TextView) findViewById(R.id.leavetime_text);
+		textView8 = (TextView) findViewById(R.id.reachlocation_text);
+
+		button = (Button) findViewById(R.id.download_image);
+		progressBar = (ProgressBar) findViewById(R.id.photo_progressbar);
+	}
+
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/visitlist3";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -129,24 +130,15 @@ public class VisitQueryActivity extends BaseActivity {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(new String(obj
-											.getString("ccuscode")));
-									textView2.setText(new String(obj
-											.getString("visitperson")));
-									textView3.setText(new String(obj
-											.getString("visitgoal")));
-									textView4.setText(new String(obj
-											.getString("visitresult")));
-									textView5.setText(new String(obj
-											.getString("iadd")));
-									textView6.setText(new String("到达时间:"
-											+ obj.getString("starttime")));
-									textView7.setText(new String("离开时间:"
-											+ obj.getString("offtime")));
-									textView8.setText(new String(obj
-											.getString("siadd")));
-									photo = User.mainurl
-											+ obj.getString("photo");
+									textView1.setText(obj.getString("ccuscode"));
+									textView2.setText(obj.getString("visitperson"));
+									textView3.setText(obj.getString("visitgoal"));
+									textView4.setText(obj.getString("visitresult"));
+									textView5.setText(obj.getString("iadd"));
+									textView6.setText("到达时间:" + obj.getString("starttime"));
+									textView7.setText("离开时间:" + obj.getString("offtime"));
+									textView8.setText(obj.getString("siadd"));
+									photo = User.mainurl + obj.getString("photo");
 								}
 							} else {
 								Toast.makeText(VisitQueryActivity.this,
@@ -154,7 +146,15 @@ public class VisitQueryActivity extends BaseActivity {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
+					}
+
+					@Override
+					public void onFailure(Throwable throwable, String s) {
+						super.onFailure(throwable, s);
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 

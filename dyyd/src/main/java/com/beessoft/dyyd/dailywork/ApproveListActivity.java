@@ -93,7 +93,7 @@ public class ApproveListActivity extends BaseActivity {
 								}
 								simAdapter = new SimpleAdapter(
 										ApproveListActivity.this, datas,// 数据源
-										R.layout.approvelist_item,// 显示布局
+										R.layout.item_approvelist,// 显示布局
 										new String[] { "date", "name",
 												"verifier" }, new int[] {
 												R.id.date, R.id.person,

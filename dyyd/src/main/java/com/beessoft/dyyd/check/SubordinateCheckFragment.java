@@ -1,15 +1,5 @@
 package com.beessoft.dyyd.check;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
@@ -40,6 +30,16 @@ import com.squareup.timessquare.CalendarView;
 import com.squareup.timessquare.CalendarView.OnDateSelectedListener;
 import com.squareup.timessquare.CalendarView.OnMonthChangedListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
 public class SubordinateCheckFragment extends Fragment {
 
 	private String mac, year, month, btn = "1", psn="", idGet, idate, state,
@@ -56,13 +56,6 @@ public class SubordinateCheckFragment extends Fragment {
 	private Button button;
 	private AutoCompleteTextView autoCompleteTextView;
 
-	// private ListView listView;
-	// // private ProgressDialog progressDialog;
-	//
-	// private SimpleAdapter simAdapter;
-	//
-	// public List<HashMap<String, Object>> datas = new
-	// ArrayList<HashMap<String, Object>>();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -341,7 +334,7 @@ public class SubordinateCheckFragment extends Fragment {
 		int size2 = map.size();
 		if (size2 > 0) {
 			map.clear();
-			// map.removeAll(map);
+			// activity_map.removeAll(activity_map);
 		}
 	}
 }

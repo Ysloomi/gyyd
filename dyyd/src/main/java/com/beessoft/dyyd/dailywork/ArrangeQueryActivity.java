@@ -1,9 +1,5 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,11 +15,16 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ArrangeQueryActivity extends BaseActivity {
 	private Button button1, button2, button3, button4;
@@ -32,7 +33,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 	private EditText editText1, editText2;
 	private String mac, advise, idTarget, state, itype, pass, btn, judge = "",
 			iflag, appeal = "";
-	private ProgressDialog progressDialog;
+
 	private Spinner spinner;
 
 	@Override
@@ -71,7 +72,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 				ArrangeQueryActivity.this, R.layout.spinner_item, judgeList);
 		spinner.setAdapter(adapter);
 
-		visitServer(ArrangeQueryActivity.this);
+		visitServer();
 
 		button1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -82,10 +83,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 					Toast.makeText(ArrangeQueryActivity.this, "请填写完成结果",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					// 开启ProgressDialog
-					progressDialog = ProgressDialog.show(
-							ArrangeQueryActivity.this, "载入中...", "请等待...",
-							true, false);
+					ProgressDialogUtil.showProgressDialog(context);
 					visitServer_comfirm(ArrangeQueryActivity.this);
 				}
 			}
@@ -100,10 +98,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 					Toast.makeText(ArrangeQueryActivity.this, "请选择评价",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					// 开启ProgressDialog
-					progressDialog = ProgressDialog.show(
-							ArrangeQueryActivity.this, "载入中...", "请等待...",
-							true, false);
+					ProgressDialogUtil.showProgressDialog(context);
 					visitServer_comfirm(ArrangeQueryActivity.this);
 				}
 			}
@@ -119,10 +114,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 					Toast.makeText(ArrangeQueryActivity.this, "请填写申诉理由",
 							Toast.LENGTH_SHORT).show();
 				} else {
-					// 开启ProgressDialog
-					progressDialog = ProgressDialog.show(
-							ArrangeQueryActivity.this, "载入中...", "请等待...",
-							true, false);
+					ProgressDialogUtil.showProgressDialog(context);
 					visitServer_comfirm(ArrangeQueryActivity.this);
 				}
 			}
@@ -132,10 +124,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 				advise = editText1.getText().toString();
 				judge = spinner.getSelectedItem().toString();
 				btn = "3";// 确认
-
-				// 开启ProgressDialog
-				progressDialog = ProgressDialog.show(ArrangeQueryActivity.this,
-						"载入中...", "请等待...", true, false);
+				ProgressDialogUtil.showProgressDialog(context);
 				visitServer_comfirm(ArrangeQueryActivity.this);
 			}
 		});
@@ -161,7 +150,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 		spinner = (Spinner) findViewById(R.id.judge_spinner);
 	}
 
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/upwork_show";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -182,20 +171,13 @@ public class ArrangeQueryActivity extends BaseActivity {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(new String(obj
-											.getString("uptime")));
-									textView2.setText(new String(obj
-											.getString("upuser")));
-									textView3.setText(new String(obj
-											.getString("uptxt")));
-									textView4.setText(new String(obj
-											.getString("workuser")));
-									textView5.setText(new String(obj
-											.getString("worktime")));
-									editText1.setText(new String(obj
-											.getString("worktxt")));
-									textView6.setText(new String(obj
-											.getString("state")));
+									textView1.setText(obj.getString("uptime"));
+									textView2.setText(obj.getString("upuser"));
+									textView3.setText(obj.getString("uptxt"));
+									textView4.setText(obj.getString("workuser"));
+									textView5.setText(obj.getString("worktime"));
+									editText1.setText(obj.getString("worktxt"));
+									textView6.setText(obj.getString("state"));
 									String getJudge = obj.getString("pj");
 
 									if (!"".equals(getJudge)) {
@@ -278,14 +260,13 @@ public class ArrangeQueryActivity extends BaseActivity {
 				});
 	}
 
-	private void visitServer_comfirm(Context context) {
+	private void visitServer_comfirm(final Context context) {
 		String httpUrl = User.mainurl + "sf/upwork_do";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("pass", pass);
 		parameters_userInfo.put("id", idTarget);
-		// System.out.println(btn);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("pj", Escape.escape(judge));
 		parameters_userInfo.put("ss", Escape.escape(appeal));
@@ -297,32 +278,27 @@ public class ArrangeQueryActivity extends BaseActivity {
 					public void onSuccess(String response) {
 
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-
-							if (dataJson.getString("code").equals("0")) {
-								Toast.makeText(ArrangeQueryActivity.this,
-										"工作完成数据上传成功", Toast.LENGTH_SHORT)
-										.show();
+							JSONObject dataJson = new JSONObject(response);
+							int code =dataJson.getInt("code");
+							if (code==0) {
+								ToastUtil.toast(context,"工作完成数据上传成功");
 								finish();
-							} else if (dataJson.getString("code").equals("1")) {
-								Toast.makeText(ArrangeQueryActivity.this, "失败",
-										Toast.LENGTH_SHORT).show();
-							} else if (dataJson.getString("code").equals("-2")) {
-								Toast.makeText(ArrangeQueryActivity.this,
-										"无权限", Toast.LENGTH_SHORT).show();
+							} else if (code==1) {
+								ToastUtil.toast(context,"上传失败，请重试");
+							} else if (code==-2) {
+								ToastUtil.toast(context,"无权限");
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

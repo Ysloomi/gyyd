@@ -1,13 +1,6 @@
 package com.beessoft.dyyd.mymeans;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,43 +17,49 @@ import com.beessoft.dyyd.bean.Advise;
 import com.beessoft.dyyd.db.AdviseDao;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AllAdviseFragment extends Fragment {
 
 	private String mac, pass, condition;
-	private ProgressDialog progressDialog;
 	private ListView listView;
 	private List<String> list;
 	private AdviseDao adviseDao;
+	private Context context;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View check = inflater.inflate(R.layout.alladvise, container, false);
 		listView = (ListView) check.findViewById(R.id.advise_listview);
+		context = getActivity();
 		return check;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+		mac = GetInfo.getIMEI(context);
+		pass = GetInfo.getPass(context);
+
+
 		adviseDao = new AdviseDao(getActivity());
-		mac = GetInfo.getIMEI(getActivity());
-		pass = GetInfo.getPass(getActivity());
+
 		condition = "所有问题";
-		// 显示ProgressDialog
-		progressDialog = ProgressDialog.show(getActivity(), "载入中...", "请等待...",
-				true, false);
 		// 构建list
 		list = new ArrayList<String>();
-		// ServerAdviseType.getAdviseTypeList(getActivity(), mac, pass, list,
-		// listView, progressDialog);
-		getAdviseTypeList(getActivity());
+		ProgressDialogUtil.showProgressDialog(context);
+		getAdviseTypeList();
 		listView.setOnItemClickListener(new ItemClickListener());
 	}
 
@@ -68,7 +67,7 @@ public class AllAdviseFragment extends Fragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long rowid) {
 
-			String type = (String) list.get(position);
+			String type = list.get(position);
 			Intent intent = new Intent(getActivity(), AdviseListActivity.class);
 			intent.putExtra("type", type);
 			intent.putExtra("condition", condition);
@@ -76,8 +75,7 @@ public class AllAdviseFragment extends Fragment {
 		}
 	}
 
-	// 访问服务器http post
-	private void getAdviseTypeList(Context context) {
+	private void getAdviseTypeList() {
 		String httpUrl = User.mainurl + "sf/adviseType";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -114,14 +112,14 @@ public class AllAdviseFragment extends Fragment {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

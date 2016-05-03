@@ -1,28 +1,21 @@
 package com.beessoft.dyyd.adapter;
 
-import java.util.HashMap;
-import java.util.List;
-
-import com.beessoft.dyyd.R;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.beessoft.dyyd.R;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class AdviseDetailAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	private List<HashMap<String, String>> mDatas;
-
-	/**
-	 * 使用了github开源的ImageLoad进行了数据加载
-	 */
-//	private ImageLoader imageLoader;
-//	private DisplayImageOptions options;
 
 	public AdviseDetailAdapter(Context context, List<HashMap<String, String>> datas) {
 		this.mDatas = datas;
