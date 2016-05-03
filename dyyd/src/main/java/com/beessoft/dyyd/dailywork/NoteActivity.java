@@ -73,8 +73,8 @@ public class NoteActivity extends BaseActivity
                 Note note = new Note();
                 Bundle b = new Bundle();
                 b.putParcelable("note", note);
-                intent.putExtra("bundle", b);
-                intent.putExtra("from", "add");
+                b.putString("from", "add");
+                intent.putExtras(b);
                 startActivity(intent);
                 return true;
         }
@@ -143,8 +143,8 @@ public class NoteActivity extends BaseActivity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 Bundle b = new Bundle();
                 b.putParcelable("note", note);
-                intent.putExtra("bundle", b);
-                intent.putExtra("from", "note");
+                b.putString("from", "note");
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });
@@ -194,21 +194,22 @@ public class NoteActivity extends BaseActivity
         parameters_userInfo.put("currentPage", currentPage + "");
 
 //        Logger.e(httpUrl+"?"+parameters_userInfo);
+
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(response);
-
                             int code = dataJson.getInt("code");
+                            notes.clear();
+                            List<Note> mDatas = new ArrayList<>();
                             if (code == 0) {
-                                notes.clear();
-                                List<Note> mDatas = GetInfo.getNotes(dataJson);
-                                notes = mDatas;
-                                listAdapter.setDatas(mDatas);
-                                listAdapter.notifyDataSetChanged();
+                                mDatas = GetInfo.getNotes(dataJson);
                             }
+                            notes = mDatas;
+                            listAdapter.setDatas(mDatas);
+                            listAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } finally {
@@ -221,6 +222,11 @@ public class NoteActivity extends BaseActivity
                     @Override
                     public void onFailure(Throwable error, String data) {
                         ToastUtil.toast(context, "网络错误，请重试");
+//                        NoticeDialogFragment noticeDialogFragment = new NoticeDialogFragment();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("title","网络错误，请重试");
+//                        noticeDialogFragment.setArguments(bundle);
+//                        noticeDialogFragment.show(getFragmentManager(),"网络");
                         ProgressDialogUtil.closeProgressDialog();
                         pullToRefreshListView.stopRefresh();
                     }

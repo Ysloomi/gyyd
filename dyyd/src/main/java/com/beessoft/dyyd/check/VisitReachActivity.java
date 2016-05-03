@@ -18,7 +18,6 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -69,7 +68,7 @@ public class VisitReachActivity extends BaseActivity {
 	private EditText personEdit;
 	private EditText aimEdit;
 
-	private ImageView customerImage;
+	private TextView getCustomerTxt;
 
 	private LinearLayout insideLl;
 
@@ -130,7 +129,7 @@ public class VisitReachActivity extends BaseActivity {
 	@SuppressLint("ClickableViewAccessibility")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.visitreach);
+		setContentView(R.layout.activity_visitreach);
 
 		context = VisitReachActivity.this;
 		mac = GetInfo.getIMEI(context);
@@ -160,41 +159,42 @@ public class VisitReachActivity extends BaseActivity {
 		insideLl = (LinearLayout) findViewById(R.id.inside_ll);
 		addrText = (TextView) findViewById(R.id.location_text);
 		insideText = (TextView) findViewById(R.id.inside_tv);
+		getCustomerTxt = (TextView) findViewById(R.id.txt_get_customer);
 
 		customerEdit= (EditText) findViewById(R.id.visit_customer);
 		personEdit= (EditText) findViewById(R.id.visit_person);
 		aimEdit = (EditText) findViewById(R.id.visit_aim);
 		typeSpinner = (Spinner) findViewById(R.id.type_spinner);
 
-		customerImage = (ImageView) findViewById(R.id.customer_iv);
-		customerImage.setOnClickListener(onClickListener);
 
-		findViewById(R.id.preserve_iv).setOnClickListener(onClickListener);
-		findViewById(R.id.location_iv).setOnClickListener(onClickListener);
-		findViewById(R.id.visit_confirm).setOnClickListener(onClickListener);
+		getCustomerTxt.setOnClickListener(onClickListener);
+
+		findViewById(R.id.txt_preserve).setOnClickListener(onClickListener);
+		findViewById(R.id.txt_refresh).setOnClickListener(onClickListener);
+		findViewById(R.id.btn_submit).setOnClickListener(onClickListener);
 	}
 
 	View.OnClickListener onClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()){
-				case R.id.customer_iv:
+				case R.id.txt_get_customer:
 					customer = customerEdit.getText().toString();
 					Intent intent = new Intent();
 					intent.setClass(context,CustomerActivity.class);
 					intent.putExtra("name",customer);
 					startActivityForResult(intent,GET_CUSTOMER);
 					break;
-				case R.id.preserve_iv:
+				case R.id.txt_preserve:
 					aim = aimEdit.getText().toString();
 					// 记住目的信息
 					PreferenceUtil.write(context,"aim",aim);
 					ToastUtil.toast(context, "保存成功");
 					break;
-				case R.id.location_iv:
+				case R.id.txt_refresh:
 					getAddrLocation();
 					break;
-				case R.id.visit_confirm:
+				case R.id.btn_submit:
 					if(haveSpinner){
 						customer = customerEdit.getText().toString();
 						person = personEdit.getText().toString();
@@ -610,11 +610,11 @@ public class VisitReachActivity extends BaseActivity {
 	 */
 	private void getListView() {
 		if (iclass.equals("集团类")) {
-			customerImage.setVisibility(View.GONE);
+			getCustomerTxt.setVisibility(View.GONE);
 			insideLl.setVisibility(View.GONE);
 			customerEdit.setHint("请输入");
 		} else if (iclass.equals("渠道类")) {
-			customerImage.setVisibility(View.VISIBLE);
+			getCustomerTxt.setVisibility(View.VISIBLE);
 			insideLl.setVisibility(View.VISIBLE);
 			customerEdit.setHint("请输入关键字搜索");
 		}

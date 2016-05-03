@@ -91,6 +91,44 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_location"
+            style="@style/TextOutLayout">
+
+            <TextView
+                android:id="@+id/txt_location_title"
+                style="@style/MyTitle"
+                android:text="当前地址" />
+
+            <TextView
+                android:id="@+id/txt_location"
+                style="@style/NoteText"
+                android:layout_toRightOf="@+id/txt_location_title"
+                android:background="@drawable/textshape_grey" />
+
+            <TextView
+                android:id="@+id/txt_refresh"
+                style="@style/TapText"
+                android:text="刷新" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_ifinside"
+            style="@style/TextOutLayout">
+
+            <TextView
+                style="@style/MyTitle"
+                android:text="是否有效范围" />
+
+            <TextView
+                android:id="@+id/txt_ifinside"
+                style="@style/NoteText"
+                android:layout_toRightOf="@+id/txt_location_title"
+                android:background="@drawable/textshape_grey" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_question"
             style="@style/TextOutLayout">
 
@@ -147,6 +185,32 @@
                 style="@style/NoteText" />
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_photo"
+            style="@style/TextOutLayout">
+
+
+            <TextView
+                android:id="@+id/txt_photo_title"
+                style="@style/MyTitle"
+                android:text="照片信息" />
+
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerHorizontal="true"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/txt_take_photo"
+                style="@style/TapText"
+                android:layout_alignParentRight="true"
+                android:text="照相"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

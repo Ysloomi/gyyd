@@ -238,16 +238,16 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.btn_note:
-//                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode9"))) {
-//                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode9"))) {
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
                         intent.setClass(context, NoteActivity.class);
-//                    }else{
-//                        intent.setClass(context, NoteQueryActivity.class);
-//                    }
+                    }else{
+                        intent.setClass(context, NoteQueryActivity.class);
+                    }
                     startActivity(intent);
-//                } else {
-//                    ToastUtil.toast(context, "无权限");
-//                }
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
                 break;
             default:
                 break;

@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.bean.NoteAddr;
-import com.beessoft.dyyd.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,7 +204,6 @@ public class NoteAddrDBManager extends AbsDBManager implements
 //				break;
 			}
 			all = name+","+code;
-			Logger.e("all>>>>"+all);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

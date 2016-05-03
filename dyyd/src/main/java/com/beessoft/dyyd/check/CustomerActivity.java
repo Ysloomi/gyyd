@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.check;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +10,8 @@ import android.widget.ListView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,7 +30,6 @@ public class CustomerActivity extends BaseActivity {
     private ListView listView;
     private List<String> datas;
     private List<HashMap<String,String>> latlngs;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +45,8 @@ public class CustomerActivity extends BaseActivity {
         String name = getIntent().getStringExtra("name");
         initView();
 
-        progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+        ProgressDialogUtil.showProgressDialog(context);
         visitServer(name);
-
     }
 
     private void initView() {
@@ -112,14 +109,15 @@ public class CustomerActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            progressDialog.dismiss();
+                            ProgressDialogUtil.closeProgressDialog();
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
-                        progressDialog.dismiss();
+                        ToastUtil.toast(context,"网络连接错误");
+                        ProgressDialogUtil.closeProgressDialog();
                     }
                 });
     }

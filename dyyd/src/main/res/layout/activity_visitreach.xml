@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout style="@style/TextOutLayout">
@@ -22,45 +23,39 @@
 
         </LinearLayout>
 
-        <RelativeLayout style="@style/TextOutLayout">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                android:id="@+id/textView1"
                 style="@style/MyTitle"
                 android:text="拜访客户" />
 
 
             <EditText
                 android:id="@+id/visit_customer"
-                style="@style/MyText"
-                android:layout_toRightOf="@+id/textView1"
-                android:background="@drawable/text_bg"/>
+                style="@style/Text" />
 
 
-            <ImageView
-                android:id="@+id/customer_iv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignRight="@+id/visit_customer"
-                android:layout_alignTop="@+id/visit_customer"
-                android:scaleType="matrix"
-                android:src="@drawable/search" />
+            <TextView
+                android:id="@+id/txt_get_customer"
+                style="@style/TapText"
+                android:text="筛选" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
-        <LinearLayout style="@style/TextOutLayout"
-            android:id="@+id/inside_ll">
+        <LinearLayout
+            android:id="@+id/inside_ll"
+            style="@style/TextOutLayout">
 
             <TextView
                 style="@style/MyTitle"
-                android:text="有效范围"/>
+                android:text="有效范围" />
 
 
             <TextView
                 android:id="@+id/inside_tv"
                 style="@style/MyText"
-                android:hint="选择客户后判定"/>
+                android:hint="选择客户后判定" />
         </LinearLayout>
 
         <LinearLayout style="@style/TextOutLayout">
@@ -74,7 +69,7 @@
             <EditText
                 android:id="@+id/visit_person"
                 style="@style/MyText"
-                android:hint="请输入拜访客户中的人员"/>
+                android:hint="请输入拜访客户中的人员" />
         </LinearLayout>
 
         <RelativeLayout style="@style/TextOutLayout">
@@ -99,48 +94,39 @@
                 android:textColor="#000000"
                 android:textSize="14sp" />
 
-
-            <ImageView
-                android:id="@+id/preserve_iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+            <TextView
+                android:id="@+id/txt_preserve"
+                style="@style/TapText"
                 android:layout_alignBottom="@+id/visit_aim"
-                android:layout_alignLeft="@+id/preserve_button"
-                android:scaleType="matrix"
-                android:src="@drawable/preserve_button" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="保存" />
 
         </RelativeLayout>
 
-        <RelativeLayout style="@style/TextOutLayout">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                android:id="@+id/textView5"
                 style="@style/MyTitle"
                 android:text="当前位置" />
 
             <TextView
                 android:id="@+id/location_text"
-                style="@style/MyText"
-                android:layout_toRightOf="@+id/textView5" />
+                style="@style/Text" />
 
-            <ImageView
-                android:id="@+id/location_iv"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignRight="@+id/location_text"
-                android:layout_alignTop="@+id/location_text"
-                android:scaleType="matrix"
-                android:src="@drawable/refresh_button" />
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/txt_refresh"
+                style="@style/TapText"
+                android:text="刷新" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/linearlayout"
-        style="@style/RelativeBottom"
-        android:layout_alignParentBottom="true">
+    <RelativeLayout style="@style/RelativeBottom">
 
         <Button
-            android:id="@+id/visit_confirm"
+            android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -150,4 +136,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

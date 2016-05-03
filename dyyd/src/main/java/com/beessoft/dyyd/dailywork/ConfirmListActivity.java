@@ -50,7 +50,6 @@ public class ConfirmListActivity extends BaseActivity {
 		super.onStart();
 	}
 
-	// 访问服务器http post
 	private void visitServer(Context context) {
 		String httpUrl = User.mainurl + "sf/check_confirmlist";
 		String pass = GetInfo.getPass(context);

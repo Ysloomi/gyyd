@@ -13,7 +13,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Note;
 import com.beessoft.dyyd.utils.GetInfo;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -53,9 +52,9 @@ public class NoteAddActivity extends BaseActivity
         mac = GetInfo.getIMEI(context);
         username = GetInfo.getUserName(context);
 
-        from = getIntent().getStringExtra("from");
-        Bundle b = getIntent().getBundleExtra("bundle");
+        Bundle b = getIntent().getExtras();
         note = b.getParcelable("note");
+        from = b.getString("from");
 
         initView();
         initData();
@@ -84,8 +83,9 @@ public class NoteAddActivity extends BaseActivity
 
     private void initData() {
         if ("change".equals(from)){
-            addr = getIntent().getStringExtra("addr");
-            addrCode = getIntent().getStringExtra("addrCode");
+            Bundle b = getIntent().getExtras();
+            addr = b.getString("addr");
+            addrCode = b.getString("addrCode");
             departText.setText(note.getDepart());
             nameText.setText(note.getName());
             startEdit.setText(note.getStart());

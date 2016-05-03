@@ -172,7 +172,6 @@ public class CheckInActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (Tools.isSDCardExit()) {
-
                     takePhoto();
                 } else {
                     ToastUtil.toast(context, "内存卡不存在不能拍照");

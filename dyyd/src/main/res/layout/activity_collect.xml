@@ -1,159 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/title1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="当前地址"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+    <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/location_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title1"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+        <TextView
+            style="@style/MyTitle"
+            android:text="当前地址" />
 
-    <ImageView
-        android:id="@+id/refresh_iv"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/location_text"
-        android:scaleType="matrix"
-        android:src="@drawable/refresh_button" />
+        <TextView
+            android:id="@+id/location_text"
+            style="@style/MyText" />
 
-    <TextView
-        android:id="@+id/title2"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title1"
-        android:layout_below="@+id/title1"
-        android:layout_marginTop="10dp"
-        android:text="  分公司  " />
+        <TextView
+            android:id="@+id/refresh_iv"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/location_text"
+            android:scaleType="matrix"
+            android:src="@drawable/refresh_button" />
 
-    <Spinner
-        android:id="@+id/block_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title2"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title2"
-        android:background="@drawable/text_bg"
-        android:gravity="center" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/title3"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title2"
-        android:layout_below="@+id/block_spinner"
-        android:layout_marginTop="10dp"
-        android:text=" 分局 " />
+    <LinearLayout style="@style/TextOutLayout">
 
-    <Spinner
-        android:id="@+id/street_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title3"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title3"
-        android:background="@drawable/text_bg"
-        android:gravity="center" />
+        <TextView
+            android:id="@+id/title2"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title1"
+            android:layout_below="@+id/title1"
+            android:layout_marginTop="10dp"
+            android:text="  分公司  " />
 
-    <TextView
-        android:id="@+id/title4"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title3"
-        android:layout_below="@+id/street_spinner"
-        android:layout_marginTop="10dp"
-        android:text="镇／片区" />
+        <Spinner
+            android:id="@+id/block_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/title2"
+            android:background="@drawable/text_bg"
+            android:gravity="center" />
+    </LinearLayout>
 
-    <Spinner
-        android:id="@+id/community_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title4"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title4"
-        android:background="@drawable/text_bg"
-        android:gravity="center" />
+    <LinearLayout style="@style/TextOutLayout">
 
+        <TextView
+            android:id="@+id/title3"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title2"
+            android:layout_below="@+id/block_spinner"
+            android:layout_marginTop="10dp"
+            android:text=" 分局 " />
 
-    <TextView
-        android:id="@+id/title5"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title4"
-        android:layout_below="@+id/community_spinner"
-        android:layout_marginTop="10dp"
-        android:text="营业厅" />
+        <Spinner
+            android:id="@+id/street_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title3"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/title3"
+            android:background="@drawable/text_bg"
+            android:gravity="center" />
+    </LinearLayout>
 
-    <Spinner
-        android:id="@+id/shop_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title5"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title5"
-        android:background="@drawable/text_bg"
-        android:gravity="center" />
+    <LinearLayout style="@style/TextOutLayout">
 
+        <TextView
+            android:id="@+id/title4"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title3"
+            android:layout_below="@+id/street_spinner"
+            android:layout_marginTop="10dp"
+            android:text="镇／片区" />
 
-    <TextView
-        android:id="@+id/title6"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title5"
-        android:layout_below="@+id/shop_spinner"
-        android:layout_marginTop="10dp"
-        android:text="照片信息" />
+        <Spinner
+            android:id="@+id/community_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/title4"
+            android:background="@drawable/text_bg"
+            android:gravity="center" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/photo_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignTop="@+id/title6"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            android:id="@+id/title5"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title4"
+            android:layout_below="@+id/community_spinner"
+            android:layout_marginTop="10dp"
+            android:text="营业厅" />
+
+        <Spinner
+            android:id="@+id/shop_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title5"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/title5"
+            android:background="@drawable/text_bg"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            android:id="@+id/title6"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title5"
+            android:layout_below="@+id/shop_spinner"
+            android:layout_marginTop="10dp"
+            android:text="照片信息" />
+
+        <ImageView
+            android:id="@+id/photo_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignTop="@+id/title6"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
 
 
-    <TextView
-        android:id="@+id/title7"
-        style="@style/MyTitle"
-        android:layout_alignLeft="@+id/title5"
-        android:layout_below="@+id/photo_image"
-        android:layout_marginTop="10dp"
-        android:text="说明" />
+        <ImageView
+            android:id="@+id/photo_photo"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/photo_image"
+            android:scaleType="matrix"
+            android:src="@drawable/photo_button" />
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title7"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title7"
-        android:background="@drawable/text_bg"
-        android:text="若采集分局位置，请只选择分公司和分局，不选择片区和营业厅"
-        android:gravity="center"
-        android:textColor="#000000" />
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            android:id="@+id/title7"
+            style="@style/MyTitle"
+            android:layout_alignLeft="@+id/title5"
+            android:layout_below="@+id/photo_image"
+            android:layout_marginTop="10dp"
+            android:text="说明" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/title7"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/title7"
+            android:background="@drawable/text_bg"
+            android:gravity="center"
+            android:text="若采集分局位置，请只选择分公司和分局，不选择片区和营业厅"
+            android:textColor="#000000" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/linearlayout"
@@ -170,13 +181,4 @@
             android:drawableTop="@drawable/confirm_icon" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/photo_photo"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/photo_image"
-        android:scaleType="matrix"
-        android:src="@drawable/photo_button" />
-
-</RelativeLayout>
+</LinearLayout>

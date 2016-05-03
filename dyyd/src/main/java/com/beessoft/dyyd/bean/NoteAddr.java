@@ -5,9 +5,10 @@ package com.beessoft.dyyd.bean;
  */
 public class NoteAddr{
 
-    private String name;//地点名字
-    private String code;//地点编码
-    private String ischeck;//是否选中 0未选 1选中
+    private String name="";//地点名字
+    private String code="";//地点编码
+    private String rtCode="";//返回的编码
+    private String ischeck="";//是否选中 0未选 1选中
 
     public String getName() {
         return name;
@@ -31,5 +32,14 @@ public class NoteAddr{
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+
+    public String getRtCode() {
+        return rtCode;
+    }
+
+    public void setRtCode(String rtCode) {
+        this.rtCode = rtCode;
     }
 }

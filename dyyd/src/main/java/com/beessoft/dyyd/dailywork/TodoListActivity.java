@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -35,9 +34,9 @@ public class TodoListActivity extends BaseActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.todolist);
+        setContentView(R.layout.activity_base_list);
         
-        listView = (ListView) findViewById(R.id.todo_list);
+        listView = (ListView) findViewById(R.id.list_view);
 
 		ProgressDialogUtil.showProgressDialog(context);
 		visitServer();
@@ -62,7 +61,7 @@ public class TodoListActivity extends BaseActivity {
 						try {
 							JSONObject dataJson = new JSONObject(response);
 							int code =dataJson.getInt("code");
-
+							datas.clear();
 							if (code==1) {
 								ToastUtil.toast(context,"没有相关信息");
 							} else if (code==0) {
@@ -75,32 +74,32 @@ public class TodoListActivity extends BaseActivity {
 									map.put("undo", "完成时长:"+obj.getString("undone"));
 									datas.add(map);
 								}
-								simAdapter = new SimpleAdapter(
-										TodoListActivity.this,
-										datas,// 数据源
-										R.layout.todo_item,// 显示布局
-										new String[] { "step", "name", "done","undo" }, 
-										new int[] {
-												R.id.step, R.id.name,
-												R.id.do_proportion,
-												R.id.time_last });
-								listView.setAdapter(simAdapter);
-								listView.setOnItemClickListener(new OnItemClickListener() {
-									@SuppressWarnings("unchecked")
-									@Override
-									public void onItemClick(
-											AdapterView<?> parent, View view,
-											int position, long id) {
-										ListView listView = (ListView) parent;
-										HashMap<String, String> map = (HashMap<String, String>) listView
-												.getItemAtPosition(position);
-										String level = map.get("step");
-										Intent intent =new Intent(TodoListActivity.this,TodoActivity.class);
-										intent.putExtra("level", level);
-										startActivity(intent);
-									}
-								});
 							}
+							simAdapter = new SimpleAdapter(
+									TodoListActivity.this,
+									datas,// 数据源
+									R.layout.item_todo,// 显示布局
+									new String[] { "step", "name", "done","undo" },
+									new int[] {
+											R.id.step, R.id.name,
+											R.id.do_proportion,
+											R.id.time_last });
+							listView.setAdapter(simAdapter);
+							listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+								@SuppressWarnings("unchecked")
+								@Override
+								public void onItemClick(
+										AdapterView<?> parent, View view,
+										int position, long id) {
+									ListView listView = (ListView) parent;
+									HashMap<String, String> map = (HashMap<String, String>) listView
+											.getItemAtPosition(position);
+									String level = map.get("step");
+									Intent intent =new Intent(TodoListActivity.this,TodoActivity.class);
+									intent.putExtra("level", level);
+									startActivity(intent);
+								}
+							});
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {

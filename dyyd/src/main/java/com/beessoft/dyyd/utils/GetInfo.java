@@ -221,6 +221,26 @@ public class GetInfo {
                 noteQuery.setDate(objUndo.getString("time"));
                 noteQueries.add(noteQuery);
             }
+            JSONArray arrayReach = object.getJSONArray("visit");
+            for (int j = 0; j < arrayReach.length(); j++) {
+                JSONObject objReach = arrayReach.getJSONObject(j);
+                NoteQuery noteQuery = new NoteQuery();
+                noteQuery.setType("已拜访");
+                noteQuery.setAddr(objReach.getString("customer"));
+                noteQuery.setAddrCode(objReach.getString("id"));
+                noteQuery.setRtCode(objReach.getString("rtCode"));
+                noteQueries.add(noteQuery);
+            }
+            JSONArray arrayLeave = object.getJSONArray("leave");
+            for (int j = 0; j < arrayLeave.length(); j++) {
+                JSONObject objLeave = arrayLeave.getJSONObject(j);
+                NoteQuery noteQuery = new NoteQuery();
+                noteQuery.setType("已离开");
+                noteQuery.setAddr(objLeave.getString("customer"));
+                noteQuery.setAddrCode(objLeave.getString("id"));
+                noteQuery.setRtCode(objLeave.getString("rtCode"));
+                noteQueries.add(noteQuery);
+            }
             JSONArray arrayWait = object.getJSONArray("wait");
             for (int j = 0; j < arrayWait.length(); j++) {
                 JSONObject objWait = arrayWait.getJSONObject(j);

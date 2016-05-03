@@ -1,7 +1,5 @@
 package com.beessoft.dyyd.check;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -10,6 +8,7 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,13 +24,7 @@ import java.util.List;
 
 public class AskLeaveQueryActivity extends BaseActivity {
 
-    private String mac, state, username;
-    private Context context;
-
     private ListView listView;
-
-    private ProgressDialog progressDialog;
-
     private SimpleAdapter simAdapter;
 
     List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
@@ -39,13 +32,15 @@ public class AskLeaveQueryActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.noticelist);
+        setContentView(R.layout.activity_base_list);
 
         context = AskLeaveQueryActivity.this;
         mac = GetInfo.getIMEI(context);
+        username = GetInfo.getUserName(context);
 
-        listView = (ListView) findViewById(R.id.notice_list);
-        progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, false);
+        listView = (ListView) findViewById(R.id.list_view);
+
+        ProgressDialogUtil.showProgressDialog(context);
         visitServer();
     }
 
@@ -55,6 +50,7 @@ public class AskLeaveQueryActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -115,14 +111,14 @@ public class AskLeaveQueryActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            progressDialog.dismiss();
+                            ProgressDialogUtil.closeProgressDialog();
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
-                        progressDialog.dismiss();
+                        ProgressDialogUtil.closeProgressDialog();
                     }
                 });
     }

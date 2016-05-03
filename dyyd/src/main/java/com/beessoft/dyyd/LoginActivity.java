@@ -168,7 +168,7 @@ public class LoginActivity extends Activity {
 								int ifgps = dataJson.getInt("ifgps");//ifgps 0 允许室外签到 1不允许
 								PreferenceUtil.write(context, "ifgps", ifgps);
 
-								int roleCode = dataJson.getInt("rolecode");
+								int roleCode = dataJson.getInt("rolecode");//权限控制
 								if (roleCode==0){
 									JSONArray array = dataJson.getJSONArray("roleList");
 									for (int i = 0; i < array.length(); i++) {

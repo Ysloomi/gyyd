@@ -22,7 +22,6 @@ import com.beessoft.dyyd.adapter.NoteAdapter;
 import com.beessoft.dyyd.bean.Note;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.GetInfo;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -159,8 +158,8 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
                 intent.setClass(context, NoteQueryDetailActivity.class);
                 Bundle b = new Bundle();
                 b.putParcelable("note", note);
-                intent.putExtra("bundle", b);
-                intent.putExtra("from", "query");
+                b.putString("from", "query");
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });
@@ -225,12 +224,13 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
                             Integer code = dataJson.getInt("code");
 //                            String msg = dataJson.getString("msg");
                             notes.clear();
+                            List<Note> mDatas = new ArrayList<Note>();
                             if (code == 0) {
-                                List<Note> mDatas = GetInfo.getNotes(dataJson);
-                                notes = mDatas;
-                                listAdapter.setDatas(mDatas);
-                                listAdapter.notifyDataSetChanged();
+                               mDatas = GetInfo.getNotes(dataJson);
                             }
+                            notes = mDatas;
+                            listAdapter.setDatas(mDatas);
+                            listAdapter.notifyDataSetChanged();
 //                            ToastUtil.toast(context, msg);
                         } catch (JSONException e) {
                             e.printStackTrace();

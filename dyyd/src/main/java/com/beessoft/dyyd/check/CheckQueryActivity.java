@@ -16,9 +16,6 @@ public class CheckQueryActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.checkquery);
-
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);// 设置为Tab模式
-
 		initView();
 	}
 
