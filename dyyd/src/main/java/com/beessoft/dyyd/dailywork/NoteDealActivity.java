@@ -27,7 +27,6 @@ import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Note;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.Logger;
@@ -59,6 +58,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
     private LinearLayout locationLl;
     private LinearLayout ifInsideLl;
+    private LinearLayout outReasonLl;
     private LinearLayout questionLl;
     private LinearLayout adviseLl;
     private LinearLayout reasonLl;
@@ -69,6 +69,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private EditText adviseEdt;
     private EditText reasonEdt;
     private EditText effectEdt;
+    private EditText outReasonEdt;
 
     private String from;
     private String state;
@@ -103,7 +104,6 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_note_deal);
 
         if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
-//			Log.i(TAG, "拍摄异常，获取原来的shot_path");
 //            Logger.e("拍摄异常，获取原来的shot_path");
             imgPath = savedInstanceState.getString("imgPath");
         }
@@ -131,6 +131,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
         locationTxt = (TextView) findViewById(R.id.txt_location);
         ifInsideTxt = (TextView) findViewById(R.id.txt_ifinside);
+
         departText = (TextView) findViewById(R.id.txt_depart);
         nameText = (TextView) findViewById(R.id.txt_name);
         addrText = (TextView) findViewById(R.id.txt_addr);
@@ -140,16 +141,19 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
         locationLl = (LinearLayout) findViewById(R.id.ll_location);
         ifInsideLl= (LinearLayout) findViewById(R.id.ll_ifinside);
+        outReasonLl= (LinearLayout) findViewById(R.id.ll_out_reason);
         questionLl = (LinearLayout) findViewById(R.id.ll_question);
         adviseLl = (LinearLayout) findViewById(R.id.ll_advise);
         reasonLl = (LinearLayout) findViewById(R.id.ll_reason);
         effectLl = (LinearLayout) findViewById(R.id.ll_effect);
         photoRl = (RelativeLayout) findViewById(R.id.rl_photo);
 
+
         questionEdt = (EditText) findViewById(R.id.edt_question);
         adviseEdt = (EditText) findViewById(R.id.edt_advise);
         reasonEdt = (EditText) findViewById(R.id.edt_reason);
         effectEdt = (EditText) findViewById(R.id.edt_effect);
+        outReasonEdt = (EditText) findViewById(R.id.edt_out_reason);
 
         photoImage = (ImageView) findViewById(R.id.img_photo);
 
@@ -250,18 +254,19 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 final String reason = reasonEdt.getText().toString();
                 final String effect = effectEdt.getText().toString();
                 final String addr = locationTxt.getText().toString();
+                final String outReason = outReasonEdt.getText().toString();
                 if ("result".equals(from)) {
                     if ("未走访".equals(state)) {
                         if (!Tools.isEmpty(reason)) {
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(quesioton, advise, reason, effect,addr);
+                            saveData(quesioton, advise, reason, effect,addr,outReason);
                         } else {
                             ToastUtil.toast(context, "请填写原因");
                         }
                     } else {
                         if (!Tools.isEmpty(quesioton) && !Tools.isEmpty(advise)) {
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(quesioton, advise, reason, effect,addr);
+                            saveData(quesioton, advise, reason, effect,addr,outReason);
                         } else {
                             ToastUtil.toast(context, "请填写问题以及措施");
                         }
@@ -269,26 +274,30 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 } else if ("effect".equals(from)) {
                     if (!Tools.isEmpty(effect)) {
                         ProgressDialogUtil.showProgressDialog(context);
-                        saveData(quesioton, advise, reason, effect,addr);
+                        saveData(quesioton, advise, reason, effect,addr,outReason);
                     } else {
                         ToastUtil.toast(context, "请填写成效跟踪");
                     }
                 } else if ("reach".equals(from)) {
                     if (!Tools.isEmpty(addr)&&!"正在定位...".equals(addr)&&!Tools.isEmpty(leavetype)){
                         if ("否".equals(leavetype)){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("不再有效范围是否确认提交")
-                                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
+                            if (TextUtils.isEmpty(outReason)){
+                                ToastUtil.toast(context,"请填写不在有效范围原因");
+                            }else {
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                            builder.setTitle("不再有效范围是否确认提交")
+//                                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
                                             ProgressDialogUtil.showProgressDialog(context);
-                                            saveData(quesioton, advise, reason, effect,addr);
-                                        }
-                                    }).setNegativeButton("否",null);
-                            builder.show();
+                                            saveData(quesioton, advise, reason, effect,addr,outReason);
+//                                        }
+//                                    }).setNegativeButton("否",null);
+//                            builder.show();
+                            }
                         }else{
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(quesioton, advise, reason, effect,addr);
+                            saveData(quesioton, advise, reason, effect,addr,outReason);
                         }
                     }else{
                         ToastUtil.toast(context,"请等待定位");
@@ -302,13 +311,13 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             ProgressDialogUtil.showProgressDialog(context);
-                                            saveData(quesioton, advise, reason, effect,addr);
+                                            saveData(quesioton, advise, reason, effect,addr,"");
                                         }
                                     }).setNegativeButton("否",null);
                             builder.show();
                         }else{
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(quesioton, advise, reason, effect,addr);
+                            saveData(quesioton, advise, reason, effect,addr,outReason);
                         }
                     } else {
                         ToastUtil.toast(context, "请等待定位");
@@ -320,7 +329,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
 
     private void saveData(String quesioton, String advise,
-                          String reason, String effect,String addr) {
+                          String reason, String effect,String addr,String outReason) {
 
 //        String httpUrl = User.mainurl+"notePad/MyNoteServlet";
         String httpUrl ="";
@@ -369,6 +378,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("addr", addr);
             parameters_userInfo.put("image", uploadBuffer);
             parameters_userInfo.put("inside", leavetype);
+            parameters_userInfo.put("reason", outReason);
         }else if ("leave".equals(from)){
             httpUrl = User.mainurl+"app/StateUpdate";
             parameters_userInfo.put("rtcode", rtCode);
@@ -384,7 +394,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("inside", leavetype);
         }
 
-        Logger.e(httpUrl+"?"+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -603,7 +613,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
                             if (code==0) {
 //                                JSONArray array = dataJson.getJSONArray("list");
@@ -622,6 +632,11 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                                             double distance = DistanceUtil. getDistance(p1, p2);
                                             leavetype = distance < scope ? "是" : "否" ;
                                             ifInsideTxt.setText(leavetype);
+                                            if ("否".equals(leavetype)&&"reach".equals(from)){
+                                                outReasonLl.setVisibility(View.VISIBLE);
+                                            }else{
+                                                outReasonLl.setVisibility(View.GONE);
+                                            }
                                         }else{
                                             ToastUtil.toast(context,"请先等待获取位置信息");
                                         }

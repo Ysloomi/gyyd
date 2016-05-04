@@ -3,26 +3,16 @@ package com.beessoft.dyyd.check;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.model.LatLng;
@@ -54,9 +44,9 @@ public class VisitReachActivity extends BaseActivity {
 
 	private LocationClient mLocationClient;
 
-	private String customer, person, aim, location, type,
-			customerType, iclass, examineResultString, longtitude, latitude,
-			addr, examineUrl, ifExamine;
+	private String customer, person, aim,type,location,
+			customerType,examineResultString, longtitude, latitude,
+			addr;
 	private String customerLat="";
 	private String customerLng="";
 	private String customerCode="";
@@ -64,13 +54,11 @@ public class VisitReachActivity extends BaseActivity {
 
 	private TextView addrText;
 	private TextView insideText;
+	private TextView getCustomerTxt;
+
 	private EditText customerEdit;
 	private EditText personEdit;
 	private EditText aimEdit;
-
-	private TextView getCustomerTxt;
-
-	private LinearLayout insideLl;
 
 	private Thread mThread;
 	private Spinner typeSpinner;
@@ -80,8 +68,6 @@ public class VisitReachActivity extends BaseActivity {
 	private static final int GET_CUSTOMER = 2;// 获取定位失败的标识
 
 	private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
-
-	private Boolean haveSpinner = true;
 	private boolean ifLocation = false;
 
 	@SuppressLint("HandlerLeak")
@@ -99,37 +85,10 @@ public class VisitReachActivity extends BaseActivity {
 		}
 	};
 
-//	@Override
-
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.visit_actions, menu);
-//		return super.onCreateOptionsMenu(menu);
-//	}
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		Intent intent = new Intent();
-//		switch (item.getItemId()) {
-//		case android.R.id.home:
-//			finish();
-//			return true;
-//		case R.id.action_material:
-//			intent.setClass(VisitReachActivity.this, WorkBookActivity.class);
-//			startActivity(intent);
-//			return true;
-//		case R.id.action_target:
-//			intent.setClass(VisitReachActivity.this, BranchTargetActivity.class);
-//			startActivity(intent);
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@SuppressLint("ClickableViewAccessibility")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_visitreach);
+		setContentView(R.layout.activity_reach);
 
 		context = VisitReachActivity.this;
 		mac = GetInfo.getIMEI(context);
@@ -145,7 +104,7 @@ public class VisitReachActivity extends BaseActivity {
 			Gps.GPS_do(mLocationClient, 8000);
 		}
 
-		visitServe_Customer();
+		getCustomerType();
 		getAddrLocation();
 
 		String a = PreferenceUtil.readString(context,"aim");
@@ -156,7 +115,6 @@ public class VisitReachActivity extends BaseActivity {
 
 	public void initView() {
 
-		insideLl = (LinearLayout) findViewById(R.id.inside_ll);
 		addrText = (TextView) findViewById(R.id.location_text);
 		insideText = (TextView) findViewById(R.id.inside_tv);
 		getCustomerTxt = (TextView) findViewById(R.id.txt_get_customer);
@@ -165,7 +123,6 @@ public class VisitReachActivity extends BaseActivity {
 		personEdit= (EditText) findViewById(R.id.visit_person);
 		aimEdit = (EditText) findViewById(R.id.visit_aim);
 		typeSpinner = (Spinner) findViewById(R.id.type_spinner);
-
 
 		getCustomerTxt.setOnClickListener(onClickListener);
 
@@ -195,33 +152,25 @@ public class VisitReachActivity extends BaseActivity {
 					getAddrLocation();
 					break;
 				case R.id.btn_submit:
-					if(haveSpinner){
-						customer = customerEdit.getText().toString();
-						person = personEdit.getText().toString();
-						aim = aimEdit.getText().toString();
-						location = addrText.getText().toString();
-						customerType = typeSpinner.getSelectedItem().toString();
-						examineResultString = "";
-						if (customerType.equals("请选择")) {
-							ToastUtil.toast(context, "请选择客户类别");
+					customer = customerEdit.getText().toString();
+					person = personEdit.getText().toString();
+					aim = aimEdit.getText().toString();
+					location = addrText.getText().toString();
+					examineResultString = "";
+					if (customerType.equals("请选择")) {
+						ToastUtil.toast(context, "请选择客户类别");
+					} else {
+						if (TextUtils.isEmpty(customerType.trim()) ||
+								TextUtils.isEmpty(customer.trim())
+								|| TextUtils.isEmpty(person.trim())
+								|| TextUtils.isEmpty(aim.trim())
+								|| TextUtils.isEmpty(location.trim())) {
+							ToastUtil.toast(context, "数据不能为空");
 						} else {
-							if (TextUtils.isEmpty(customerType.trim()) ||
-									TextUtils.isEmpty(customer.trim())
-									|| TextUtils.isEmpty(person.trim())
-									|| TextUtils.isEmpty(aim.trim())
-									|| TextUtils.isEmpty(location.trim())) {
-								ToastUtil.toast(context, "数据不能为空");
+							if (!Tools.isEmpty(leavetype)&&!"正在定位...".equals(location)) {
+								confirmInfo();
 							} else {
-//							if ("0".equals(ifExamine)) {
-								if ("渠道类".equals(customerType)&&Tools.isEmpty(leavetype)){
-									ToastUtil.toast(context,"请重新选择客户，等待有效范围的判定");
-								}else{
-									confirmInfo();
-								}
-
-//							} else {
-//								inputIfExamineDialog();
-//							}
+								ToastUtil.toast(context, "请重新选择客户，等待有效范围的判定");
 							}
 						}
 					}
@@ -229,7 +178,6 @@ public class VisitReachActivity extends BaseActivity {
 			}
 		}
 	};
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -259,121 +207,6 @@ public class VisitReachActivity extends BaseActivity {
 		}
 	}
 
-	private void inputIfExamineDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				VisitReachActivity.this);
-		builder.setTitle("提示").setMessage("是否检查").setCancelable(false)
-				.setPositiveButton("检查", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						inputExamineDialog();
-					}
-				}).setNegativeButton("不检查", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						confirmInfo();
-					}
-		}).show();
-
-	}
-
-	@SuppressLint({ "InflateParams", "SetJavaScriptEnabled" })
-	private void inputExamineDialog() {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.examine, null);
-
-		final EditText editText1 = (EditText) view
-				.findViewById(R.id.examine_text);
-		final WebView webView = (WebView) view.findViewById(R.id.examine_web);
-		final ProgressBar progressBar = (ProgressBar) view
-				.findViewById(R.id.examine_progressBar);
-
-		final AlertDialog myDialog = new AlertDialog.Builder(
-				VisitReachActivity.this).setView(view)
-				.setPositiveButton("确认", null).setNegativeButton("取消", null)
-				.setCancelable(false).create();
-
-		if ("1".equals(ifExamine)) {
-			String url = User.mainurl + examineUrl;
-			// webview定义参数
-			WebSettings webSettings = webView.getSettings();
-			webSettings.setJavaScriptEnabled(true);
-			webSettings.setAppCacheEnabled(true);
-			webSettings.setDatabaseEnabled(true);
-			webSettings.setDomStorageEnabled(true);
-			webSettings.setGeolocationDatabasePath("/data/data/<my-app>");
-			webSettings.setGeolocationEnabled(true);
-			webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-			webSettings.setAppCacheMaxSize(8 * 1024 * 1024);
-			webSettings.setAllowFileAccess(true);
-			webSettings.setSaveFormData(true);
-			webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-
-			// 显示web
-			webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-			webView.setWebChromeClient(new WebChromeClient() {
-				@Override
-				public void onProgressChanged(WebView view, int newProgress) {
-					Message msg = new Message();
-					msg.what = 200;
-					msg.obj = newProgress;
-					// 进度条到100时，自动消失
-					if (newProgress >= 100) {
-						progressBar.setVisibility(View.GONE);
-					}
-				}
-			});
-
-			webView.loadUrl(url);
-
-			// 如果页面中链接，如果希望点击链接继续在当前browser中响应，
-			// 而不是新开Android的系统browser中响应该链接，必须覆盖webview的WebViewClient对象
-			webView.setWebViewClient(new WebViewClient() {
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					// 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
-					view.loadUrl(url);
-					// 记得消耗掉这个事件。给不知道的朋友再解释一下，
-					// Android中返回True的意思就是到此为止吧,事件就会不会冒泡传递了，我们称之为消耗掉
-					return true;
-				}
-			});
-			editText1.setHint("请输入检查结果");
-		} else if ("2".equals(ifExamine)) {
-			webView.setVisibility(View.GONE);
-			progressBar.setVisibility(View.GONE);
-			myDialog.setTitle("请输入检查结果");
-		}
-
-		myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-			@Override
-			public void onShow(DialogInterface dialog) {
-				Button button = myDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-				button.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						examineResultString = editText1.getText().toString();
-						if ("".equals(examineResultString)) {
-							Toast.makeText(VisitReachActivity.this, "请填写检查结果",
-									Toast.LENGTH_SHORT).show();
-						} else {
-							confirmInfo();
-							myDialog.dismiss();
-						}
-					}
-				});
-				Button button1 = myDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-				button1.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						confirmInfo();
-						myDialog.dismiss();
-					}
-				});
-			}
-		});
-		myDialog.show();
-	}
-
 	public void confirmInfo() {
 		if ("否".equals(leavetype)) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -382,13 +215,13 @@ public class VisitReachActivity extends BaseActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							ProgressDialogUtil.showProgressDialog(context);
-							visitServer(customerType, customer, person, aim, longtitude, latitude, location);
+							visitServer(customerType, customer, person, aim, location);
 						}
 					}).setNegativeButton("否", null);
 			builder.show();
 		} else {
 			ProgressDialogUtil.showProgressDialog(context);
-			visitServer(customerType, customer, person, aim, longtitude, latitude, location);
+			visitServer(customerType, customer, person, aim, location);
 		}
 	}
 
@@ -396,8 +229,7 @@ public class VisitReachActivity extends BaseActivity {
 		mThread = new Thread(runnable);
 		if (Gps.exist(VisitReachActivity.this, "distance.db")) {
 			addrText.setText("正在定位...");
-			distanceHelper = new DistanceDatabaseHelper(
-					getApplicationContext(), "distance.db", 1);
+			distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
 			longtitude = Gps.getJd(distanceHelper);
 			latitude = Gps.getWd(distanceHelper);
 			type = Gps.getType(distanceHelper);
@@ -416,7 +248,6 @@ public class VisitReachActivity extends BaseActivity {
 	}
 
 	Runnable runnable = new Runnable() {
-
 		@SuppressLint("ClickableViewAccessibility")
 		@Override
 		public void run() {// run()在新的线程中运行
@@ -463,7 +294,7 @@ public class VisitReachActivity extends BaseActivity {
 		}
 	};
 
-	private void visitServe_Customer() {
+	private void getCustomerType() {
 
 		String httpUrl = User.mainurl + "sf/startvisit";
 
@@ -478,18 +309,17 @@ public class VisitReachActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 //							String msg = dataJson.getString("msg");
 							if (code==0){
 								JSONArray arrayType = dataJson.getJSONArray("typelist");
-								List<String> list = new ArrayList<String>();
+								List<String> list = new ArrayList<>();
 								for (int j = 0; j < arrayType.length(); j++) {
 									JSONObject obj = arrayType.getJSONObject(j);
 									list.add(obj.getString("type"));
-									haveSpinner= true;
 								}
-								ArrayAdapter<String> adapterType = new ArrayAdapter<String>(
+								ArrayAdapter<String> adapterType = new ArrayAdapter<>(
 										context,
 										R.layout.spinner_item,
 										list);
@@ -498,8 +328,8 @@ public class VisitReachActivity extends BaseActivity {
 									@Override
 									public void onItemSelected(AdapterView<?> parent, View view,
 															   int position, long id) {
-										iclass = parent.getItemAtPosition(position).toString();
-										getListView();
+										customerType = parent.getItemAtPosition(position).toString();
+//										getListView();
 									}
 
 									@Override
@@ -508,20 +338,18 @@ public class VisitReachActivity extends BaseActivity {
 										// 在官方的文档上说明，为back的时候触发，但是无效，可能需要特定的场景
 									}
 								});
-								examineUrl = dataJson.getString("checkbz");// 检查的网址
-								ifExamine = dataJson.getString("checkflag");// 是否检查，0不检查，1检查,2不弹web
+//								examineUrl = dataJson.getString("checkbz");// 检查的网址
+//								ifExamine = dataJson.getString("checkflag");// 是否检查，0不检查，1检查,2不弹web
 							}
 //							ToastUtil.toast(context,msg);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
-
 				});
 	}
 
-	private void visitServer(String customerType, String customer, String person, String aim,
-			String longitude, String latitude, String location) {
+	private void visitServer(String customerType, String customer, String person, String aim, String location) {
 
 		String httpUrl = User.mainurl + "sf/startvisit_save";
 		
@@ -534,7 +362,7 @@ public class VisitReachActivity extends BaseActivity {
 		parameters_userInfo.put("visitperson", Escape.escape(person));
 		parameters_userInfo.put("visitgoal", Escape.escape(aim));
 		parameters_userInfo.put("addr", Escape.escape(location));
-		parameters_userInfo.put("jd", longitude);
+		parameters_userInfo.put("jd", longtitude);
 		parameters_userInfo.put("wd", latitude);
 		parameters_userInfo.put("ccuscode", customerCode);
 		parameters_userInfo.put("type", Escape.escape(customerType));
@@ -546,7 +374,7 @@ public class VisitReachActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code == 0) {
 								ToastUtil.toast(context, "到达现场数据上传成功");
@@ -594,7 +422,7 @@ public class VisitReachActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							JSONObject obj = dataJson.getJSONObject("result");
 							addr = obj.getString("formatted_address");
 						} catch (Exception e) {
@@ -605,18 +433,11 @@ public class VisitReachActivity extends BaseActivity {
 
 	}
 
-	/**
-	 * 根据选择的类别来进行分类
-	 */
-	private void getListView() {
-		if (iclass.equals("集团类")) {
-			getCustomerTxt.setVisibility(View.GONE);
-			insideLl.setVisibility(View.GONE);
-			customerEdit.setHint("请输入");
-		} else if (iclass.equals("渠道类")) {
-			getCustomerTxt.setVisibility(View.VISIBLE);
-			insideLl.setVisibility(View.VISIBLE);
-			customerEdit.setHint("请输入关键字搜索");
-		}
-	}
+//	private void getListView() {
+//		if (customerType.equals("集团类")) {
+//			getCustomerTxt.setVisibility(View.GONE);
+//		} else if (customerType.equals("渠道类")) {
+//			getCustomerTxt.setVisibility(View.VISIBLE);
+//		}
+//	}
 }

@@ -193,7 +193,7 @@ public class GetInfo {
             note.setPlan(obj.getString("plan"));
             note.setDate(obj.getString("writeTime"));
 
-            JSONObject object = obj.getJSONObject("activity_map");
+            JSONObject object = obj.getJSONObject("map");
             JSONArray arrayFinish = object.getJSONArray("finish");
             ArrayList<NoteQuery> noteQueries = new ArrayList<>();
             for (int j = 0; j < arrayFinish.length(); j++) {

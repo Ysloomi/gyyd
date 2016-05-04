@@ -13,8 +13,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.LocationClient;
 import com.beessoft.dyyd.BaseActivity;
@@ -44,8 +45,16 @@ import java.io.File;
 public class VisitLeaveActivity extends BaseActivity implements View.OnClickListener {
 
     private LocationClient mLocationClient;
+
+    private LinearLayout typeLl;
+    private LinearLayout questionLl;
+
     private TextView customerText, personText, aimText, addrText, reachTimeTxt, reachLocationText;
+
+    private Spinner typeSpn ;
     private EditText resultEdit;
+    private EditText questionEdit;
+
     private String customer, person, aim, location, result, type;
     public static final int PHOTO_CODE = 5;
     // 创建Bitmap对象
@@ -80,37 +89,11 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             }
         }
     };
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.visit_actions, menu);
-//		return super.onCreateOptionsMenu(menu);
-//	}
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		Intent intent = new Intent();
-//		switch (item.getItemId()) {
-//		case android.R.id.home:
-//			finish();
-//			return true;
-//		case R.id.action_material:
-//			intent.setClass(VisitLeaveActivity.this, WorkBookActivity.class);
-//			startActivity(intent);
-//			return true;
-//		case R.id.action_target:
-//			intent.setClass(VisitLeaveActivity.this, BranchTargetActivity.class);
-//			startActivity(intent);
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visitleave);
+        setContentView(R.layout.activity_leave);
         if (savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))) {
 //			Log.i(TAG, "拍摄异常，获取原来的shot_path");
             Logger.e("拍摄异常，获取原来的shot_path");
@@ -122,16 +105,15 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
         initView();
 
-        // 获取已拜访客户信息
-        visitServe_GetInfo();
-
-        reachTimeTxt.setText("到达时间:" + PreferenceUtil.readString(context, "reachTime"));
-
-        getAddrLocation();
-
         if (Gps.exist(VisitLeaveActivity.this, "distance.db")) {
             Gps.GPS_do(mLocationClient, 8000);
         }
+        getAddrLocation();
+        // 获取已拜访客户信息
+        getInfo();
+
+        reachTimeTxt.setText("到达时间:" + PreferenceUtil.readString(context, "reachTime"));
+
         String a = PreferenceUtil.readString(context, "result");
         if (!"".equals(a)) {
             resultEdit.setText(a);
@@ -141,6 +123,10 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     public void initView() {
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
+
+        typeLl = (LinearLayout) findViewById(R.id.ll_question_type);
+        questionLl = (LinearLayout) findViewById(R.id.ll_question_type);
+
         customerText = (TextView) findViewById(R.id.visitleave_customer);
         personText = (TextView) findViewById(R.id.visitleave_person);
         aimText = (TextView) findViewById(R.id.visitleave_aim);
@@ -149,17 +135,18 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         reachLocationText = (TextView) findViewById(R.id.reachlocation_text);
 
         resultEdit = (EditText) findViewById(R.id.visitleave_result);
+        questionEdit = (EditText) findViewById(R.id.edt_question);
+
         photoImage = (ImageView) findViewById(R.id.img_photo);
 
         photoImage.setOnClickListener(this);
-        findViewById(R.id.img_preserve).setOnClickListener(this);
-        findViewById(R.id.img_take_photo).setOnClickListener(this);
-        findViewById(R.id.img_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_preserve).setOnClickListener(this);
+        findViewById(R.id.txt_take_photo).setOnClickListener(this);
+        findViewById(R.id.txt_refresh).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
     }
 
     public void getAddrLocation() {
-
         mThread = new Thread(runnable);
         if (Gps.exist(VisitLeaveActivity.this, "distance.db")) {
             addrText.setText("正在定位...");
@@ -168,11 +155,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             longitude = Gps.getJd(distanceHelper);
             latitude = Gps.getWd(distanceHelper);
             type = Gps.getType(distanceHelper);
-
-            visitServer_getaddr(longitude, latitude);
-
+            getAddr(longitude, latitude);
             mThread.start();// 线程启动
-
             distanceHelper.close();
         } else {
             addrText.setText("正在定位...");
@@ -207,7 +191,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 latitude = myApp.getwd();
                 type = myApp.getType();
                 if (addr == null) {
-                    visitServer_getaddr(longitude, latitude);
+                    getAddr(longitude, latitude);
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -223,7 +207,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 }
             } else {
                 if (addr == null) {
-                    mHandler.obtainMessage(MSG_FAILURE).sendToTarget();// 获取图片失败
+                    mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
                 } else {
                     mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
                 }
@@ -231,13 +215,15 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         }
     };
 
-    private void visitServe_GetInfo() {
+    private void getInfo() {
+
         String httpUrl = User.mainurl + "sf/offvisit";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -260,7 +246,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 //								String text2= text1+"\n";
 //								int textLength = text2.length();
 //								resultEdit.setSelection(textLength, textLength);
-
                                 startid = obj.getString("startid");
                             }
                         } catch (Exception e) {
@@ -294,23 +279,18 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
-
                         try {
-                            JSONObject dataJson = new JSONObject(Escape
-                                    .unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
                             if (code == 0) {
-                                Toast.makeText(VisitLeaveActivity.this,
-                                        "离开现场数据上报成功", Toast.LENGTH_SHORT)
-                                        .show();
                                 PreferenceUtil.write(context, "result", "");
+                                ToastUtil.toast(context,"离开现场数据上报成功");
                                 finish();
                             } else if (code == 1) {
                                 ToastUtil.toast(context, "已提交，请勿重复提交");
                             } else {
                                 ToastUtil.toast(context, "请重新提交");
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
@@ -327,6 +307,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     }
 
     public void takePhoto() {
+        imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
         // 必须确保文件夹路径存在，否则拍照后无法完成回调
         File vFile = new File(imgPath);
         if (!vFile.exists()) {
@@ -362,7 +343,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    public void visitServer_getaddr(String longitude, String latitude) {
+    public void getAddr(String longitude, String latitude) {
         String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
@@ -406,7 +387,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_preserve:
+            case R.id.txt_preserve:
                 result = resultEdit.getText().toString();
                 PreferenceUtil.write(context, "result", result);
                 ToastUtil.toast(context, "保存成功");
@@ -416,15 +397,14 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                     PhotoHelper.openPictureDialog(context, imgPath);
                 }
                 break;
-            case R.id.img_take_photo:
+            case R.id.txt_take_photo:
                 if (Tools.isSDCardExit()) {
-                    imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
                     takePhoto();
                 } else {
                     ToastUtil.toast(context, "内存卡不存在不能拍照");
                 }
                 break;
-            case R.id.img_refresh:
+            case R.id.txt_refresh:
                 getAddrLocation();
                 break;
             case R.id.btn_submit:
@@ -439,8 +419,12 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                         || TextUtils.isEmpty(location.trim())) {
                     ToastUtil.toast(context, "数据不能为空");
                 } else {
-                    ProgressDialogUtil.showProgressDialog(context);
-                    visitServer();
+                    if (!"正在定位...".equals(location)) {
+                        ProgressDialogUtil.showProgressDialog(context);
+                        visitServer();
+                    } else {
+                        ToastUtil.toast(context,"请等待位置刷新");
+                    }
                 }
                 break;
         }

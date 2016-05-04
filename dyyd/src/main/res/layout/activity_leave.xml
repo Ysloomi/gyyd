@@ -60,30 +60,50 @@
 
                 <EditText
                     android:id="@+id/visitleave_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/TextView01"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
+                    style="@style/MyText"
                     android:layout_toRightOf="@+id/TextView01"
                     android:background="@drawable/bigtext_bg"
                     android:gravity="top"
                     android:hint="请填写沟通的主要内容，发现的问题，取得的效果等。要和拜访目的有一定的对应性。"
-                    android:maxLines="6"
                     android:paddingLeft="2dp"
-                    android:scrollbars="vertical"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
+                    android:scrollbars="vertical" />
 
-                <ImageView
-                    android:id="@+id/img_preserve"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/visitleave_result"
-                    android:scaleType="matrix"
-                    android:src="@drawable/preserve_button" />
+                <TextView
+                    android:id="@+id/txt_preserve"
+                    style="@style/TapText"
+                    android:text="保存"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
             </RelativeLayout>
+
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_question_type"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="问题类型" />
+
+                <Spinner
+                    android:id="@+id/spn_type"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_question"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="问题反馈" />
+
+                <EditText
+                    android:id="@+id/edt_question"
+                    style="@style/MyText" />
+
+            </LinearLayout>
 
             <RelativeLayout style="@style/TextOutLayout">
 
@@ -101,37 +121,30 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter" />
 
-                <ImageView
-                    android:id="@+id/img_take_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/txt_take_photo"
+                    style="@style/TapText"
                     android:layout_alignParentRight="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/photo_button" />
+                    android:text="照相" />
+
             </RelativeLayout>
 
-            <RelativeLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
-                    android:id="@+id/textView5"
                     style="@style/MyTitle"
                     android:text="当前位置" />
 
                 <TextView
                     android:id="@+id/location_text"
-                    style="@style/MyText"
-                    android:layout_toRightOf="@+id/textView5" />
+                    style="@style/MyText" />
 
+                <TextView
+                    android:id="@+id/txt_refresh"
+                    style="@style/TapText"
+                    android:text="刷新" />
 
-                <ImageView
-                    android:id="@+id/img_refresh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/refresh_button" />
-
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">
 
@@ -144,6 +157,7 @@
                     style="@style/MyText" />
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

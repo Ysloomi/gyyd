@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.beessoft.dyyd.pulltorefresh.RefreshTime;
 import com.beessoft.dyyd.swipemenulistview.SwipeMenu;
 import com.beessoft.dyyd.swipemenulistview.SwipeMenuCreator;
 import com.beessoft.dyyd.swipemenulistview.SwipeMenuHelper;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -362,7 +364,7 @@ public class NoteActivity extends BaseActivity
                         .get(Calendar.DAY_OF_MONTH)).show();
                 break;
             case R.id.edt_end:
-                new DatePickerDialog(context,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
@@ -379,7 +381,15 @@ public class NoteActivity extends BaseActivity
                                 endEdit.setText(yearStr + "-" + month + "-" + day);
                             }
                         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-                        .get(Calendar.DAY_OF_MONTH)).show();
+                        .get(Calendar.DAY_OF_MONTH));
+                start = startEdit.getText().toString();
+                if (!TextUtils.isEmpty(start)){
+                    long timeInMillisSinceEpoch = DateUtil.getTimeInMillisSinceEpoch(start);
+                    datePickerDialog.getDatePicker().setMinDate(timeInMillisSinceEpoch);
+                    datePickerDialog.show();
+                }else{
+                    ToastUtil.toast(context,"请先选择开始日期");
+                }
                 break;
             case R.id.txt_search:
                 start = startEdit.getText().toString();

@@ -192,7 +192,7 @@ public class NoteAddrActivity extends BaseActivity
         mListView.setAdapter(noteAddrAdapter);
 
         List<String> lists = new ArrayList<>();
-        lists.add("集团客户");
+        lists.add("政企单位");
         lists.add("渠道商家");
         lists.add("公司部门");
         Tools.reloadSpinner(context,typeSp,lists);

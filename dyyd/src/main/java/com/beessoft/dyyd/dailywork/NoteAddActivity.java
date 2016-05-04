@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Note;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -127,7 +129,7 @@ public class NoteAddActivity extends BaseActivity
                         .get(Calendar.DAY_OF_MONTH)).show();
                 break;
             case R.id.edt_end:
-                new DatePickerDialog(context,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
@@ -144,7 +146,15 @@ public class NoteAddActivity extends BaseActivity
                                 endEdit.setText(yearStr + "-" + month + "-" + day);
                             }
                         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-                        .get(Calendar.DAY_OF_MONTH)).show();
+                        .get(Calendar.DAY_OF_MONTH));
+                String start1 = startEdit.getText().toString();
+                if (!TextUtils.isEmpty(start1)){
+                    long timeInMillisSinceEpoch = DateUtil.getTimeInMillisSinceEpoch(start1);
+                    datePickerDialog.getDatePicker().setMinDate(timeInMillisSinceEpoch);
+                    datePickerDialog.show();
+                }else{
+                    ToastUtil.toast(context,"请先选择开始日期");
+                }
                 break;
             case R.id.txt_addr:
                 Intent intent = new Intent();
@@ -237,5 +247,4 @@ public class NoteAddActivity extends BaseActivity
                     }
                 });
     }
-
 }

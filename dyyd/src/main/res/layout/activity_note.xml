@@ -13,7 +13,7 @@
 
         <TextView
             style="@style/MyTitle"
-            android:text="日期:" />
+            android:text="日期" />
 
         <EditText
             android:id="@+id/edt_start"

@@ -165,12 +165,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
 //        });
     }
 
-//	@Override
-//	public void onResume() {
-//		visitServer(getActivity());
-//		super.onResume();
-//	}
-
     private void visitServer(final Context context) {
         String httpUrl = User.mainurl + "sf/notice";
         String mac = GetInfo.getIMEI(getActivity());
