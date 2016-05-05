@@ -61,11 +61,8 @@
         android:drawableTop="@drawable/collect"
         android:text="考勤点采集"
         android:textColor="#4db0f6"
-        android:textSize="14sp"
-        android:layout_below="@+id/checkout_button"
-        android:layout_marginTop="35dp"
-        android:layout_alignLeft="@+id/checkout_button"
-        android:layout_alignStart="@+id/checkout_button" />
+        android:layout_alignTop="@+id/askleave_button"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/leave_button"

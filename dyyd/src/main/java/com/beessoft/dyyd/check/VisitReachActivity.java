@@ -26,6 +26,7 @@ import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -170,11 +171,13 @@ public class VisitReachActivity extends BaseActivity {
 								|| TextUtils.isEmpty(aim.trim())
 								|| TextUtils.isEmpty(location.trim())) {
 							ToastUtil.toast(context, "数据不能为空");
+						} else if("正在定位...".equals(location)){
+							ToastUtil.toast(context, "请等待位置刷新");
 						} else {
-							if (!Tools.isEmpty(leavetype)&&!"正在定位...".equals(location)) {
+							if ("渠道类".equals(customerType)&&Tools.isEmpty(leavetype)){
+								ToastUtil.toast(context,"请重新选择客户，等待有效范围的判定");
+							}else{
 								confirmInfo();
-							} else {
-								ToastUtil.toast(context, "请重新选择客户，等待有效范围的判定");
 							}
 						}
 					}
@@ -307,6 +310,8 @@ public class VisitReachActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+
+		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

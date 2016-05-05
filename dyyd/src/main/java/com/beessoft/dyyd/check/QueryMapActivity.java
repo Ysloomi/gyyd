@@ -33,7 +33,7 @@ public class QueryMapActivity extends BaseActivity {
 		jd = intent.getStringExtra("jd");
 		wd = intent.getStringExtra("wd");
 		username = intent.getStringExtra("username");
-//		System.out.println("jd:"+jd+"wd:"+wd);
+
 		// 获取地图控件引用
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		mBaiduMap = mMapView.getMap();

@@ -138,10 +138,12 @@ public class CollectActivity extends BaseActivity {
 		
 		photoImage = (ImageView) findViewById(R.id.photo_image);
 		photoImage.setOnClickListener(clickListener);
-		
-		findViewById(R.id.refresh_iv).setOnClickListener(clickListener);
-		findViewById(R.id.photo_photo).setOnClickListener(clickListener);
-		findViewById(R.id.photo_confirm).setOnClickListener(clickListener);
+
+
+		findViewById(R.id.txt_refresh).setOnClickListener(clickListener);
+		findViewById(R.id.txt_take_photo).setOnClickListener(clickListener);
+		findViewById(R.id.txt_get_customer).setOnClickListener(clickListener);
+		findViewById(R.id.btn_submit).setOnClickListener(clickListener);
 	}
 	
 	OnClickListener clickListener = new OnClickListener() 
@@ -150,44 +152,37 @@ public class CollectActivity extends BaseActivity {
 		public void onClick(View v) 
 		{
 			switch (v.getId()) {
-			case R.id.refresh_iv:
-				getAddrLocation();
-				break;
-			case R.id.photo_photo:
-				if (Tools.isSDCardExit()) {
-					takePhoto();
-				} else {
-					ToastUtil.toast(context, "内存卡不存在不能拍照");
-				}
-				break;
-			case R.id.photo_confirm:
-				addr = addrText.getText().toString();
-				if (uploadBuffer == null)
-				{
-					ToastUtil.toast(context, "请先照相再上传");
-				}
-				else if (Tools.isEmpty(shopId))
-				{
-					ToastUtil.toast(context, "请选择到营业厅");
-				}
-				else if("Gps".equals(type) || "Wifi".equals(type))
-				{
-					ProgressDialogUtil.showProgressDialog(context);
-					visitServer();
-				}
-				else 
-				{
-					ToastUtil.toast(context, "请刷新位置信息到Gps或Wifi再提交");
-				}
-				break;
-			case R.id.photo_image:	
-				if(!Tools.isEmpty(imgPath))
-				{
-					PhotoHelper.openPictureDialog(CollectActivity.this,imgPath);
-				}
-				break;
-			default:
-				break;
+				case R.id.txt_refresh:
+					getAddrLocation();
+					break;
+				case R.id.txt_take_photo:
+					if (Tools.isSDCardExit()) {
+						takePhoto();
+					} else {
+						ToastUtil.toast(context, "内存卡不存在不能拍照");
+					}
+					break;
+				case R.id.btn_submit:
+					addr = addrText.getText().toString();
+					if (TextUtils.isEmpty(uploadBuffer)) {
+						ToastUtil.toast(context, "请先照相再上传");
+					} else if (Tools.isEmpty(shopId)) {
+						ToastUtil.toast(context, "请选择");
+					} else if ("Gps".equals(type) || "Wifi".equals(type)) {
+						ProgressDialogUtil.showProgressDialog(context);
+						visitServer();
+					} else {
+						ToastUtil.toast(context, "请刷新位置信息到Gps或Wifi再提交");
+					}
+					break;
+				case R.id.photo_image:
+					String imagePath = Tools.getSDPath() + "/dyyd/photo.jpg";
+					if (!Tools.isEmpty(imagePath)) {
+						PhotoHelper.openPictureDialog(CollectActivity.this, imagePath);
+					}
+					break;
+				default:
+					break;
 			}
 		}
 	};
@@ -546,7 +541,7 @@ public class CollectActivity extends BaseActivity {
 	}
 
 	public void visitServer_getaddr(Context context, String longitude,
-			String latitude) {
+									String latitude) {
 		String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
@@ -568,8 +563,7 @@ public class CollectActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							JSONObject obj = dataJson.getJSONObject("result");
 							addr = obj.getString("formatted_address");
 						} catch (Exception e) {
