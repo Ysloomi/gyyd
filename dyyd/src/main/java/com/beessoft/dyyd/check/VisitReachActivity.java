@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -54,11 +55,13 @@ public class VisitReachActivity extends BaseActivity {
 
 	private TextView addrText;
 	private TextView insideText;
-	private TextView getCustomerTxt;
-
 	private EditText customerEdit;
 	private EditText personEdit;
 	private EditText aimEdit;
+
+	private TextView getCustomerTxt;
+
+	private LinearLayout insideLl;
 
 	private Thread mThread;
 	private Spinner typeSpinner;
@@ -115,6 +118,7 @@ public class VisitReachActivity extends BaseActivity {
 
 	public void initView() {
 
+		insideLl = (LinearLayout) findViewById(R.id.inside_ll);
 		addrText = (TextView) findViewById(R.id.location_text);
 		insideText = (TextView) findViewById(R.id.inside_tv);
 		getCustomerTxt = (TextView) findViewById(R.id.txt_get_customer);
@@ -329,7 +333,7 @@ public class VisitReachActivity extends BaseActivity {
 									public void onItemSelected(AdapterView<?> parent, View view,
 															   int position, long id) {
 										customerType = parent.getItemAtPosition(position).toString();
-//										getListView();
+										getListView();
 									}
 
 									@Override
@@ -405,7 +409,7 @@ public class VisitReachActivity extends BaseActivity {
 	}
 
 	public void visitServer_getaddr(String longitude,String latitude) {
-		String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
+		String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -433,11 +437,15 @@ public class VisitReachActivity extends BaseActivity {
 
 	}
 
-//	private void getListView() {
-//		if (customerType.equals("集团类")) {
-//			getCustomerTxt.setVisibility(View.GONE);
-//		} else if (customerType.equals("渠道类")) {
-//			getCustomerTxt.setVisibility(View.VISIBLE);
-//		}
-//	}
+	private void getListView() {
+		if (customerType.equals("集团类")) {
+			getCustomerTxt.setVisibility(View.GONE);
+			insideLl.setVisibility(View.GONE);
+			customerEdit.setHint("请输入");
+		} else if (customerType.equals("渠道类")) {
+			getCustomerTxt.setVisibility(View.VISIBLE);
+			insideLl.setVisibility(View.VISIBLE);
+			customerEdit.setHint("请输入关键字搜索");
+		}
+	}
 }

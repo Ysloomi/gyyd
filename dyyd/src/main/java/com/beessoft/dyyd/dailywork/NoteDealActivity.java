@@ -478,7 +478,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void visitServer_getaddr(String longitude, String latitude) {
-        String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
+        String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
