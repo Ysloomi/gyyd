@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.baidu.location.LocationClient;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -146,6 +147,7 @@ public class LoginActivity extends Activity {
 		parameters_userInfo.put("version", User.getVersionCode(context)+"");
 
 //		Logger.e(httpUrl+"?"+parameters_userInfo);
+
 		client_request.get(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override

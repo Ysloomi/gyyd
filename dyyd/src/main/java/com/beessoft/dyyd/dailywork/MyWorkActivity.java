@@ -95,8 +95,7 @@ public class MyWorkActivity extends BaseActivity {
 										AdapterView<?> parent, View view,
 										int position, long id) {
 									ListView listView = (ListView) parent;
-									HashMap<String, String> map = (HashMap<String, String>) listView
-											.getItemAtPosition(position);
+									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
 									Intent intent = new Intent();
 									name = map.get("name");
 									if ("渠道拜访".equals(name)) {

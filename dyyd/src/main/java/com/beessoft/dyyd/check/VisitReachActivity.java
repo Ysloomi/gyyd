@@ -136,11 +136,17 @@ public class VisitReachActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()){
 				case R.id.txt_get_customer:
-					customer = customerEdit.getText().toString();
-					Intent intent = new Intent();
-					intent.setClass(context,CustomerActivity.class);
-					intent.putExtra("name",customer);
-					startActivityForResult(intent,GET_CUSTOMER);
+					if (TextUtils.isEmpty(customerType)||customerType.equals("请选择")) {
+						ToastUtil.toast(context, "请选择客户类别");
+					} else {
+						customer = customerEdit.getText().toString();
+						String a = "政企单位".equals(customerType)?"1":"";
+						Intent intent = new Intent();
+						intent.setClass(context, CustomerActivity.class);
+						intent.putExtra("name", customer);
+						intent.putExtra("type", a);
+						startActivityForResult(intent, GET_CUSTOMER);
+					}
 					break;
 				case R.id.txt_preserve:
 					aim = aimEdit.getText().toString();
@@ -157,14 +163,12 @@ public class VisitReachActivity extends BaseActivity {
 					aim = aimEdit.getText().toString();
 					location = addrText.getText().toString();
 					examineResultString = "";
-					if (customerType.equals("请选择")) {
+					if (TextUtils.isEmpty(customerType)||customerType.equals("请选择")) {
 						ToastUtil.toast(context, "请选择客户类别");
 					} else {
-						if (TextUtils.isEmpty(customerType.trim()) ||
-								TextUtils.isEmpty(customer.trim())
+						if (TextUtils.isEmpty(customer.trim())
 								|| TextUtils.isEmpty(person.trim())
-								|| TextUtils.isEmpty(aim.trim())
-								|| TextUtils.isEmpty(location.trim())) {
+								|| TextUtils.isEmpty(aim.trim())) {
 							ToastUtil.toast(context, "数据不能为空");
 						} else {
 							if (!Tools.isEmpty(leavetype)&&!"正在定位...".equals(location)) {
@@ -268,7 +272,7 @@ public class VisitReachActivity extends BaseActivity {
 				longtitude = myApp.getjd();
 				latitude = myApp.getwd();
 				type = myApp.getType();
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					visitServer_getaddr(longtitude,latitude);
 					try {
 						Thread.sleep(3000);
@@ -278,13 +282,13 @@ public class VisitReachActivity extends BaseActivity {
 				}
 				// 未签到时，关闭location服务
 				mLocationClient.stop();
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 				} else {
 					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 				}
 			} else {
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 				} else {
 					// 向ui线程发送MSG_SUCCESS标识

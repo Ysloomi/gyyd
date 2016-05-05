@@ -11,6 +11,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -41,6 +43,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VisitLeaveActivity extends BaseActivity implements View.OnClickListener {
 
@@ -55,17 +59,19 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     private EditText resultEdit;
     private EditText questionEdit;
 
-    private String customer, person, aim, location, result, type;
+    private String customer,result, type;
+    private String customerType;
+    private String questionType;
+    private String customerCode = "";
+    private String longitude, latitude, addr;
+    private String startid;
+
     public static final int PHOTO_CODE = 5;
     // 创建Bitmap对象
     private Bitmap bitmap;
     private String uploadBuffer = null;
-    private String startid;
     private ImageView photoImage;
     private String imgPath = "";
-    private String customerCode = "";
-
-    private String longitude, latitude, addr;
 
     private Thread mThread;
 
@@ -125,7 +131,9 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
         typeLl = (LinearLayout) findViewById(R.id.ll_question_type);
-        questionLl = (LinearLayout) findViewById(R.id.ll_question_type);
+        questionLl = (LinearLayout) findViewById(R.id.ll_question);
+
+        typeSpn = (Spinner) findViewById(R.id.spn_type);
 
         customerText = (TextView) findViewById(R.id.visitleave_customer);
         personText = (TextView) findViewById(R.id.visitleave_person);
@@ -225,28 +233,58 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
 
+        Logger.e(httpUrl+"?"+parameters_userInfo);
+
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
                             if (code == 0) {
+                                startid = dataJson.getString("startid");
+                                customerText.setText(dataJson.getString("ccusname"));
+                                personText.setText(dataJson.getString("visitperson"));
+                                aimText.setText(dataJson.getString("visitgoal"));
+                                reachLocationText.setText(dataJson.getString("siadd"));
+                                customerCode = dataJson.getString("ccuscode");
+                                customerType = dataJson.getString("custype");
+                                if ("政企单位".equals(customerType)){
+                                    typeLl.setVisibility(View.VISIBLE);
+                                    questionLl.setVisibility(View.VISIBLE);
+                                }
                                 JSONArray array = dataJson.getJSONArray("list");
-                                JSONObject obj = array.getJSONObject(0);
-                                customerText.setText(obj.getString("ccusname"));
-                                personText.setText(obj.getString("visitperson"));
-                                aimText.setText(obj.getString("visitgoal"));
-                                reachLocationText.setText(obj.getString("siadd"));
-                                customerCode = obj.getString("ccuscode");
+                                List<String> list = new ArrayList<>();
+                                for (int j = 0; j < array.length(); j++) {
+                                    JSONObject obj = array.getJSONObject(j);
+                                    list.add(obj.getString("type"));
+                                }
+                                ArrayAdapter<String> adapterType = new ArrayAdapter<>(
+                                        context,
+                                        R.layout.spinner_item,
+                                        list);
+                                typeSpn.setAdapter(adapterType);
+                                typeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view,
+                                                               int position, long id) {
+                                        questionType = parent.getItemAtPosition(position).toString();
+//										getListView();
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+                                        // 这个一直没有触发，我也不知道什么时候被触发。
+                                        // 在官方的文档上说明，为back的时候触发，但是无效，可能需要特定的场景
+                                    }
+                                });
 //								//将光标移到最后
 //								String text1= obj.getString("checkresult");
 //								resultEdit.setText(text1 + "\n");
 //								String text2= text1+"\n";
 //								int textLength = text2.length();
 //								resultEdit.setSelection(textLength, textLength);
-                                startid = obj.getString("startid");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -255,7 +293,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-    private void visitServer() {
+    private void visitServer(String person,String aim,String location,String question) {
 
         String httpUrl = User.mainurl + "sf/offvisit_save";
 
@@ -274,6 +312,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("image", uploadBuffer);
         parameters_userInfo.put("startid", startid);
         parameters_userInfo.put("ccuscode", customerCode);
+        parameters_userInfo.put("question",  Escape.escape(question));
+        parameters_userInfo.put("questiontype", questionType);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -361,8 +401,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape
-                                    .unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             JSONObject obj = dataJson.getJSONObject("result");
                             addr = obj.getString("formatted_address");
                         } catch (Exception e) {
@@ -409,22 +448,30 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.btn_submit:
                 customer = customerText.getText().toString();
-                person = personText.getText().toString();
-                aim = aimText.getText().toString();
+                String person = personText.getText().toString();
+                String aim = aimText.getText().toString();
                 result = resultEdit.getText().toString();
-                location = addrText.getText().toString();
-                if (uploadBuffer == null) {
+                String location = addrText.getText().toString();
+                String question = questionEdit.getText().toString();
+                if (TextUtils.isEmpty(uploadBuffer)) {
                     ToastUtil.toast(context, "请先照相再上传");
-                } else if (TextUtils.isEmpty(result.trim())
-                        || TextUtils.isEmpty(location.trim())) {
+                } else if (TextUtils.isEmpty(result.trim())) {
                     ToastUtil.toast(context, "数据不能为空");
+                } else if ("正在定位...".equals(location)) {
+                    ToastUtil.toast(context, "请等待位置刷新");
                 } else {
-                    if (!"正在定位...".equals(location)) {
+                    if (!"请选择".equals(questionType)){
+                        if (TextUtils.isEmpty(question.trim())) {
+                            ToastUtil.toast(context, "请填写问题");
+                        }else {
+                            ProgressDialogUtil.showProgressDialog(context);
+                            visitServer(person,aim,location,question);
+                        }
+                    }else{
                         ProgressDialogUtil.showProgressDialog(context);
-                        visitServer();
-                    } else {
-                        ToastUtil.toast(context,"请等待位置刷新");
+                        visitServer(person,aim,location,question);
                     }
+
                 }
                 break;
         }

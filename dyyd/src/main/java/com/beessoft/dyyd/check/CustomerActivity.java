@@ -11,6 +11,7 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -40,20 +41,21 @@ public class CustomerActivity extends BaseActivity {
         mac = GetInfo.getIMEI(context);
         username = GetInfo.getUserName(context);
 
-        datas = new ArrayList<String>();
+        datas = new ArrayList<>();
         latlngs = new ArrayList<>();
         String name = getIntent().getStringExtra("name");
+        String type = getIntent().getStringExtra("type");
         initView();
 
         ProgressDialogUtil.showProgressDialog(context);
-        visitServer(name);
+        visitServer(name,type);
     }
 
     private void initView() {
         listView = (ListView) findViewById(R.id.list_view);
     }
 
-    private void visitServer(String name) {
+    private void visitServer(String name,String type) {
 
         String httpUrl = User.mainurl + "sf/GetCustomer";
 
@@ -63,15 +65,19 @@ public class CustomerActivity extends BaseActivity {
         parameters_userInfo.put("name", Escape.escape(name));
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("type", type);
+
+
+        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
-                            String code = dataJson.getString("code");
-                            if (code.equals("0")) {
+                            JSONObject dataJson = new JSONObject(response);
+                            int code = dataJson.getInt("code");
+                            if (code==0) {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject obj = array.getJSONObject(i);
@@ -103,7 +109,7 @@ public class CustomerActivity extends BaseActivity {
                                     }
                                 });
                             }else{
-                                ToastUtil.toast(context,"无内容");
+                                ToastUtil.toast(context,"无相应信息");
                                 finish();
                             }
                         } catch (Exception e) {
