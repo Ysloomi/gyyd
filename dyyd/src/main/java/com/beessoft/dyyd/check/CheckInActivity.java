@@ -374,8 +374,8 @@ public class CheckInActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
-                            Logger.e(dataJson.toString());
+                            JSONObject dataJson = new JSONObject(response);
+//                            Logger.e(dataJson.toString());
                             String codeA = dataJson.getString("code");
                             if (codeA.equals("0")) {
                                 ifInsideText.setText("是");
@@ -389,7 +389,6 @@ public class CheckInActivity extends BaseActivity {
                                 ifInsideText.setText("否");
                                 code = 1;
                                 JSONArray array = dataJson.getJSONArray("list");
-
                                 List<String> list = new ArrayList<String>();
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
@@ -485,8 +484,7 @@ public class CheckInActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape
-                                    .unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             String code = dataJson.getString("code");
                             if (code.equals("0")) {
                                 // 删除distance.db数据库
@@ -534,6 +532,7 @@ public class CheckInActivity extends BaseActivity {
 
 
     public void visitServer_getaddr() {
+
         String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
@@ -551,7 +550,7 @@ public class CheckInActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             JSONObject obj = dataJson.getJSONObject("result");
                             addr = obj.getString("formatted_address");
                         } catch (Exception e) {
