@@ -62,9 +62,12 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     private String customer,result, type;
     private String customerType;
     private String questionType;
+    private String questionTypeCode;
     private String customerCode = "";
     private String longitude, latitude, addr;
     private String startid;
+
+    private List<String> questionCodes  = new ArrayList<>();
 
     public static final int PHOTO_CODE = 5;
     // 创建Bitmap对象
@@ -242,34 +245,46 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
+                            questionCodes.clear();;
                             if (code == 0) {
-                                startid = dataJson.getString("startid");
-                                customerText.setText(dataJson.getString("ccusname"));
-                                personText.setText(dataJson.getString("visitperson"));
-                                aimText.setText(dataJson.getString("visitgoal"));
-                                reachLocationText.setText(dataJson.getString("siadd"));
-                                customerCode = dataJson.getString("ccuscode");
-                                customerType = dataJson.getString("custype");
+                                JSONArray array = dataJson.getJSONArray("list");
+                                JSONObject obj = array.getJSONObject(0);
+                                startid = obj.getString("startid");
+                                customerText.setText(obj.getString("ccusname"));
+                                personText.setText(obj.getString("visitperson"));
+                                aimText.setText(obj.getString("visitgoal"));
+                                reachLocationText.setText(obj.getString("siadd"));
+                                customerCode = obj.getString("ccuscode");
+                                customerType = obj.getString("custype");
                                 if ("政企单位".equals(customerType)){
                                     typeLl.setVisibility(View.VISIBLE);
                                     questionLl.setVisibility(View.VISIBLE);
                                 }
-                                JSONArray array = dataJson.getJSONArray("list");
-                                List<String> list = new ArrayList<>();
-                                for (int j = 0; j < array.length(); j++) {
-                                    JSONObject obj = array.getJSONObject(j);
-                                    list.add(obj.getString("type"));
+                                JSONArray arrayQuestin = dataJson.getJSONArray("qtlist");
+                                List<String> listQuestin  = new ArrayList<>();
+                                listQuestin.add("填写问题，请选择类型");
+                                questionCodes.add("100");
+                                for (int j = 0; j < arrayQuestin.length(); j++) {
+                                    JSONObject objQ = arrayQuestin.getJSONObject(j);
+                                    listQuestin.add(objQ.getString("qtname"));
+                                    questionCodes.add(objQ.getString("qtcode"));
                                 }
                                 ArrayAdapter<String> adapterType = new ArrayAdapter<>(
                                         context,
                                         R.layout.spinner_item,
-                                        list);
+                                        listQuestin);
                                 typeSpn.setAdapter(adapterType);
                                 typeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view,
                                                                int position, long id) {
-                                        questionType = parent.getItemAtPosition(position).toString();
+                                        if (position>0){
+                                            questionType = parent.getItemAtPosition(position).toString();
+                                            questionTypeCode = questionCodes.get(position);
+                                        }else{
+                                            questionType = "";
+                                            questionTypeCode = "";
+                                        }
 //										getListView();
                                     }
 
@@ -313,7 +328,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("startid", startid);
         parameters_userInfo.put("ccuscode", customerCode);
         parameters_userInfo.put("question",  Escape.escape(question));
-        parameters_userInfo.put("questiontype", questionType);
+        parameters_userInfo.put("questiontype", questionTypeCode);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -360,7 +375,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);//
         // 打开新的activity，这里是系统摄像头
         startActivityForResult(intent, PHOTO_CODE);
-
     }
 
     // 相机返回处理
@@ -384,7 +398,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     }
 
     public void getAddr(String longitude, String latitude) {
-        String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
+        String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
@@ -432,6 +446,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 ToastUtil.toast(context, "保存成功");
                 break;
             case R.id.img_photo:
+                String imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
                 if (!Tools.isEmpty(imgPath)) {
                     PhotoHelper.openPictureDialog(context, imgPath);
                 }
@@ -460,9 +475,9 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 } else if ("正在定位...".equals(location)) {
                     ToastUtil.toast(context, "请等待位置刷新");
                 } else {
-                    if (!"请选择".equals(questionType)){
-                        if (TextUtils.isEmpty(question.trim())) {
-                            ToastUtil.toast(context, "请填写问题");
+                    if (!TextUtils.isEmpty(question.trim())) {
+                        if (TextUtils.isEmpty(questionType)){
+                            ToastUtil.toast(context, "请选择问题类型");
                         }else {
                             ProgressDialogUtil.showProgressDialog(context);
                             visitServer(person,aim,location,question);
@@ -471,7 +486,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                         ProgressDialogUtil.showProgressDialog(context);
                         visitServer(person,aim,location,question);
                     }
-
                 }
                 break;
         }

@@ -166,7 +166,6 @@
         android:text="一线记事本"
         android:textColor="#4db0f6"
         android:layout_alignTop="@+id/worklocation_button"
-        android:layout_alignLeft="@+id/work_button"
-        android:layout_alignStart="@+id/work_button" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

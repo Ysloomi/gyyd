@@ -47,6 +47,7 @@ public class VisitReachActivity extends BaseActivity {
 	private String customer, person, aim,type,location,
 			customerType,examineResultString, longtitude, latitude,
 			addr;
+	private String from;
 	private String customerLat="";
 	private String customerLng="";
 	private String customerCode="";
@@ -95,6 +96,7 @@ public class VisitReachActivity extends BaseActivity {
 		username = GetInfo.getUserName(context);
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
+		from = getIntent().getStringExtra("from");
 
 		initView();
 
@@ -106,6 +108,12 @@ public class VisitReachActivity extends BaseActivity {
 
 		getCustomerType();
 		getAddrLocation();
+
+
+		if (!TextUtils.isEmpty(from)){
+			customer = getIntent().getStringExtra("name");
+			typeSpinner.setSelection(2,true);
+		}
 
 		String a = PreferenceUtil.readString(context,"aim");
 		if (!"".equals(a)) {
@@ -207,6 +215,9 @@ public class VisitReachActivity extends BaseActivity {
 						ToastUtil.toast(context,"请先等待获取位置信息");
 					}
 				}
+			}else {
+				leavetype = "未采集";
+				insideText.setText(leavetype);
 			}
 		}
 	}
@@ -409,7 +420,7 @@ public class VisitReachActivity extends BaseActivity {
 	}
 
 	public void visitServer_getaddr(String longitude,String latitude) {
-		String httpUrl = "http://api.activity_map.baidu.com/geocoder/v2/";
+		String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();

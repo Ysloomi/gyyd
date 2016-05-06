@@ -146,7 +146,7 @@ public class LoginActivity extends Activity {
 		parameters_userInfo.put("sim", IMSI);
 		parameters_userInfo.put("version", User.getVersionCode(context)+"");
 
-//		Logger.e(httpUrl+"?"+parameters_userInfo);
+		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.get(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

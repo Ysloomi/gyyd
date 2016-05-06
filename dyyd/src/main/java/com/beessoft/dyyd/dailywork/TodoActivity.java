@@ -1,11 +1,15 @@
 package com.beessoft.dyyd.dailywork;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.check.VisitReachActivity;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -24,7 +28,7 @@ import java.util.List;
 
 public class TodoActivity extends BaseActivity {
 
-    private String level;
+    private String from;
     public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
     private ListView listView;
     private SimpleAdapter simAdapter;
@@ -40,20 +44,21 @@ public class TodoActivity extends BaseActivity {
 
         listView = (ListView) findViewById(R.id.list_view);
 
-        level = getIntent().getStringExtra("level");
+        String step = getIntent().getStringExtra("step");
+        from = getIntent().getStringExtra("from");
 
         ProgressDialogUtil.showProgressDialog(context);
-        visitServer();
+        visitServer(step);
     }
 
-    private void visitServer() {
+    private void visitServer(String step) {
         String httpUrl = User.mainurl + "sf/mywork";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("ccus", Escape.escape(level));
+        parameters_userInfo.put("ccus", Escape.escape(step));
         parameters_userInfo.put("ishow", "0");
 
         client_request.post(httpUrl, parameters_userInfo,
@@ -63,6 +68,7 @@ public class TodoActivity extends BaseActivity {
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
+                            datas.clear();
                             if (code == 1) {
                                 ToastUtil.toast(context, "没有相关信息");
                             } else if (code == 0) {
@@ -76,20 +82,31 @@ public class TodoActivity extends BaseActivity {
                                     map.put("undo", "完成时长:" + obj.getString("undone"));
                                     datas.add(map);
                                 }
-                                simAdapter = new SimpleAdapter(
-                                        TodoActivity.this, datas,// 数据源
-                                        R.layout.item_todo,// 显示布局
-                                        new String[]{
-                                                "step", "name", "done",
-                                                "undo"},
-                                        new int[]{
-                                                R.id.step,
-                                                R.id.name,
-                                                R.id.do_proportion,
-                                                R.id.time_last});
-                                listView.setAdapter(simAdapter);
-                                listView.setOnItemClickListener(null);
                             }
+                            simAdapter = new SimpleAdapter(
+                                    TodoActivity.this, datas,// 数据源
+                                    R.layout.item_todo,// 显示布局
+                                    new String[]{
+                                            "step", "name", "done",
+                                            "undo"},
+                                    new int[]{
+                                            R.id.step,
+                                            R.id.name,
+                                            R.id.do_proportion,
+                                            R.id.time_last});
+                            listView.setAdapter(simAdapter);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    if ("unit".equals(from)){
+                                        String name = parent.getItemAtPosition(position).toString();
+                                        Intent intent = new Intent();
+                                        intent.setClass(context, VisitReachActivity.class);
+                                        intent.putExtra("name",name);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {

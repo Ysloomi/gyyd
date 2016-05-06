@@ -15,6 +15,7 @@ import com.beessoft.dyyd.DetailActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.update.UpdateManager;
 import com.beessoft.dyyd.utils.PreferenceUtil;
+import com.beessoft.dyyd.utils.User;
 
 public class MyMeansFragment extends Fragment {
 	private TextView unitTxt, departTxt, nameTxt, telTxt, macTxt, onlineTxt;
@@ -40,6 +41,7 @@ public class MyMeansFragment extends Fragment {
 		macTxt = (TextView) view.findViewById(R.id.mac_text);
 		onlineTxt = (TextView) view.findViewById(R.id.online_text);
 		updateBtn = (Button) view.findViewById(R.id.btn_update);
+		updateBtn.setText("在线升级   v"+ User.getVersionName(context));
 		updateBtn.setOnClickListener(onClickListener);
 
 		view.findViewById(R.id.btn_changepassword).setOnClickListener(onClickListener);

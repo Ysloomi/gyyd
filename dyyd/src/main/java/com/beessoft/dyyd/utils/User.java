@@ -20,7 +20,6 @@ public class User {
 
 	/**
 	 * 获取软件名称
-	 * 
 	 * @param context
 	 * @return
 	 */
@@ -37,7 +36,6 @@ public class User {
 
 	/**
 	 * 获取软件版本号
-	 * 
 	 * @param context
 	 * @return
 	 */
