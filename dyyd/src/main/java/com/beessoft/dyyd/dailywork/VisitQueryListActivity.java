@@ -9,7 +9,6 @@ import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -33,9 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VisitQueryListActivity extends BaseActivity {
+public class VisitQueryListActivity extends BaseActivity implements View.OnClickListener{
 
-	private Button button;
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 	private ListView listView;
 	private SimpleAdapter simAdapter;
@@ -48,11 +46,14 @@ public class VisitQueryListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_visitquerylist);
 
-		button = (Button) findViewById(R.id.visitquery_button);
-		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.visitquery_text);
+		context = VisitQueryListActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
+		autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_search);
 		listView = (ListView) findViewById(R.id.visitquery_list);
 
-		mac = GetInfo.getIMEI(VisitQueryListActivity.this);
+
 		GetJSON.visitServer_GetInfo_NoSpecial(VisitQueryListActivity.this, autoCompleteTextView, mac);
 		autoCompleteTextView.setHint("专业、姓名、分局");
 
@@ -68,22 +69,15 @@ public class VisitQueryListActivity extends BaseActivity {
 				return false;
 			}
 		});
-
-		button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				ProgressDialogUtil.showProgressDialog(context);
-				String level = autoCompleteTextView.getText().toString();
-				visitServer(level);
-				Tools.closeInput(VisitQueryListActivity.this, autoCompleteTextView);
-			}
-		});
 	}
 
-	// 访问服务器http post
 	private void visitServer(String level) {
+
 		String httpUrl = User.mainurl + "sf/visitlist";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("psn", Escape.escape(level));
 
@@ -114,16 +108,13 @@ public class VisitQueryListActivity extends BaseActivity {
 									R.layout.item_visitquerylist,// 显示布局
 									new String[] { "idate", "name" },
 									new int[] { R.id.date, R.id.person });
-							// simAdapter.setViewBinder(new MyViewBinder());
 							listView.setAdapter(simAdapter);
-							// 添加点击
 							listView.setOnItemClickListener(new OnItemClickListener() {
 								@SuppressWarnings("unchecked")
 								@Override
 								public void onItemClick(
 										AdapterView<?> parent, View view,
 										int position, long id) {
-
 									ListView listView = (ListView) parent;
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
@@ -151,5 +142,17 @@ public class VisitQueryListActivity extends BaseActivity {
 					}
 				});
 
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.txt_search:
+				ProgressDialogUtil.showProgressDialog(context);
+				String level = autoCompleteTextView.getText().toString();
+				visitServer(level);
+				Tools.closeInput(VisitQueryListActivity.this, autoCompleteTextView);
+				break;
+		}
 	}
 }

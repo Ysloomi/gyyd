@@ -27,7 +27,7 @@ import java.util.List;
 
 public class TodoListActivity extends BaseActivity {
 
-    private String from ;
+    private String from;
     private List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
     private ListView listView;
     private SimpleAdapter simAdapter;
@@ -41,7 +41,9 @@ public class TodoListActivity extends BaseActivity {
         mac = GetInfo.getIMEI(context);
         username = GetInfo.getUserName(context);
 
-       from = getIntent().getStringExtra("from");
+        from = getIntent().getStringExtra("from");
+
+        listView = (ListView) findViewById(R.id.list_view);
 
         if ("shop".equals(from)) {
             setTitle("渠道拜访");
@@ -54,8 +56,8 @@ public class TodoListActivity extends BaseActivity {
 
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("step", "测试");
-            map.put("done", "完成次数:1" );
-            map.put("undo", "完成时长:1" );
+            map.put("done", "完成次数:1");
+            map.put("undo", "完成时长:1");
             datas.add(map);
 
             simAdapter = new SimpleAdapter(
@@ -75,8 +77,7 @@ public class TodoListActivity extends BaseActivity {
                         AdapterView<?> parent, View view,
                         int position, long id) {
                     ListView listView = (ListView) parent;
-                    HashMap<String, String> map = (HashMap<String, String>) listView
-                            .getItemAtPosition(position);
+                    HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
                     String step = map.get("step");
                     Intent intent = new Intent(context, TodoActivity.class);
                     intent.putExtra("step", step);
@@ -85,8 +86,6 @@ public class TodoListActivity extends BaseActivity {
                 }
             });
         }
-
-        listView = (ListView) findViewById(R.id.list_view);
 
 
     }
@@ -141,8 +140,7 @@ public class TodoListActivity extends BaseActivity {
                                         AdapterView<?> parent, View view,
                                         int position, long id) {
                                     ListView listView = (ListView) parent;
-                                    HashMap<String, String> map = (HashMap<String, String>) listView
-                                            .getItemAtPosition(position);
+                                    HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
                                     String step = map.get("step");
                                     Intent intent = new Intent(context, TodoActivity.class);
                                     intent.putExtra("step", step);

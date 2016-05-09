@@ -47,8 +47,50 @@ public class TodoActivity extends BaseActivity {
         String step = getIntent().getStringExtra("step");
         from = getIntent().getStringExtra("from");
 
-        ProgressDialogUtil.showProgressDialog(context);
-        visitServer(step);
+
+        if ("shop".equals(from)) {
+            setTitle("渠道拜访");
+            ProgressDialogUtil.showProgressDialog(context);
+            visitServer(step);
+        } else {
+            setTitle("政企拜访");
+
+            datas.clear();
+
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("step", "测试1");
+            map.put("name", "测试单位");
+            map.put("done", "完成次数:1/2" );
+            map.put("undo", "完成时长:0/100" );
+            datas.add(map);
+
+            simAdapter = new SimpleAdapter(
+                    context,
+                    datas,// 数据源
+                    R.layout.item_todo,// 显示布局
+                    new String[]{"step", "name", "done", "undo"},
+                    new int[]{
+                            R.id.step, R.id.name,
+                            R.id.do_proportion,
+                            R.id.time_last});
+            listView.setAdapter(simAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onItemClick(
+                        AdapterView<?> parent, View view,
+                        int position, long id) {
+                    HashMap<String,String> map = (HashMap<String,String>) parent.getItemAtPosition(position);
+                    Intent intent = new Intent();
+                    intent.setClass(context, VisitReachActivity.class);
+                    intent.putExtra("name",map.get("name"));
+                    intent.putExtra("from", from);
+                    startActivity(intent);
+                }
+            });
+        }
+
+
     }
 
     private void visitServer(String step) {
@@ -99,10 +141,11 @@ public class TodoActivity extends BaseActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     if ("unit".equals(from)){
-                                        String name = parent.getItemAtPosition(position).toString();
+                                        HashMap<String,String> map = (HashMap<String,String>) parent.getItemAtPosition(position);
                                         Intent intent = new Intent();
                                         intent.setClass(context, VisitReachActivity.class);
-                                        intent.putExtra("name",name);
+                                        intent.putExtra("name",map.get("name"));
+                                        intent.putExtra("from",from);
                                         startActivity(intent);
                                     }
                                 }

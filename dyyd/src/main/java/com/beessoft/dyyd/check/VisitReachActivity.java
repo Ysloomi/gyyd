@@ -112,7 +112,8 @@ public class VisitReachActivity extends BaseActivity {
 
 		if (!TextUtils.isEmpty(from)){
 			customer = getIntent().getStringExtra("name");
-			typeSpinner.setSelection(2,true);
+			customerEdit.setText(customer);
+
 		}
 
 		String a = PreferenceUtil.readString(context,"aim");
@@ -359,6 +360,8 @@ public class VisitReachActivity extends BaseActivity {
 //							ToastUtil.toast(context,msg);
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							typeSpinner.setSelection(1,true);
 						}
 					}
 				});
