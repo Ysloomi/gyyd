@@ -1,44 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <!--
-         <Button
-        android:id="@+id/query_confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#00000000"
-        android:drawableTop="@drawable/approve_confirm_icon" />
-    -->
-
-
-    <!--
-         <Button
-        android:id="@+id/query_back"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="#00000000" />
-    -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp" >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView1"
@@ -125,8 +98,8 @@
                 android:text="今日总结"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
-            
-                        <TextView
+
+            <TextView
                 android:id="@+id/query_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,7 +123,8 @@
                 android:text="下个工作\n日计划"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
-                    <TextView
+
+            <TextView
                 android:id="@+id/query_plan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -188,9 +162,6 @@
                 android:paddingLeft="1dp"
                 android:textColor="#000000" />
 
-    
-
-
 
             <TextView
                 android:id="@+id/textView7"
@@ -218,4 +189,4 @@
         </RelativeLayout>
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

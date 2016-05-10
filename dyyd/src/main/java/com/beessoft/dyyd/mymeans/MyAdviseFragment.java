@@ -10,7 +10,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -31,13 +30,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MyAdviseFragment extends Fragment {
+public class MyAdviseFragment extends Fragment implements OnClickListener {
 
 	private String mac,username, pass, type, condition, question = "";
 	private ListView listView;
 	private Context context;
 	private EditText editText;
-	private Button button;
 
 	private ArrayList<HashMap<String, String>> datas;
 
@@ -47,12 +45,13 @@ public class MyAdviseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View check = inflater.inflate(R.layout.myadvise, container, false);
+		View check = inflater.inflate(R.layout.fragment_myadvise, container, false);
+		context = getActivity();
+
 		listView = (ListView) check.findViewById(R.id.advise_list);
 		editText = (EditText) check.findViewById(R.id.advise_edittext);
-		button = (Button) check.findViewById(R.id.advise_button);
+		check.findViewById(R.id.txt_search).setOnClickListener(this);
 
-		context = getActivity();
 		return check;
 	}
 
@@ -73,7 +72,6 @@ public class MyAdviseFragment extends Fragment {
 		datas = new ArrayList<HashMap<String, String>>();
 
 		listView.setOnItemClickListener(new ItemClickListener());
-		button.setOnClickListener(new ClickListener());
 	}
 
 	@Override
@@ -81,6 +79,18 @@ public class MyAdviseFragment extends Fragment {
 		super.onStart();
 		ProgressDialogUtil.showProgressDialog(context);
 		getAdviseList();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (isFinish) {
+			question = editText.getText().toString();
+			ProgressDialogUtil.showProgressDialog(context);
+			getAdviseList();
+			isFinish = false;
+		} else {
+			ToastUtil.toast(context, "请等待数据加载");
+		}
 	}
 
 	class ItemClickListener implements OnItemClickListener {
@@ -96,19 +106,6 @@ public class MyAdviseFragment extends Fragment {
 		}
 	}
 
-	class ClickListener implements OnClickListener {
-		@Override
-		public void onClick(View v) {
-			if (isFinish) {
-				question = editText.getText().toString();
-				ProgressDialogUtil.showProgressDialog(context);
-				getAdviseList();
-				isFinish = false;
-			} else {
-				ToastUtil.toast(context, "请等待数据加载");
-			}
-		}
-	}
 
 	private void getAdviseList() {
 		String httpUrl = User.mainurl + "sf/adviselist";

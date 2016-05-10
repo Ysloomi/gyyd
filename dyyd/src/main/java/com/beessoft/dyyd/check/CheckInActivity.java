@@ -36,7 +36,6 @@ import com.beessoft.dyyd.utils.AlarmReceiver;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.PreferenceUtil;
@@ -118,8 +117,7 @@ public class CheckInActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkin);
         if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
-//			Log.i(TAG, "拍摄异常，获取原来的shot_path");
-            Logger.e("拍摄异常，获取原来的shot_path");
+//            Logger.e("拍摄异常，获取原来的shot_path");
             imgPath = savedInstanceState.getString("imgPath");
         }
         context = CheckInActivity.this;
@@ -532,7 +530,6 @@ public class CheckInActivity extends BaseActivity {
 
 
     public void visitServer_getaddr() {
-
         String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
         AsyncHttpClient client_request = new AsyncHttpClient();

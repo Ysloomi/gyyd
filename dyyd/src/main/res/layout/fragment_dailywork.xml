@@ -1,46 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/visitquery_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/work_button"
-        android:layout_marginRight="35dp"
-        android:layout_toLeftOf="@+id/work_button"
-        android:background="#00000000"
-        android:drawableTop="@drawable/visitquery"
-        android:text="拜访记录"
-        android:textColor="#4db0f6"
-        android:visibility="gone" />
+
 
     <Button
         android:id="@+id/query_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_alignLeft="@+id/visitquery_button"
         android:layout_below="@+id/visitquery_button"
         android:layout_marginTop="35dp"
-        android:background="#00000000"
         android:drawableTop="@drawable/approvequery"
-        android:text="审批查询"
-        android:textColor="#4db0f6" 
-        android:visibility="gone"/>
+        android:text="@string/activity_approvequery"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/notice_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_below="@+id/work_button"
         android:layout_marginTop="35dp"
         android:layout_toRightOf="@+id/visitquery_button"
-        android:background="#00000000"
         android:drawableTop="@drawable/notice_button"
-        android:text="通  知"
-        android:textColor="#4db0f6"
+        android:text="@string/activity_notice"
         android:visibility="gone" />
 
     <TextView
@@ -56,116 +38,104 @@
 
     <Button
         android:id="@+id/workquery_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_alignLeft="@+id/mileage_button"
         android:layout_below="@+id/mileage_button"
         android:layout_marginTop="35dp"
-        android:background="#00000000"
         android:drawableTop="@drawable/workquery"
-        android:text="日志查询"
-        android:textColor="@color/blue"
+        android:text="@string/activity_workquery"
         android:visibility="gone" />
 
     <Button
         android:id="@+id/mymemo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_alignLeft="@+id/query_button"
         android:layout_below="@+id/query_button"
         android:layout_marginTop="35dp"
-        android:background="#00000000"
         android:drawableTop="@drawable/mymemo"
-        android:text="备忘录"
-        android:textColor="#4db0f6" 
-        android:visibility="gone"/>
+        android:text="@string/activity_mymemo"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/arrange_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_alignLeft="@+id/notice_button"
         android:layout_below="@+id/notice_button"
         android:layout_marginTop="35dp"
-        android:background="#00000000"
         android:drawableTop="@drawable/arrange"
-        android:text="安排工作"
-        android:textColor="#4db0f6"
+        android:text="@string/activity_arrange"
         android:visibility="gone" />
 
     <Button
         android:id="@+id/mileage_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FragmentButton"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:background="#00000000"
         android:drawableTop="@drawable/mymileage"
-        android:text="我的里程"
-        android:textColor="#4db0f6"
-        android:visibility="gone"/>
+        android:text="@string/activity_mymileage"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/work_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:drawableTop="@drawable/mywork"
-        android:text="待办事项"
-        android:textColor="#4db0f6"
+        style="@style/FragmentButton"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:layout_centerHorizontal="true" />
+        android:drawableTop="@drawable/mywork"
+        android:text="@string/activity_mywork" />
 
     <Button
         android:id="@+id/photo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:drawableTop="@drawable/photo"
-        android:text="拍照上传"
-        android:textColor="#4db0f6"
+        style="@style/FragmentButton"
         android:layout_alignTop="@+id/work_button"
+        android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/work_button"
-        android:layout_marginRight="35dp" />
+        android:drawableTop="@drawable/photo"
+        android:text="@string/activity_photo" />
 
     <Button
         android:id="@+id/worklocation_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="#00000000"
-        android:drawableTop="@drawable/worklocation"
-        android:text="员工位置"
-        android:textColor="#4db0f6"
-        android:layout_below="@+id/photo_button"
+        style="@style/FragmentButton"
         android:layout_alignLeft="@+id/photo_button"
-        android:layout_alignStart="@+id/photo_button" />
+        android:layout_alignStart="@+id/photo_button"
+        android:layout_below="@+id/photo_button"
+        android:layout_marginTop="35dp"
+        android:drawableTop="@drawable/worklocation"
+        android:text="@string/activity_location" />
 
     <Button
         android:id="@+id/checkquery_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00000000"
-        android:drawableTop="@drawable/checkquery"
-        android:text="考勤查询"
-        android:textColor="#4db0f6"
+        style="@style/FragmentButton"
         android:layout_alignTop="@+id/work_button"
-        android:layout_toRightOf="@+id/work_button"
-        android:layout_toEndOf="@+id/work_button"
         android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp" />
+        android:layout_marginStart="35dp"
+        android:layout_toEndOf="@+id/work_button"
+        android:layout_toRightOf="@+id/work_button"
+        android:drawableTop="@drawable/checkquery"
+        android:text="@string/activity_checkquery" />
 
 
     <Button
         android:id="@+id/btn_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/worklocation_button"
+        android:layout_centerHorizontal="true"
         android:background="#00000000"
         android:drawableTop="@drawable/note"
-        android:text="一线记事本"
-        android:textColor="#4db0f6"
-        android:layout_alignTop="@+id/worklocation_button"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/title_activity_note"
+        android:textColor="#4db0f6" />
+
+
+    <Button
+        android:id="@+id/visitquery_button"
+        style="@style/FragmentButton"
+        android:layout_alignLeft="@+id/checkquery_button"
+        android:layout_alignStart="@+id/checkquery_button"
+        android:layout_below="@+id/checkquery_button"
+        android:layout_marginTop="35dp"
+        android:drawableTop="@drawable/visitquery"
+        android:text="@string/activity_visitquery"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -26,7 +26,6 @@ import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -311,7 +310,7 @@ public class VisitReachActivity extends BaseActivity {
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
 
-		Logger.e(httpUrl+"?"+parameters_userInfo);
+//		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

@@ -6,22 +6,28 @@
 
     <LinearLayout style="@style/TextOutLayout">
 
-        <AutoCompleteTextView
-            android:id="@+id/act_search"
-            style="@style/MyText"
-            android:completionThreshold="1" />
+        <EditText
+            android:id="@+id/advise_edittext"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="3"
+            android:background="@drawable/text_bg"
+            android:hint="我的问题关键字搜索">
+
+            <requestFocus />
+        </EditText>
 
         <TextView
             android:id="@+id/txt_search"
             style="@style/TapText"
-            android:text="检 索" />
-
+            android:text="检索" />
     </LinearLayout>
 
+
     <ListView
-        android:id="@+id/visitquery_list"
+        android:id="@+id/advise_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

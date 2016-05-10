@@ -58,6 +58,7 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -70,7 +71,6 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 								ToastUtil.toast(context, "没有相关信息");
 							} else if ("0".equals(code)) {
 								JSONArray array = dataJson.getJSONArray("list");
-
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
@@ -96,7 +96,6 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 												R.id.start, R.id.over,
 												R.id.person,R.id.type });
 								listView.setAdapter(simAdapter);
-								// 添加点击
 								listView.setOnItemClickListener(new OnItemClickListener() {
 									@SuppressWarnings("unchecked")
 									@Override
@@ -110,7 +109,6 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 										startActivity(intent);
 									}
 								});
-
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

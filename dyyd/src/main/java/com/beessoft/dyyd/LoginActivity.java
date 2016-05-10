@@ -37,11 +37,11 @@ public class LoginActivity extends Activity {
 	
 	private Context context;
 	private LocationClient mLocationClient;
-	private String Mac;
+	private String mac;
 
 	private ImageButton imgBtn;
 	private CheckBox savePassword;
-	private EditText editText1, editText2;
+	private EditText nameEdt, passEdt;
 	private TextView versionTxt;
 	private String IMSI;
 	private String user, pass;
@@ -49,22 +49,22 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login);
+		setContentView(R.layout.activity_login);
 
 		context=LoginActivity.this;
 		
 		versionTxt = (TextView) findViewById(R.id.version_text);
 		savePassword = (CheckBox) findViewById(R.id.remember_password);
-		editText1 = (EditText) findViewById(R.id.editText1);
-		editText2 = (EditText) findViewById(R.id.editText2);
+		nameEdt = (EditText) findViewById(R.id.editText1);
+		passEdt = (EditText) findViewById(R.id.editText2);
 		imgBtn = (ImageButton) findViewById(R.id.imageButton);
 
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
-		Mac = GetInfo.getIMEI(LoginActivity.this);
+		mac = GetInfo.getIMEI(LoginActivity.this);
 
-		versionTxt.setText(User.version + User.getVersionName(this));
+		versionTxt.setText(User.version + User.getVersionName(context));
 
 		Gps gps = new Gps(context);
 		gps.openGPSSettings(context);
@@ -74,13 +74,13 @@ public class LoginActivity extends Activity {
 
 		IMSI = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getSubscriberId();
 
-		editText1.setText(PreferenceUtil.readString(context, "username"));
+		nameEdt.setText(PreferenceUtil.readString(context, "username"));
 		Boolean isCheck = PreferenceUtil.readBoolean(context, "isCheck");
 		// 判断记住密码多选框的状态
 		if (isCheck) {
 			// 设置默认是记录密码状态
 			savePassword.setChecked(true);
-			editText2.setText(PreferenceUtil.readString(context, "password"));
+			passEdt.setText(PreferenceUtil.readString(context, "password"));
 		}
 
 		// 监听记住密码多选框按钮事件
@@ -98,10 +98,10 @@ public class LoginActivity extends Activity {
 		imgBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				user = editText1.getText().toString();
-				pass = editText2.getText().toString();
+				user = nameEdt.getText().toString();
+				pass = passEdt.getText().toString();
 				ProgressDialogUtil.showProgressDialog(context);
-				visitServer_login(user, pass, Mac);
+				visitServer_login(user, pass, mac);
 			}
 		});
 	}
@@ -136,7 +136,9 @@ public class LoginActivity extends Activity {
 	}
 
 	private void visitServer_login(String usercode,String ipass, String mac) {
+
 		String httpUrl = User.mainurl + "app/app_login";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("usercode", usercode);
@@ -146,13 +148,13 @@ public class LoginActivity extends Activity {
 		parameters_userInfo.put("version", User.getVersionCode(context)+"");
 
 //		Logger.e(httpUrl+"?"+parameters_userInfo);
+
 		client_request.get(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-//							Logger.e("login"+dataJson);
 							switch (dataJson.getString("code")) {
 							case "0":
 								PreferenceUtil.write(context, "username", user);
@@ -221,7 +223,7 @@ public class LoginActivity extends Activity {
 		
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		parameters_userInfo.put("cmaker", Mac);
+		parameters_userInfo.put("cmaker", mac);
 		parameters_userInfo.put("usercode", GetInfo.getUserName(context));
 		
 		client_request.post(httpUrl, parameters_userInfo,
@@ -238,10 +240,10 @@ public class LoginActivity extends Activity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}finally{
-							ToastUtil.toast(context, "登陆成功");
 							Intent intent = new Intent();
 							intent.setClass(context,MainActivity.class);
 							startActivity(intent);
+							ToastUtil.toast(context, "登陆成功");
 						}
 					}
 				});

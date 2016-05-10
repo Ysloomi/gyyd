@@ -58,6 +58,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         photoBtn = (Button) view.findViewById(R.id.photo_button);
         checkQueryBtn = (Button) view.findViewById(R.id.checkquery_button);
         noteBTn = (Button) view.findViewById(R.id.btn_note);
+        noteBTn = (Button) view.findViewById(R.id.btn_note);
 
         photoBtn.setOnClickListener(this);
         myworkButton.setOnClickListener(this);
@@ -175,7 +176,6 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("pass", pass);
         parameters_userInfo.put("usercode", username);
-
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

@@ -27,7 +27,6 @@ import java.util.List;
 
 public class MyWorkActivity extends BaseActivity {
 
-	private String name;
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 	private ListView listView;
 	private SimpleAdapter simAdapter;
@@ -98,7 +97,7 @@ public class MyWorkActivity extends BaseActivity {
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
 									Intent intent = new Intent();
-									name = map.get("name");
+									String name = map.get("name");
 									if ("渠道拜访".equals(name)) {
 										intent.setClass(context, TodoListActivity.class);
 										startActivity(intent);
@@ -166,13 +165,9 @@ public class MyWorkActivity extends BaseActivity {
 ////			} catch (Exception e) {
 ////				e.printStackTrace();
 ////			}
-//			cleanlist();
-//			// 显示ProgressDialog
-//			progressDialog = ProgressDialog.show(MyWorkActivity.this, "载入中...",
-//					"请等待...", true, false);
-//			getData(MyWorkActivity.this);
+//			ProgressDialogUtil.showProgressDialog(context);
+//			getData();
 //		}
 //		super.onResume();
 //	}
-
 }

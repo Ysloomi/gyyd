@@ -92,10 +92,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Loading">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -437,8 +437,7 @@
             android:icon="@drawable/top_logo"
             android:label="@string/title_activity_note"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".dailywork.NoteAddActivity"
             android:icon="@drawable/top_logo"
@@ -463,11 +462,12 @@
             android:label="@string/title_activity_note_query_detail"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".dailywork.NoteDealActivity"
+        <activity
+            android:name=".dailywork.NoteDealActivity"
             android:icon="@drawable/top_logo"
             android:label="@string/title_activity_note_deal"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
         <receiver android:name=".utils.AlarmReceiver">

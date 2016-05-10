@@ -1,12 +1,7 @@
 package com.beessoft.dyyd.dailywork;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +22,9 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.QueryMapActivity;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -36,121 +32,81 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class CheckApproveActivity extends BaseActivity {
-	private Button button1, button2, button3, button4;
-	private TextView textView1, textView2, textView3, textView4, textView5,
-			textView6, textView7, textView8, textView9, textView10;
-	private String mac, id, btn, photo, result, jd, wd,unagree_reason;
-	private ProgressDialog progressDialog;
-	private ImageView imageView;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class CheckApproveActivity extends BaseActivity implements View.OnClickListener {
+	private Button agreeBtn, refuseBtn, queryBtn;
+	private TextView personTxt, timeTxt, locationTxt, contextTxt, classTxt,
+			explainTxt, journeyTxt, approvemanTxt, approvetimeTxt, approveresultTxt;
+	private String id, btn, photo, result, jd, wd,unagree_reason;
+	private ImageView photoImg;
 	private ProgressBar progressBar;
 	private Bitmap bitmap;
 	private Thread mThread;
+
+	private LinearLayout approveManLl;
+	private LinearLayout approveTimeLl;
+	private LinearLayout approveResultLl;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_checkapprove);
 
+		context = CheckApproveActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
 		initView();
 
 		id =  getIntent().getStringExtra("idTarget");
 
 		if ("query".equals(getIntent().getStringExtra("query"))) {
-			button1.setVisibility(View.GONE);
-			button2.setVisibility(View.GONE);
-			button3.setVisibility(View.VISIBLE);
-			
-			// 设置标题
-//			CharSequence titleLable = "考勤记录";
+			agreeBtn.setVisibility(View.GONE);
+			refuseBtn.setVisibility(View.GONE);
+			queryBtn.setVisibility(View.VISIBLE);
 			setTitle("考勤记录");
-			
 		} else {
-			textView8.setBackgroundResource(R.drawable.unedit_text_bg);
-			textView9.setBackgroundResource(R.drawable.unedit_text_bg);
-			textView10.setBackgroundResource(R.drawable.unedit_text_bg);
+			approveManLl.setVisibility(View.GONE);
+			approveTimeLl.setVisibility(View.GONE);
+			approveResultLl.setVisibility(View.GONE);
 		}
 
-		// 根据mac地址获取今日总结和明日计划
-		mac = GetInfo.getIMEI(CheckApproveActivity.this);
-		visitServer(CheckApproveActivity.this);
-
-		button1.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				result = textView10.getText().toString();
-				if ("".equals(result)) {
-					btn = "0";//同意
-					// 显示ProgressDialog
-					progressDialog = ProgressDialog.show(
-							CheckApproveActivity.this, "载入中...", "请等待...",
-							true, false);
-					visitServer_comfirm(CheckApproveActivity.this, btn);
-				} else {
-					Toast.makeText(CheckApproveActivity.this, "已审批，请勿重复提交",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-		button2.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				result = textView10.getText().toString();
-				if ("".equals(result)) {
-					btn = "1";//不同意
-					inputExamineDialog();
-				} else {
-					Toast.makeText(CheckApproveActivity.this, "已审批，请勿重复提交",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-		button3.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				String username = textView1.getText().toString();
-				if (!TextUtils.isEmpty(username.trim())) {
-					Intent intent = new Intent(CheckApproveActivity.this,
-							QueryMapActivity.class);
-					intent.putExtra("jd", jd);
-					intent.putExtra("wd", wd);
-					intent.putExtra("username", username);
-					startActivity(intent);
-				}
-			}
-		});
-		button4.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				progressBar.setVisibility(View.VISIBLE);
-				mThread = new Thread(runnable);
-				mThread.start();
-			}
-		});
-		imageView.setOnClickListener(new ImageView.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				PhotoHelper.openPictureDialog_down(CheckApproveActivity.this,
-						bitmap);
-			}
-		});
+		visitServer();
 	}
 
 	public void initView() {
-		textView1 = (TextView) findViewById(R.id.person_text);
-		textView2 = (TextView) findViewById(R.id.time_text);
-		textView3 = (TextView) findViewById(R.id.location_text);
-		textView4 = (TextView) findViewById(R.id.context_text);
-		textView5 = (TextView) findViewById(R.id.class_text);
-		textView6 = (TextView) findViewById(R.id.explain_text);
-		textView7 = (TextView) findViewById(R.id.journey_type);
-		textView8 = (TextView) findViewById(R.id.approveman_text);
-		textView9 = (TextView) findViewById(R.id.approvetime_text);
-		textView10 = (TextView) findViewById(R.id.approveresult_text);
 
-		button1 = (Button) findViewById(R.id.agree_button);
-		button2 = (Button) findViewById(R.id.refuse_button);
-		button3 = (Button) findViewById(R.id.query_map);
-		button4 = (Button) findViewById(R.id.download_image);
-		imageView = (ImageView) findViewById(R.id.checkin_image);
 
+		approveManLl = (LinearLayout) findViewById(R.id.ll_approveman) ;
+		approveTimeLl = (LinearLayout) findViewById(R.id.ll_approve_time) ;
+		approveResultLl = (LinearLayout) findViewById(R.id.ll_approve_result) ;
+
+		personTxt = (TextView) findViewById(R.id.person_text);
+		timeTxt = (TextView) findViewById(R.id.time_text);
+		locationTxt = (TextView) findViewById(R.id.location_text);
+		contextTxt = (TextView) findViewById(R.id.context_text);
+		classTxt = (TextView) findViewById(R.id.class_text);
+		explainTxt = (TextView) findViewById(R.id.explain_text);
+		journeyTxt = (TextView) findViewById(R.id.journey_type);
+		approvemanTxt = (TextView) findViewById(R.id.approveman_text);
+		approvetimeTxt = (TextView) findViewById(R.id.approvetime_text);
+		approveresultTxt = (TextView) findViewById(R.id.approveresult_text);
+
+		agreeBtn = (Button) findViewById(R.id.agree_button);
+		refuseBtn = (Button) findViewById(R.id.refuse_button);
+		queryBtn = (Button) findViewById(R.id.query_map);
+
+		photoImg = (ImageView) findViewById(R.id.checkin_image);
 		progressBar = (ProgressBar) findViewById(R.id.photo_progressbar);
+
+		agreeBtn.setOnClickListener(this);
+		refuseBtn.setOnClickListener(this);
+		queryBtn.setOnClickListener(this);
+		photoImg.setOnClickListener(this);
+		findViewById(R.id.txt_download).setOnClickListener(this);
 	}
 	
 	@SuppressLint("InflateParams")
@@ -170,7 +126,6 @@ public class CheckApproveActivity extends BaseActivity {
 		myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
-
 				Button button = myDialog.getButton(AlertDialog.BUTTON_POSITIVE);
 				button.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -179,17 +134,13 @@ public class CheckApproveActivity extends BaseActivity {
 						if (TextUtils.isEmpty(unagree_reason.trim())) {
 							ToastUtil.toast(CheckApproveActivity.this, "请填写不同意原因");
 						} else {
-							// 显示ProgressDialog
-							progressDialog = ProgressDialog.show(
-									CheckApproveActivity.this, "载入中...", "请等待...",
-									true, false);
-							visitServer_comfirm(CheckApproveActivity.this, btn);
+							ProgressDialogUtil.showProgressDialog(context);
+							saveData();
 							myDialog.dismiss();
 						}
 					}
 				});
-				Button button1 = myDialog
-						.getButton(AlertDialog.BUTTON_NEGATIVE);
+				Button button1 = myDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 				button1.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -201,13 +152,16 @@ public class CheckApproveActivity extends BaseActivity {
 		myDialog.show();
 	}
 
-	// 访问服务器http post
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/startwork_check2";
+
 		String pass = GetInfo.getPass(context);
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("pass", pass);
 		parameters_userInfo.put("id", id);
 
@@ -215,43 +169,30 @@ public class CheckApproveActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							if (dataJson.getString("code").equals("0")) {
-
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(new String(obj
-											.getString("username")));
-									textView2.setText(new String(obj
-											.getString("iday")));
-									textView3.setText(new String(obj
-											.getString("iadd")));
-									textView4.setText(new String(obj
-											.getString("bin")));
-									textView5.setText(new String(obj
-											.getString("iclass")));
-									textView6.setText(new String(obj
-											.getString("cmemo")));
-									textView7.setText(new String(obj
-											.getString("type")));
-									textView8.setText(new String(obj
-											.getString("checker")));
-									textView9.setText(new String(obj
-											.getString("checktime")));
-									textView10.setText(new String(obj
-											.getString("checkval")));
+									personTxt.setText(obj.getString("username"));
+									timeTxt.setText(obj.getString("iday"));
+									locationTxt.setText(obj.getString("iadd"));
+									contextTxt.setText(obj.getString("bin"));
+									classTxt.setText(obj.getString("iclass"));
+									explainTxt.setText(obj.getString("cmemo"));
+									journeyTxt.setText(obj.getString("type"));
+									approvemanTxt.setText(obj.getString("checker"));
+									approvetimeTxt.setText(obj.getString("checktime"));
+									approveresultTxt.setText(obj.getString("checkval"));
 									jd = obj.getString("lng");
 									wd = obj.getString("lat");
-									photo = User.mainurl
-											+ obj.getString("photo");
+									photo = User.mainurl + obj.getString("photo");
 								}
 							} else {
 								Toast.makeText(CheckApproveActivity.this,
-										"请重新上传", Toast.LENGTH_SHORT).show();
+										"请重试", Toast.LENGTH_SHORT).show();
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -260,11 +201,13 @@ public class CheckApproveActivity extends BaseActivity {
 				});
 	}
 
-	// 访问服务器http post
-	private void visitServer_comfirm(Context context, String btn) {
+	private void saveData() {
+
 		String httpUrl = User.mainurl + "sf/startwork_checksave";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("id", id);
 		parameters_userInfo.put("btn", btn);
@@ -274,12 +217,10 @@ public class CheckApproveActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-//						 System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								Toast.makeText(CheckApproveActivity.this,
 										"签到审批数据上传成功", Toast.LENGTH_SHORT)
 										.show();
@@ -291,14 +232,14 @@ public class CheckApproveActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
@@ -327,10 +268,62 @@ public class CheckApproveActivity extends BaseActivity {
 	private Handler mHandler = new Handler() {
 		@SuppressLint("HandlerLeak")
 		public void handleMessage(Message msg) {
-			imageView.setImageBitmap(bitmap);
-			if (imageView != null) {
+			photoImg.setImageBitmap(bitmap);
+			if (photoImg != null) {
 				progressBar.setVisibility(View.GONE);
 			}
 		}
 	};
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.txt_download:
+				progressBar.setVisibility(View.VISIBLE);
+				mThread = new Thread(runnable);
+				mThread.start();
+				break;
+			case R.id.agree_button:
+				result = approveresultTxt.getText().toString();
+				if (TextUtils.isEmpty(result)) {
+					btn = "0";//同意
+					ProgressDialogUtil.showProgressDialog(context);
+					saveData();
+				} else {
+					Toast.makeText(CheckApproveActivity.this, "已审批，请勿重复提交",
+							Toast.LENGTH_SHORT).show();
+				}
+				break;
+			case R.id.refuse_button:
+				result = approveresultTxt.getText().toString();
+				if ("".equals(result)) {
+					btn = "1";//不同意
+					inputExamineDialog();
+				} else {
+					Toast.makeText(CheckApproveActivity.this, "已审批，请勿重复提交",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				queryBtn.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+
+					}
+				});
+				break;
+			case R.id.query_map:
+				String username = personTxt.getText().toString();
+				if (!TextUtils.isEmpty(username.trim())) {
+					Intent intent = new Intent(CheckApproveActivity.this,
+							QueryMapActivity.class);
+					intent.putExtra("jd", jd);
+					intent.putExtra("wd", wd);
+					intent.putExtra("username", username);
+					startActivity(intent);
+				}
+				break;
+			case R.id.checkin_image:
+				PhotoHelper.openPictureDialog_down(CheckApproveActivity.this, bitmap);
+				break;
+		}
+	}
 }

@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <ScrollView
-        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -86,7 +85,9 @@
 
             </LinearLayout>
 
-            <LinearLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_approveman"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/MyTitle"
@@ -98,7 +99,9 @@
 
             </LinearLayout>
 
-            <LinearLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_approve_time"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/MyTitle"
@@ -110,7 +113,9 @@
 
             </LinearLayout>
 
-            <LinearLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_approve_result"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/MyTitle"
@@ -122,13 +127,6 @@
 
             </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/photo_progressbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="13dp"
-                android:visibility="gone" />
         </LinearLayout>
 
     </ScrollView>
@@ -155,6 +153,7 @@
             android:layout_marginRight="24dp"
             android:background="#00000000"
             android:drawableTop="@drawable/refuse_button" />
+
     </RelativeLayout>
 
 </LinearLayout>

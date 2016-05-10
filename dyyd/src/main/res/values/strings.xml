@@ -49,8 +49,8 @@
     <string name="activity_checkout">下班签退</string>
     <string name="activity_visitreach">到达现场</string>
     <string name="activity_visitleave">离开现场</string>
-    <string name="activity_photo">拍照上传</string>
-    <string name="activity_photoquery">照片查询</string>
+    <string name="activity_photo">信息采集</string>
+    <string name="activity_photoquery">信息查询</string>
     <string name="activity_visitquery">拜访记录</string>
     <string name="activity_mywork">待办事项</string>
     <string name="activity_mymileage">我的里程</string>
@@ -69,7 +69,7 @@
     <string name="activity_checkapprove">签到审批</string>
     <string name="activity_checkquery">考勤查询</string>
     <string name="activity_collect">考勤点采集</string>
-    <string name="activity_askleave">请假申请</string>
+    <string name="activity_askleave">请假登记</string>
     <string name="activity_askleavequery">请假查询</string>
     <string name="activity_arrange">安排工作</string>
     <string name="activity_arrangequery">安排查询</string>
@@ -83,7 +83,7 @@
     <string name="activity_leaveinfo">离开区域</string>
     <string name="activity_targetquery">目标查询</string>
     <string name="activity_advise">意见反馈</string>
-    <string name="title_activity_note">我的记事本</string>
+    <string name="title_activity_note">一线记事本</string>
     <string name="title_activity_note_add">新增记事本</string>
     <string name="title_activity_note_addr">地点选择</string>
     <string name="title_activity_note_query">查询记事本</string>
