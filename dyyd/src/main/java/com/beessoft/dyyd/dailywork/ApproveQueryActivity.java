@@ -47,7 +47,7 @@ public class ApproveQueryActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.approvequery);
+        setContentView(R.layout.activity_approvequery);
 
         context = ApproveQueryActivity.this;
         mac = GetInfo.getIMEI(context);

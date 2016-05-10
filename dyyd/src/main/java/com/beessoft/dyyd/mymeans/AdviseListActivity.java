@@ -65,7 +65,7 @@ public class AdviseListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.adviselist);
+        setContentView(R.layout.activity_adviselist);
 
         context = AdviseListActivity.this;
         mac = GetInfo.getIMEI(context);

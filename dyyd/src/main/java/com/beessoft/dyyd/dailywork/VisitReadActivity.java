@@ -71,10 +71,8 @@ public class VisitReadActivity extends BaseActivity {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
 									map.put("name", obj.getString("username"));
-									map.put("readnum",
-											"阅读次数:" + obj.getString("cs"));
-									map.put("readtime",
-											"最后阅读时间:" + obj.getString("readtime"));
+									map.put("readnum", "阅读次数:" + obj.getString("cs"));
+									map.put("readtime", "最后阅读时间:" + obj.getString("readtime"));
 									datas.add(map);
 								}
 								simAdapter = new SimpleAdapter(

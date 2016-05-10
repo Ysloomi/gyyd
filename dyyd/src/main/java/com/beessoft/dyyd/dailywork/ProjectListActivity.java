@@ -76,7 +76,7 @@ public class ProjectListActivity extends BaseActivity {
 								}
 								simAdapter = new SimpleAdapter(
 										ProjectListActivity.this, datas,// 数据源
-										R.layout.project_item,// 显示布局
+										R.layout.item_project,// 显示布局
 										new String[] { "name", "contents", "date",
 												"photonum" }, new int[] {
 												R.id.name, R.id.contents,

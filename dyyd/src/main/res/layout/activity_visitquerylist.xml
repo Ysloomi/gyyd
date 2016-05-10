@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout style="@style/TextOutLayout">
+    <LinearLayout style="@style/TextOutLayout"
+        android:visibility="gone">
 
         <AutoCompleteTextView
             android:id="@+id/act_search"

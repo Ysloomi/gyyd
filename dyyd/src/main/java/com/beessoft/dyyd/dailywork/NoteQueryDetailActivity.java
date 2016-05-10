@@ -242,7 +242,7 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
             }
         }
 
-        View v = LayoutInflater.from(context).inflate(R.layout.menu_item, null);
+        View v = LayoutInflater.from(context).inflate(R.layout.item_menu, null);
         final PopupWindow pw = new PopupWindow(v, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pw.setContentView(v);
         pw.setOutsideTouchable(true);

@@ -86,7 +86,7 @@ public class MyMileageActivity extends BaseActivity {
 								simAdapter = new SimpleAdapter(
 										MyMileageActivity.this,
 										datas,// 数据源
-										R.layout.mymileage_item,// 显示布局
+										R.layout.item_mymileage,// 显示布局
 										new String[] { "date", "journey",
 												"mileage", "unitprice", "sum" },
 										new int[] { R.id.date, R.id.journey,

@@ -54,8 +54,11 @@
     </style>
 
     <style name="ListItemText" parent="@android:style/Widget.Holo.Light.TextView">
-        <item name="android:textSize">15sp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:layout_marginLeft">15dp</item>
     </style>
 
     <style name="line_horizontal_seperator_layout">
@@ -76,28 +79,12 @@
         <item name="android:background">@color/line_dark_grey</item>
     </style>
 
-
-    <style name="detailTitle" parent="@android:style/Widget.Holo.Light.TextView">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/title_bg</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="detailText" parent="@android:style/Widget.Holo.Light.TextView">
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:background">@drawable/text_bg</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-
     <style name="detailBigText" parent="@android:style/Widget.Holo.Light.TextView">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:background">@drawable/bigtext_bg</item>
         <item name="android:gravity">top</item>
         <item name="android:paddingLeft">2dp</item>
     </style>
-    <!-- <item name="android:titleTextStyle">@style/TextAppearance.Holo.Widget.ActionBar.Title.Own</item> -->
 
 
     <!--

@@ -431,7 +431,7 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
     private void reloadSpinner(Spinner spinner,List<String> lists){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-                R.layout.spinner_item,
+                R.layout.item_spinner,
                 lists);
         spinner.setAdapter(arrayAdapter);
     }

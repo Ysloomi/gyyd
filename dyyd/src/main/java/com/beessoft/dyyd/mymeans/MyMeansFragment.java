@@ -27,7 +27,7 @@ public class MyMeansFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		context= getActivity();
-		View view = inflater.inflate(R.layout.mymeans, container, false);
+		View view = inflater.inflate(R.layout.fragment_mymeans, container, false);
 		initview(view);
 		return view;
 	}

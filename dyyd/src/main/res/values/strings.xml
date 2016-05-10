@@ -69,7 +69,7 @@
     <string name="activity_checkapprove">签到审批</string>
     <string name="activity_checkquery">考勤查询</string>
     <string name="activity_collect">考勤点采集</string>
-    <string name="activity_askleave">请假申请</string>
+    <string name="activity_askleave">请假登记</string>
     <string name="activity_askleavequery">请假查询</string>
     <string name="activity_arrange">安排工作</string>
     <string name="activity_arrangequery">安排查询</string>

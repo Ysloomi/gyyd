@@ -47,61 +47,29 @@ public class TodoActivity extends BaseActivity {
         String step = getIntent().getStringExtra("step");
         from = getIntent().getStringExtra("from");
 
-
+        RequestParams parameters_userInfo = new RequestParams();
         if ("shop".equals(from)) {
             setTitle("渠道拜访");
             ProgressDialogUtil.showProgressDialog(context);
-            visitServer(step);
+            parameters_userInfo.put("mac", mac);
+            parameters_userInfo.put("usercode", username);
+            parameters_userInfo.put("ccus", Escape.escape(step));
+            parameters_userInfo.put("ishow", "0");
+            visitServer(parameters_userInfo);
         } else {
             setTitle("政企拜访");
-
-            datas.clear();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("step", "测试1");
-            map.put("name", "测试单位");
-            map.put("done", "完成次数:1/2" );
-            map.put("undo", "完成时长:0/100" );
-            datas.add(map);
-
-            simAdapter = new SimpleAdapter(
-                    context,
-                    datas,// 数据源
-                    R.layout.item_todo,// 显示布局
-                    new String[]{"step", "name", "done", "undo"},
-                    new int[]{
-                            R.id.step, R.id.name,
-                            R.id.do_proportion,
-                            R.id.time_last});
-            listView.setAdapter(simAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onItemClick(
-                        AdapterView<?> parent, View view,
-                        int position, long id) {
-                    HashMap<String,String> map = (HashMap<String,String>) parent.getItemAtPosition(position);
-                    Intent intent = new Intent();
-                    intent.setClass(context, VisitReachActivity.class);
-                    intent.putExtra("name",map.get("name"));
-                    intent.putExtra("from", from);
-                    startActivity(intent);
-                }
-            });
+            ProgressDialogUtil.showProgressDialog(context);
+            parameters_userInfo.put("mac", "cs");
+            parameters_userInfo.put("usercode", username);
+            parameters_userInfo.put("ccusType", "1");
+            visitServer(parameters_userInfo);
         }
-
-
     }
 
-    private void visitServer(String step) {
+    private void visitServer(RequestParams parameters_userInfo) {
         String httpUrl = User.mainurl + "sf/mywork";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-        parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("ccus", Escape.escape(step));
-        parameters_userInfo.put("ishow", "0");
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -120,8 +88,12 @@ public class TodoActivity extends BaseActivity {
                                     HashMap<String, Object> map = new HashMap<String, Object>();
                                     map.put("step", obj.getString("cccname"));
                                     map.put("name", obj.getString("ccusname"));
+                                    map.put("customercode", obj.getString("ccuscode"));
                                     map.put("done", "完成次数:" + obj.getString("done"));
-                                    map.put("undo", "完成时长:" + obj.getString("undone"));
+                                    map.put("undo", "完成时长:" + obj.getString("undo"));
+                                    map.put("lat", obj.getString("lat"));
+                                    map.put("lng", obj.getString("lng"));
+                                    map.put("scope",obj.getString("fw"));
                                     datas.add(map);
                                 }
                             }
@@ -142,11 +114,12 @@ public class TodoActivity extends BaseActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     if ("unit".equals(from)){
                                         HashMap<String,String> map = (HashMap<String,String>) parent.getItemAtPosition(position);
-                                        Intent intent = new Intent();
-                                        intent.setClass(context, VisitReachActivity.class);
-                                        intent.putExtra("name",map.get("name"));
-                                        intent.putExtra("from",from);
-                                        startActivity(intent);
+                                        String name = map.get("name");
+                                        String customercode = map.get("customercode");
+                                        String lat = map.get("lat");
+                                        String lng = map.get("lng");
+                                        int scope = Integer.valueOf(map.get("scope"));
+                                        visitServer(name,customercode,lat,lng,scope);
                                     }
                                 }
                             });
@@ -161,6 +134,48 @@ public class TodoActivity extends BaseActivity {
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
                         ProgressDialogUtil.closeProgressDialog();
+                    }
+                });
+    }
+
+
+    private void visitServer(final String name,final String customerCode
+            ,final String lat,final String lng
+            ,final int scope) {
+        String httpUrl = User.mainurl + "sf/startwork_do";
+
+        String mac = GetInfo.getIMEI(context);
+        String username = GetInfo.getUserName(context);
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+//                            String code= dataJson.getString("icount");
+                            if ("0".equals(dataJson.getString("visit"))) {
+                                Intent intent = new Intent();
+                                intent.setClass(context, VisitReachActivity.class);
+                                intent.putExtra("name",name);
+                                intent.putExtra("customercode",customerCode);
+                                intent.putExtra("lat",lat);
+                                intent.putExtra("lng",lng);
+                                intent.putExtra("scope",scope);
+                                intent.putExtra("from",from);
+                                startActivity(intent);
+                            } else {
+                                ToastUtil.toast(context, "尚有到达现场，请先离开");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

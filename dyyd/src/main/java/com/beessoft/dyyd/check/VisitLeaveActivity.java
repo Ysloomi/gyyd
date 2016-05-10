@@ -201,7 +201,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 longitude = myApp.getjd();
                 latitude = myApp.getwd();
                 type = myApp.getType();
-                if (addr == null) {
+                if (TextUtils.isEmpty(addr)) {
                     getAddr(longitude, latitude);
                     try {
                         Thread.sleep(3000);
@@ -211,13 +211,13 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 }
                 // 未签到时，关闭location服务
                 mLocationClient.stop();
-                if (addr == null) {
+                if (TextUtils.isEmpty(addr)) {
                     mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
                 } else {
                     mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
                 }
             } else {
-                if (addr == null) {
+                if (TextUtils.isEmpty(addr)) {
                     mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
                 } else {
                     mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
@@ -271,7 +271,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                                 }
                                 ArrayAdapter<String> adapterType = new ArrayAdapter<>(
                                         context,
-                                        R.layout.spinner_item,
+                                        R.layout.item_spinner,
                                         listQuestin);
                                 typeSpn.setAdapter(adapterType);
                                 typeSpn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -58,7 +58,7 @@ public class WorkLocationActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.worklocation);
+		setContentView(R.layout.activity_worklocation);
 		
 		context = WorkLocationActivity.this;
 		mac = GetInfo.getIMEI(context);
@@ -291,7 +291,7 @@ public class WorkLocationActivity extends BaseActivity {
 //
 //								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 //										WorkLocationActivity.this,
-//										R.layout.spinner_item,
+//										R.layout.item_spinner,
 //										list);
 //								// 把定义好的Adapter设定到spinner中
 //								departSpinner.setAdapter(adapter);
@@ -462,7 +462,7 @@ public class WorkLocationActivity extends BaseActivity {
 	private void reloadSpinner(Spinner spinner,ArrayList<String> list) {
 		ArrayAdapter<String> adapter =
 				new ArrayAdapter<String>(context,
-						R.layout.spinner_item,
+						R.layout.item_spinner,
 						list);
 		spinner.setAdapter(adapter);
 	}

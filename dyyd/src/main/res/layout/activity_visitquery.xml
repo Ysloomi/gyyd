@@ -1,226 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="拜访客户"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/visitquery_customer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_below="@+id/visitquery_person"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="拜访目的"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_below="@+id/visitquery_aim"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="拜访结果"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="拜访客户" />
 
-    <TextView
-        android:id="@+id/visitquery_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/TextView01"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/TextView01"
-        android:background="@drawable/bigtext_bg"
-        android:gravity="top"
-        android:maxLines="6"
-        android:paddingLeft="2dp"
-        android:scrollbars="vertical"
-        android:singleLine="false"
-        android:textColor="#000000" />
+                <TextView
+                    android:id="@+id/visitquery_customer"
+                    style="@style/MyText" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView01"
-        android:layout_below="@+id/visitquery_result"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="照片信息"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="拜访人员"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/visitquery_person"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/visitquery_customer"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="拜访人员" />
 
-    <TextView
-        android:id="@+id/visitquery_aim"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/visitquery_person"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/text_bg"
-        android:textColor="#000000" />
 
-    <ImageView
-        android:id="@+id/visitquery_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignTop="@+id/TextView02"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+                <TextView
+                    android:id="@+id/visitquery_person"
+                    style="@style/MyText" />
 
-    <TextView
-        android:id="@+id/leavetime_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:text="离开时间:"
-        android:textColor="@android:color/black" />
 
-    <TextView
-        android:id="@+id/reachtime_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/leavetime_text"
-        android:layout_alignLeft="@+id/leavetime_text"
-        android:text="到达时间:"
-        android:textColor="@android:color/black" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView02"
-        android:layout_below="@+id/reachlocation_text"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="离开位置"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/location_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/visitquery_result"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="拜访目的" />
 
-    <ProgressBar
-        android:id="@+id/photo_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/visitquery_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="13dp"
-        android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/visitquery_result"
-        android:layout_alignTop="@+id/visitquery_image"
-        android:src="@drawable/download_button" />
+                <TextView
+                    android:id="@+id/visitquery_aim"
+                    style="@style/MyText" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/download_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/imageView1"
-        android:layout_alignTop="@+id/imageView1"
-        android:background="#00000000" />
-    
-    
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView02"
-        android:layout_below="@+id/visitquery_image"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="到达位置"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+            <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/reachlocation_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/visitquery_result"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/textView6"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="拜访结果" />
 
-</RelativeLayout>
+                <TextView
+                    android:id="@+id/visitquery_result"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_question_type">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="问题类型" />
+
+                <TextView
+                    android:id="@+id/txt_question_type"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/TextOutLayout"
+                android:id="@+id/ll_question">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="问题反馈" />
+
+                <TextView
+                    android:id="@+id/txt_question"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="照片信息" />
+
+
+                <ImageView
+                    android:id="@+id/visitquery_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+
+                <ProgressBar
+                    android:id="@+id/photo_progressbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/txt_download"
+                    style="@style/TapText"
+                    android:layout_alignParentRight="true"
+                    android:text="获取" />
+
+            </RelativeLayout>
+
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="到达位置" />
+
+                <TextView
+                    android:id="@+id/txt_reach_addr"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="离开位置" />
+
+
+                <TextView
+                    android:id="@+id/txt_leave_addr"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="到达时间" />
+
+                <TextView
+                    android:id="@+id/leavetime_text"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="离开时间" />
+
+                <TextView
+                    android:id="@+id/reachtime_text"
+                    style="@style/MyText" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

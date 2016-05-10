@@ -51,6 +51,7 @@ public class VisitReachActivity extends BaseActivity {
 	private String customerLat="";
 	private String customerLng="";
 	private String customerCode="";
+	private int customerScope;
 	private String leavetype="";
 
 	private TextView addrText;
@@ -78,6 +79,22 @@ public class VisitReachActivity extends BaseActivity {
 			switch (msg.what) {
 			case MSG_SUCCESS:
 				addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
+				if (!TextUtils.isEmpty(from)){
+					if (Tools.isEmpty(customerLat)||"0".equals(customerLat)){
+						leavetype = "未采集";
+						insideText.setText(leavetype);
+					}else{
+						if (!Tools.isEmpty(latitude)){
+							LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
+							LatLng p2 = new LatLng(Double.valueOf(customerLat),Double.valueOf(customerLng));
+							double distance = DistanceUtil. getDistance(p1, p2);
+							leavetype = distance < customerScope ? "是" : "否" ;
+							insideText.setText(leavetype);
+						}else{
+							ToastUtil.toast(context,"请先等待获取位置信息");
+						}
+					}
+				}
 				break;
 			case MSG_FAILURE:
 				addrText.setText("请重新定位");
@@ -112,8 +129,11 @@ public class VisitReachActivity extends BaseActivity {
 
 		if (!TextUtils.isEmpty(from)){
 			customer = getIntent().getStringExtra("name");
+			customerCode = getIntent().getStringExtra("customercode");
+			customerLat = getIntent().getStringExtra("lat");
+			customerLng= getIntent().getStringExtra("lng");
+			customerScope = getIntent().getIntExtra("scope",0);
 			customerEdit.setText(customer);
-
 		}
 
 		String a = PreferenceUtil.readString(context,"aim");
@@ -201,8 +221,8 @@ public class VisitReachActivity extends BaseActivity {
 				customerLat = data.getStringExtra("lat");
 				customerLng = data.getStringExtra("lng");
 				customerCode = data.getStringExtra("ccuscode");//客户编码
-				int scope = Integer.valueOf(data.getStringExtra("scope"));
-				if (Tools.isEmpty(customerLat)){
+				customerScope = Integer.valueOf(data.getStringExtra("scope"));
+				if (Tools.isEmpty(customerLat)||"0".equals(customerLat)){
 					leavetype = "未采集";
 					insideText.setText(leavetype);
 				}else{
@@ -210,7 +230,7 @@ public class VisitReachActivity extends BaseActivity {
 						LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
 						LatLng p2 = new LatLng(Double.valueOf(customerLat),Double.valueOf(customerLng));
 						double distance = DistanceUtil. getDistance(p1, p2);
-						leavetype = distance < scope ? "是" : "否" ;
+						leavetype = distance < customerScope ? "是" : "否" ;
 						insideText.setText(leavetype);
 					}else{
 						ToastUtil.toast(context,"请先等待获取位置信息");
@@ -337,7 +357,7 @@ public class VisitReachActivity extends BaseActivity {
 								}
 								ArrayAdapter<String> adapterType = new ArrayAdapter<>(
 										context,
-										R.layout.spinner_item,
+										R.layout.item_spinner,
 										list);
 								typeSpinner.setAdapter(adapterType);
 								typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -361,7 +381,9 @@ public class VisitReachActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}finally {
-							typeSpinner.setSelection(1,true);
+							if (!TextUtils.isEmpty(from)){
+								typeSpinner.setSelection(1,true);
+							}
 						}
 					}
 				});

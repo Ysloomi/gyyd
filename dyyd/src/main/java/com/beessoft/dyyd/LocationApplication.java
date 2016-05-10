@@ -281,9 +281,8 @@ public class LocationApplication extends Application {
 		String inum = "0";
 
 		String httpUrl = User.mainurl + "app/save_app_jwd";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
-//		PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-//		client_request.setCookieStore(myCookieStore);
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("jd", jd);
@@ -302,8 +301,7 @@ public class LocationApplication extends Application {
 						distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
 						// 更新用户参数
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
-//							Log.e("location",dataJson.toString());
+							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
 								distanceHelper
 										.getReadableDatabase()

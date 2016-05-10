@@ -377,7 +377,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 		ArrayAdapter<String> adapter =
 				new ArrayAdapter<String>(
 						NewCheckQueryActivity.this,
-						R.layout.spinner_item,
+						R.layout.item_spinner,
 						list);
 		spinner.setAdapter(adapter);
 	}

@@ -12,7 +12,7 @@
         android:layout_below="@+id/visitquery_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/approvequery"
-        android:text="审批查询"
+        android:text="@string/activity_approvequery"
         android:visibility="gone" />
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_below="@+id/mileage_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/workquery"
-        android:text="日志查询"
+        android:text="@string/activity_workquery"
         android:visibility="gone" />
 
     <Button
@@ -53,7 +53,7 @@
         android:layout_below="@+id/query_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/mymemo"
-        android:text="备忘录"
+        android:text="@string/activity_mymemo"
         android:visibility="gone" />
 
     <Button
@@ -63,7 +63,7 @@
         android:layout_below="@+id/notice_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/arrange"
-        android:text="安排工作"
+        android:text="@string/activity_arrange"
         android:visibility="gone" />
 
     <Button
@@ -73,7 +73,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/mymileage"
-        android:text="我的里程"
+        android:text="@string/activity_mymileage"
         android:visibility="gone" />
 
     <Button
@@ -101,7 +101,7 @@
         android:layout_below="@+id/photo_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/worklocation"
-        android:text="员工位置" />
+        android:text="@string/activity_location" />
 
     <Button
         android:id="@+id/checkquery_button"
@@ -128,13 +128,13 @@
 
 
     <Button
-        android:id="@+id/visitquery_button"
+        android:id="@+id/btn_visitquery"
         style="@style/FragmentButton"
         android:layout_alignLeft="@+id/checkquery_button"
         android:layout_alignStart="@+id/checkquery_button"
         android:layout_below="@+id/checkquery_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/visitquery"
-        android:text="@string/activity_visitquery" />
+        android:text="@string/activity_visitquery"/>
 
 </RelativeLayout>

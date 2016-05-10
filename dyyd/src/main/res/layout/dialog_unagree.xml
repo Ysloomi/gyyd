@@ -8,11 +8,7 @@
         android:id="@+id/reason_text"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
         android:background="@drawable/bigtext_bg"
-        android:gravity="top" >
-
-        <requestFocus />
-    </EditText>
+        android:gravity="top" />
 
 </RelativeLayout>

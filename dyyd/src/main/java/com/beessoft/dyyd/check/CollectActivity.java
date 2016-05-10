@@ -633,7 +633,7 @@ public class CollectActivity extends BaseActivity {
 	public void reloadSpinner(Spinner spinner,ArrayList<String> list) {
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(
 				CollectActivity.this,
-				R.layout.spinner_item,
+				R.layout.item_spinner,
 				list);
 		spinner.setAdapter(adapter);
 	}

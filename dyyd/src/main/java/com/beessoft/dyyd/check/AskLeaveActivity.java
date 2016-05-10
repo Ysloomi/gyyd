@@ -85,7 +85,6 @@ public class AskLeaveActivity extends BaseActivity {
         startEdit.setText(GetInfo.Date());
         overEdit.setText(GetInfo.Date());
 
-
         reasonEdit = (EditText) findViewById(R.id.reason_et);
         amCheckBox = (CheckBox) findViewById(R.id.am_cb);
         pmCheckBox = (CheckBox) findViewById(R.id.pm_cb);
@@ -207,7 +206,7 @@ public class AskLeaveActivity extends BaseActivity {
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                                 context,
-                                R.layout.spinner_item,
+                                R.layout.item_spinner,
                                 list);
                         typeSpinner.setAdapter(adapter);
                     }

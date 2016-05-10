@@ -290,6 +290,9 @@ public class GetInfo {
                     case "9":
                         a = R.drawable.note_untap;
                         break;
+                    case "10":
+                        a = R.drawable.visitquery_untap;
+                        break;
                 }
             }
             Drawable drawableTopCheckIn = context.getResources().getDrawable(a);

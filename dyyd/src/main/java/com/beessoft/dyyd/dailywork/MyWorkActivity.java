@@ -27,7 +27,6 @@ import java.util.List;
 
 public class MyWorkActivity extends BaseActivity {
 
-	private String name;
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 	private ListView listView;
 	private SimpleAdapter simAdapter;
@@ -58,7 +57,7 @@ public class MyWorkActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
-		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("mac", "cs");
 		parameters_userInfo.put("usercode", username);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -67,15 +66,11 @@ public class MyWorkActivity extends BaseActivity {
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-							String code = dataJson.getString("code");
+							int code = dataJson.getInt("code");
 							datas.clear();
-							HashMap<String, Object> map1 = new HashMap<String, Object>();
-							map1.put("name", "政企拜访");
-							map1.put("message", "");
-							datas.add(map1);
-							if (code.equals("1")) {
+							if (code==1) {
 								ToastUtil.toast(context,"没有相关信息");
-							} else if (code.equals("0")) {
+							} else if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
@@ -99,15 +94,16 @@ public class MyWorkActivity extends BaseActivity {
 										AdapterView<?> parent, View view,
 										int position, long id) {
 									ListView listView = (ListView) parent;
-									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
+									HashMap<String, String> map = (HashMap<String, String>) listView
+											.getItemAtPosition(position);
 									Intent intent = new Intent();
-									name = map.get("name");
+									String name = map.get("name");
 									if ("渠道拜访".equals(name)) {
 										intent.setClass(context, TodoListActivity.class);
 										intent.putExtra("from","shop");
 										startActivity(intent);
 									}else if ("政企拜访".equals(name)) {
-										intent.setClass(context, TodoListActivity.class);
+										intent.setClass(context, TodoActivity.class);
 										intent.putExtra("from","unit");
 										startActivity(intent);
 									} else if ("待审批工作日志".equals(name)) {
@@ -171,13 +167,9 @@ public class MyWorkActivity extends BaseActivity {
 ////			} catch (Exception e) {
 ////				e.printStackTrace();
 ////			}
-//			cleanlist();
-//			// 显示ProgressDialog
-//			progressDialog = ProgressDialog.show(MyWorkActivity.this, "载入中...",
-//					"请等待...", true, false);
-//			getData(MyWorkActivity.this);
+//			ProgressDialogUtil.showProgressDialog(context);
+//			getData();
 //		}
 //		super.onResume();
 //	}
-
 }

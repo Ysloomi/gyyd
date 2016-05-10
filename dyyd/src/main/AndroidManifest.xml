@@ -92,10 +92,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Loading">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -192,11 +192,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".material.WorkBookActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_workbook"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".mymeans.ChangePasswordActivity"
             android:icon="@drawable/top_logo"
             android:label="@string/activity_changepassword"
@@ -238,16 +233,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".material.SalesWorkBookActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_sales"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".material.BossWorkBookActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_boss"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".dailywork.WorkQueryListActivity"
             android:icon="@drawable/top_logo"
             android:label="@string/activity_workquery"
@@ -285,16 +270,6 @@
             android:label="@string/activity_share"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".material.CompanyTargetActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_company"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".material.BranchTargetActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_branch"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".dailywork.CheckApproveListActivity"
             android:icon="@drawable/top_logo"
@@ -362,16 +337,6 @@
             android:label="@string/activity_notice"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".material.TerminalActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_terminal"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".material.TargetQueryListActivity"
-            android:icon="@drawable/top_logo"
-            android:label="@string/activity_targetquery"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".dailywork.ConfirmListActivity"
             android:icon="@drawable/top_logo"

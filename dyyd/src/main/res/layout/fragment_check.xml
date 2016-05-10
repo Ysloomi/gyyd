@@ -11,7 +11,7 @@
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/checkout_button"
         android:drawableTop="@drawable/checkin"
-        android:text="上班签到" />
+        android:text="@string/activity_checkin" />
 
     <Button
         android:id="@+id/checkout_button"
@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:drawableTop="@drawable/checkout"
-        android:text="下班签退" />
+        android:text="@string/activity_checkout" />
 
     <Button
         android:id="@+id/visit_button"
@@ -29,7 +29,7 @@
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/checkout_button"
         android:drawableTop="@drawable/visitreach"
-        android:text="到达现场" />
+        android:text="@string/activity_visitreach" />
 
     <Button
         android:id="@+id/askleave_button"
@@ -39,15 +39,15 @@
         android:layout_below="@+id/visit_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/askleave"
-        android:text="请假登记" />
+        android:text="@string/activity_askleave" />
 
     <Button
         android:id="@+id/collect_button"
         style="@style/FragmentButton"
-        android:drawableTop="@drawable/collect"
-        android:text="考勤点采集"
         android:layout_alignTop="@+id/leave_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:drawableTop="@drawable/collect"
+        android:text="@string/activity_collect" />
 
     <Button
         android:id="@+id/leave_button"
@@ -57,6 +57,6 @@
         android:layout_below="@+id/checkin_button"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/leave"
-        android:text="离开现场" />
+        android:text="@string/activity_visitleave" />
 
 </RelativeLayout>

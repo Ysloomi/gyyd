@@ -82,7 +82,7 @@ public class PhotoQueryListActivity extends BaseActivity {
 								// 声明一个ArrayAdapter用于存放简单数据
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 										context,
-										R.layout.spinner_item,
+										R.layout.item_spinner,
 										list);
 								// 把定义好的Adapter设定到spinner中
 								spinner.setAdapter(adapter);
@@ -158,7 +158,7 @@ public class PhotoQueryListActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									PhotoQueryListActivity.this,
 									datas,// 数据源
-									R.layout.photoquery_main_item,// 显示布局
+									R.layout.item_photoquery_main,// 显示布局
 									new String[] { "type", "message" },
 									new int[] { R.id.name, R.id.message });
 							listView.setAdapter(simAdapter);

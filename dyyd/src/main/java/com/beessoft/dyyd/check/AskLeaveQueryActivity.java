@@ -6,7 +6,6 @@ import android.widget.SimpleAdapter;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -26,8 +25,7 @@ public class AskLeaveQueryActivity extends BaseActivity {
 
     private ListView listView;
     private SimpleAdapter simAdapter;
-
-    List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
+    private List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,9 @@ public class AskLeaveQueryActivity extends BaseActivity {
     }
 
     private void visitServer() {
+
         String httpUrl = User.mainurl + "sf/LeaveQuery";
+
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
@@ -57,7 +57,8 @@ public class AskLeaveQueryActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
+
                             if (dataJson.getString("code").equals("0")) {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 for (int j = 0; j < array.length(); j++) {

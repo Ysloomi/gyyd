@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
@@ -32,8 +32,11 @@ public class AskLeaveApproveActivity extends BaseActivity {
 
     private Button agreeButton;
     private Button refuseButton;
-    private TextView nameText, startText, overText, daysText, typeText,
-            reasonText, approvenameText, approvetimeText, approveresultText, title7, title8, title9;
+    private TextView nameText, startText, overText, daysText, typeText, reasonText;
+
+    private LinearLayout approveManLl;
+    private LinearLayout approveTimeLl;
+    private LinearLayout approveResultLl;
 
     private String usercode;
     private String intodate;
@@ -42,7 +45,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.askapprove);
+        setContentView(R.layout.activity_askapprove);
 
         context = AskLeaveApproveActivity.this;
         mac = GetInfo.getIMEI(context);
@@ -71,22 +74,26 @@ public class AskLeaveApproveActivity extends BaseActivity {
         intodate = map.get("intodate");
 
         if ("query".equals(getIntent().getStringExtra("query"))) {
+            setTitle("请假查询");
             agreeButton.setVisibility(View.GONE);
             refuseButton.setVisibility(View.GONE);
-            // 设置标题
-//			CharSequence titleLable = "考勤记录";
-            setTitle("请假查询");
+//            approveManLl.setVisibility(View.VISIBLE);
+//            approveTimeLl.setVisibility(View.VISIBLE);
+//            approveResultLl.setVisibility(View.VISIBLE);
         } else {
-            title7.setVisibility(View.GONE);
-            title8.setVisibility(View.GONE);
-            title9.setVisibility(View.GONE);
-            approvenameText.setVisibility(View.GONE);
-            approvetimeText.setVisibility(View.GONE);
-            approveresultText.setVisibility(View.GONE);
+            agreeButton.setVisibility(View.VISIBLE);
+            refuseButton.setVisibility(View.VISIBLE);
+//            approveManLl.setVisibility(View.GONE);
+//            approveTimeLl.setVisibility(View.GONE);
+//            approveResultLl.setVisibility(View.GONE);
         }
     }
 
     public void initView() {
+
+        approveManLl = (LinearLayout) findViewById(R.id.ll_approveman) ;
+        approveTimeLl = (LinearLayout) findViewById(R.id.ll_approve_time) ;
+        approveResultLl = (LinearLayout) findViewById(R.id.ll_approve_result) ;
 
         nameText = (TextView) findViewById(R.id.person_text);
         startText = (TextView) findViewById(R.id.start_text);
@@ -95,13 +102,9 @@ public class AskLeaveApproveActivity extends BaseActivity {
         typeText = (TextView) findViewById(R.id.type_text);
         reasonText = (TextView) findViewById(R.id.explain_text);
 
-        approvenameText = (TextView) findViewById(R.id.approveman_text);
-        approvetimeText = (TextView) findViewById(R.id.approvetime_text);
-        approveresultText = (TextView) findViewById(R.id.approveresult_text);
-
-        title7 = (TextView) findViewById(R.id.title7);
-        title8 = (TextView) findViewById(R.id.title8);
-        title9 = (TextView) findViewById(R.id.title9);
+//        approvenameText = (TextView) findViewById(R.id.approveman_text);
+//        approvetimeText = (TextView) findViewById(R.id.approvetime_text);
+//        approveresultText = (TextView) findViewById(R.id.approveresult_text);
 
         agreeButton = (Button) findViewById(R.id.agree_button);
         refuseButton = (Button) findViewById(R.id.refuse_button);
@@ -129,7 +132,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
     @SuppressLint("InflateParams")
     private void inputExamineDialog() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.unagree, null);
+        View view = inflater.inflate(R.layout.dialog_unagree, null);
 
         final EditText editText1 = (EditText) view.findViewById(R.id.reason_text);
 
@@ -193,8 +196,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
                                 ToastUtil.toast(context, "审批成功");
                                 finish();
                             } else {
-                                Toast.makeText(AskLeaveApproveActivity.this,
-                                        "请重新上传", Toast.LENGTH_SHORT).show();
+                                ToastUtil.toast(context,"请重新上传");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

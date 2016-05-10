@@ -125,7 +125,7 @@ public class ArrangeQueryListActivity extends BaseActivity {
                             }
                             simAdapter = new SimpleAdapter(
                                     ArrangeQueryListActivity.this, datas,// 数据源
-                                    R.layout.arrangequery_item,// 显示布局
+                                    R.layout.item_arrangequery,// 显示布局
                                     new String[]{"idate", "username",
                                             "work", "state"}, new int[]{
                                     R.id.date, R.id.name,

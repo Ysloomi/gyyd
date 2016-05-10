@@ -52,42 +52,7 @@ public class TodoListActivity extends BaseActivity {
         } else {
             setTitle("政企拜访");
 
-            datas.clear();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("step", "测试");
-            map.put("done", "完成次数:1");
-            map.put("undo", "完成时长:1");
-            datas.add(map);
-
-            simAdapter = new SimpleAdapter(
-                    TodoListActivity.this,
-                    datas,// 数据源
-                    R.layout.item_todo,// 显示布局
-                    new String[]{"step", "name", "done", "undo"},
-                    new int[]{
-                            R.id.step, R.id.name,
-                            R.id.do_proportion,
-                            R.id.time_last});
-            listView.setAdapter(simAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onItemClick(
-                        AdapterView<?> parent, View view,
-                        int position, long id) {
-                    ListView listView = (ListView) parent;
-                    HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
-                    String step = map.get("step");
-                    Intent intent = new Intent(context, TodoActivity.class);
-                    intent.putExtra("step", step);
-                    intent.putExtra("from", from);
-                    startActivity(intent);
-                }
-            });
         }
-
-
     }
 
     private void visitServer() {

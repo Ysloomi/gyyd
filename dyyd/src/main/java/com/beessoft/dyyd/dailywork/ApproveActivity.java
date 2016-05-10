@@ -60,7 +60,7 @@ public class ApproveActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.approve);
+		setContentView(R.layout.activity_approve);
 
 		textView1 = (TextView) findViewById(R.id.approve_person);
 		textView2 = (TextView) findViewById(R.id.approve_outtime);

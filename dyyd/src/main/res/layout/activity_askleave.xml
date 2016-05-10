@@ -1,63 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                style="@style/detailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                style="@style/MyTitle"
                 android:text="开始日期" />
 
             <EditText
                 android:id="@+id/start_et"
-
-                style="@style/detailText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp" />
+                style="@style/MyText" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                style="@style/detailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                style="@style/MyTitle"
                 android:text="结束日期" />
 
             <EditText
                 android:id="@+id/over_et"
-                style="@style/detailText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp" />
+                style="@style/MyText" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <RelativeLayout style="@style/TextOutLayout">
 
             <CheckBox
                 android:id="@+id/am_cb"
@@ -77,57 +52,31 @@
                 android:text="下午" />
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                style="@style/detailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                style="@style/MyTitle"
                 android:text="请假类型" />
 
             <Spinner
                 android:id="@+id/type_spinner"
-                style="@style/detailText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp" />
+                style="@style/MyText" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                style="@style/detailTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                style="@style/MyTitle"
                 android:text="请假事由" />
 
             <EditText
                 android:id="@+id/reason_et"
-                style="@style/detailBigText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="20dp" />
+                style="@style/MyText" />
 
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="#4db0f6">
+    <RelativeLayout style="@style/RelativeBottom">
 
         <Button
             android:id="@+id/askleave_confirm"
@@ -139,4 +88,4 @@
             android:drawableTop="@drawable/confirm_icon" />
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
