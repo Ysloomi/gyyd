@@ -8,8 +8,8 @@
     <Button
         android:id="@+id/query_button"
         style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/visitquery_button"
-        android:layout_below="@+id/visitquery_button"
+        android:layout_alignLeft="@+id/btn_visitquery"
+        android:layout_below="@+id/btn_visitquery"
         android:layout_marginTop="35dp"
         android:drawableTop="@drawable/approvequery"
         android:text="@string/activity_approvequery"
@@ -20,7 +20,7 @@
         style="@style/FragmentButton"
         android:layout_below="@+id/work_button"
         android:layout_marginTop="35dp"
-        android:layout_toRightOf="@+id/visitquery_button"
+        android:layout_toRightOf="@+id/btn_visitquery"
         android:drawableTop="@drawable/notice_button"
         android:text="@string/activity_notice"
         android:visibility="gone" />

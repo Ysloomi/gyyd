@@ -67,6 +67,7 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 						try {
 							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
+							datas.clear();
 							if ("1".equals(code)) {
 								ToastUtil.toast(context, "没有相关信息");
 							} else if ("0".equals(code)) {
@@ -86,30 +87,30 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 									map.put("pm",obj.getString("pm"));
 									datas.add(map);
 								}
-								simAdapter = new SimpleAdapter(
-										AskLeaveApproveListActivity.this, 
-										datas,// 数据源
-										R.layout.item_askleaveapprovelist,// 显示布局
-										new String[] { "start", "over",
-												"username" ,"type" }, 
-										new int[] {
-												R.id.start, R.id.over,
-												R.id.person,R.id.type });
-								listView.setAdapter(simAdapter);
-								listView.setOnItemClickListener(new OnItemClickListener() {
-									@SuppressWarnings("unchecked")
-									@Override
-									public void onItemClick(AdapterView<?> parent, View view,
-											int position, long id) {
-										ListView listView = (ListView) parent;
-										HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
-										Intent intent = new Intent();
-										intent.setClass(context, AskLeaveApproveActivity.class);
-										intent.putExtra("hashmap", map);
-										startActivity(intent);
-									}
-								});
 							}
+							simAdapter = new SimpleAdapter(
+									AskLeaveApproveListActivity.this,
+									datas,// 数据源
+									R.layout.item_askleaveapprovelist,// 显示布局
+									new String[] { "start", "over",
+											"username" ,"type" },
+									new int[] {
+											R.id.start, R.id.over,
+											R.id.person,R.id.type });
+							listView.setAdapter(simAdapter);
+							listView.setOnItemClickListener(new OnItemClickListener() {
+								@SuppressWarnings("unchecked")
+								@Override
+								public void onItemClick(AdapterView<?> parent, View view,
+														int position, long id) {
+									ListView listView = (ListView) parent;
+									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
+									Intent intent = new Intent();
+									intent.setClass(context, AskLeaveApproveActivity.class);
+									intent.putExtra("hashmap", map);
+									startActivity(intent);
+								}
+							});
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {

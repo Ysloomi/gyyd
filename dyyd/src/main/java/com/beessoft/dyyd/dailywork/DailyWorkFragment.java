@@ -54,12 +54,12 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         checkQueryBtn = (Button) view.findViewById(R.id.checkquery_button);
         noteBTn = (Button) view.findViewById(R.id.btn_note);
 
-        photoBtn.setOnClickListener(this);
-        myworkButton.setOnClickListener(this);
-        checkQueryBtn.setOnClickListener(this);
-        workLocationButton.setOnClickListener(this);
-        noteBTn.setOnClickListener(this);
-        visitQueryBtn.setOnClickListener(this);
+        photoBtn.setOnClickListener(DailyWorkFragment.this);
+        myworkButton.setOnClickListener(DailyWorkFragment.this);
+        checkQueryBtn.setOnClickListener(DailyWorkFragment.this);
+        workLocationButton.setOnClickListener(DailyWorkFragment.this);
+        noteBTn.setOnClickListener(DailyWorkFragment.this);
+        visitQueryBtn.setOnClickListener(DailyWorkFragment.this);
 
         GetInfo.getButtonRole(context, photoBtn, "5","");
         GetInfo.getButtonRole(context, myworkButton, "6","");
