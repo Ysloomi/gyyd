@@ -57,7 +57,7 @@ public class MyWorkActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
-		parameters_userInfo.put("mac", "cs");
+		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
 
 		client_request.post(httpUrl, parameters_userInfo,

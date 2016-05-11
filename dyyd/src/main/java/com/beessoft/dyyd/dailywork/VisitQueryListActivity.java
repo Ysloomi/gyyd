@@ -48,7 +48,7 @@ public class VisitQueryListActivity extends BaseActivity implements View.OnClick
         username = GetInfo.getUserName(context);
 
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_search);
-        listView = (ListView) findViewById(R.id.visitquery_list);
+        listView = (ListView) findViewById(R.id.list_view);
 
 
 //        GetJSON.visitServer_GetInfo_NoSpecial(VisitQueryListActivity.this, autoCompleteTextView, mac);

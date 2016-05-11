@@ -59,7 +59,7 @@ public class TodoActivity extends BaseActivity {
         } else {
             setTitle("政企拜访");
             ProgressDialogUtil.showProgressDialog(context);
-            parameters_userInfo.put("mac", "cs");
+            parameters_userInfo.put("mac", mac);
             parameters_userInfo.put("usercode", username);
             parameters_userInfo.put("ccusType", "1");
             visitServer(parameters_userInfo);
@@ -143,9 +143,6 @@ public class TodoActivity extends BaseActivity {
             ,final String lat,final String lng
             ,final int scope) {
         String httpUrl = User.mainurl + "sf/startwork_do";
-
-        String mac = GetInfo.getIMEI(context);
-        String username = GetInfo.getUserName(context);
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
