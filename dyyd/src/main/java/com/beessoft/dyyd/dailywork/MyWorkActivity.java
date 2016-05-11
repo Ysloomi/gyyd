@@ -66,11 +66,11 @@ public class MyWorkActivity extends BaseActivity {
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-							String code = dataJson.getString("code");
+							int code = dataJson.getInt("code");
 							datas.clear();
-							if (code.equals("1")) {
+							if (code==1) {
 								ToastUtil.toast(context,"没有相关信息");
-							} else if (code.equals("0")) {
+							} else if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
@@ -100,9 +100,11 @@ public class MyWorkActivity extends BaseActivity {
 									String name = map.get("name");
 									if ("渠道拜访".equals(name)) {
 										intent.setClass(context, TodoListActivity.class);
+										intent.putExtra("from","shop");
 										startActivity(intent);
-									}else if ("集团拜访".equals(name)) {
-										intent.setClass(context, TodoListActivity.class);
+									}else if ("政企拜访".equals(name)) {
+										intent.setClass(context, TodoActivity.class);
+										intent.putExtra("from","unit");
 										startActivity(intent);
 									} else if ("待审批工作日志".equals(name)) {
 										intent.setClass(context, ApproveListActivity.class);

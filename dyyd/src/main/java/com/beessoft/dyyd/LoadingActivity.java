@@ -1,7 +1,5 @@
 package com.beessoft.dyyd;
 
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +8,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.utils.User;
+
+import java.util.TimerTask;
 
 public class LoadingActivity extends Activity {
 
@@ -30,7 +30,7 @@ public class LoadingActivity extends Activity {
 
 		versionText = (TextView) findViewById(R.id.version_text);
 
-		versionText.setText(new String(User.version + User.getVersionName(this)));
+		versionText.setText(User.version + User.getVersionName(this));
 
 		Handler handler = new Handler();
 		TimerTask task = new TimerTask() {

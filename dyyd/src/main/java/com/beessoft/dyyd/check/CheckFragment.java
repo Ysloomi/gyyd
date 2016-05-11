@@ -48,12 +48,12 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 		collectBtn = (Button) view.findViewById(R.id.collect_button);
 		askLeaveBtn = (Button) view.findViewById(R.id.askleave_button);
 
-		checkInButton.setOnClickListener(this);
-		checkOutButton.setOnClickListener(this);
-		visitReachBtn.setOnClickListener(this);
-		visitLeaveBtn.setOnClickListener(this);
-		collectBtn.setOnClickListener(this);
-		askLeaveBtn.setOnClickListener(this);
+		checkInButton.setOnClickListener(CheckFragment.this);
+		checkOutButton.setOnClickListener(CheckFragment.this);
+		visitReachBtn.setOnClickListener(CheckFragment.this);
+		visitLeaveBtn.setOnClickListener(CheckFragment.this);
+		collectBtn.setOnClickListener(CheckFragment.this);
+		askLeaveBtn.setOnClickListener(CheckFragment.this);
 
 		GetInfo.getButtonRole(context,checkInButton,"1","checkin");
 		GetInfo.getButtonRole(context,checkOutButton,"1","checkout");

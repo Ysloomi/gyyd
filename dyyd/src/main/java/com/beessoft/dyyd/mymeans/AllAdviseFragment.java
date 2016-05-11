@@ -40,7 +40,7 @@ public class AllAdviseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View check = inflater.inflate(R.layout.alladvise, container, false);
+		View check = inflater.inflate(R.layout.fragment_alladvise, container, false);
 		listView = (ListView) check.findViewById(R.id.advise_listview);
 		context = getActivity();
 		return check;

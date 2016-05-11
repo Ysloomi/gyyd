@@ -16,6 +16,7 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -82,7 +83,7 @@ public class PhotoQueryListActivity extends BaseActivity {
 								// 声明一个ArrayAdapter用于存放简单数据
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 										context,
-										R.layout.spinner_item,
+										R.layout.item_spinner,
 										list);
 								// 把定义好的Adapter设定到spinner中
 								spinner.setAdapter(adapter);
@@ -135,6 +136,8 @@ public class PhotoQueryListActivity extends BaseActivity {
 		parameters_userInfo.put("pass", "");
 		parameters_userInfo.put("dep", Escape.escape(department));
 
+		Logger.e(httpUrl + "?"+parameters_userInfo);
+
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
@@ -158,7 +161,7 @@ public class PhotoQueryListActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									PhotoQueryListActivity.this,
 									datas,// 数据源
-									R.layout.photoquery_main_item,// 显示布局
+									R.layout.item_photoquery_main,// 显示布局
 									new String[] { "type", "message" },
 									new int[] { R.id.name, R.id.message });
 							listView.setAdapter(simAdapter);

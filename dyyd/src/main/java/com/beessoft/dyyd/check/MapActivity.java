@@ -1,7 +1,5 @@
 package com.beessoft.dyyd.check;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Base64;
 import android.widget.TextView;
@@ -22,8 +20,8 @@ import com.baidu.mapapi.model.LatLng;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.overlayutil.OverlayManager;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -44,8 +42,6 @@ public class MapActivity extends BaseActivity {
 	BaiduMap mBaiduMap = null;
 	MapView mMapView = null;
 //	private Marker mMarker = null;
-	
-	private ProgressDialog progressDialog;
 	private TextView textView;
 	private String department, person, itype, itime, mac,pass,myId;
 	private String flag;
@@ -56,14 +52,15 @@ public class MapActivity extends BaseActivity {
 	BitmapDescriptor bitmapGreen = BitmapDescriptorFactory
 			.fromResource(R.drawable.icon_marka_green);
 
-	private Context context;
-
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_map);
 
 		context= MapActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+		pass = GetInfo.getPass(context);
 
 		textView =(TextView) findViewById(R.id.mileage_text);
 		// 获取地图控件引用
@@ -77,22 +74,15 @@ public class MapActivity extends BaseActivity {
 		myId= getIntent().getStringExtra("id");
 		flag= getIntent().getStringExtra("flag");
 
-		mac = GetInfo.getIMEI(context);
-		pass = GetInfo.getPass(context);
-
 		// 定义Maker坐标点
 		LatLng point = new LatLng(31.133641, 104.397998);
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(point));
 
 		if ("do".equals(itype)) {
-			// 开启ProgressDialog
-			progressDialog = ProgressDialog.show(MapActivity.this, "载入中...",
-					"请等待...", true, true);
+			ProgressDialogUtil.showProgressDialog(context);
 			visitServer_do();
 		} else if ("run".equals(itype)) {
-			// 开启ProgressDialog
-			progressDialog = ProgressDialog.show(MapActivity.this, "载入中...",
-					"请等待...", true, true);
+			ProgressDialogUtil.showProgressDialog(context);
 			visitServer_run();
 		}
 	}
@@ -137,9 +127,7 @@ public class MapActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-//							Logger.e("response" + response);
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
@@ -219,14 +207,14 @@ public class MapActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 						ToastUtil.toast(context, "服务器连接超时");
 						finish();
 					}
@@ -254,8 +242,7 @@ public class MapActivity extends BaseActivity {
 
 						try {
 
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
 								List<LatLng> list = new ArrayList<LatLng>();
@@ -287,14 +274,14 @@ public class MapActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 						ToastUtil.toast(context, "服务器连接超时");
 						finish();
 					}

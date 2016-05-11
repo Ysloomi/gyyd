@@ -23,6 +23,7 @@ import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -48,9 +49,11 @@ public class VisitReachActivity extends BaseActivity {
 	private String customer, person, aim,type,location,
 			customerType,examineResultString, longtitude, latitude,
 			addr;
+	private String from;
 	private String customerLat="";
 	private String customerLng="";
 	private String customerCode="";
+	private int customerScope;
 	private String leavetype="";
 
 	private TextView addrText;
@@ -80,6 +83,22 @@ public class VisitReachActivity extends BaseActivity {
 			switch (msg.what) {
 			case MSG_SUCCESS:
 				addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
+				if (!TextUtils.isEmpty(from)){
+					if (Tools.isEmpty(customerLat)||"0".equals(customerLat)){
+						leavetype = "未采集";
+						insideText.setText(leavetype);
+					}else{
+						if (!Tools.isEmpty(latitude)){
+							LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
+							LatLng p2 = new LatLng(Double.valueOf(customerLat),Double.valueOf(customerLng));
+							double distance = DistanceUtil. getDistance(p1, p2);
+							leavetype = distance < customerScope ? "是" : "否" ;
+							insideText.setText(leavetype);
+						}else{
+							ToastUtil.toast(context,"请先等待获取位置信息");
+						}
+					}
+				}
 				break;
 			case MSG_FAILURE:
 				addrText.setText("请重新定位");
@@ -98,6 +117,7 @@ public class VisitReachActivity extends BaseActivity {
 		username = GetInfo.getUserName(context);
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
+		from = getIntent().getStringExtra("from");
 
 		initView();
 
@@ -109,6 +129,16 @@ public class VisitReachActivity extends BaseActivity {
 
 		getCustomerType();
 		getAddrLocation();
+
+
+		if (!TextUtils.isEmpty(from)){
+			customer = getIntent().getStringExtra("name");
+			customerCode = getIntent().getStringExtra("customercode");
+			customerLat = getIntent().getStringExtra("lat");
+			customerLng= getIntent().getStringExtra("lng");
+			customerScope = getIntent().getIntExtra("scope",0);
+			customerEdit.setText(customer);
+		}
 
 		String a = PreferenceUtil.readString(context,"aim");
 		if (!"".equals(a)) {
@@ -140,11 +170,17 @@ public class VisitReachActivity extends BaseActivity {
 		public void onClick(View v) {
 			switch (v.getId()){
 				case R.id.txt_get_customer:
-					customer = customerEdit.getText().toString();
-					Intent intent = new Intent();
-					intent.setClass(context,CustomerActivity.class);
-					intent.putExtra("name",customer);
-					startActivityForResult(intent,GET_CUSTOMER);
+					if (TextUtils.isEmpty(customerType)||customerType.equals("请选择")) {
+						ToastUtil.toast(context, "请选择客户类别");
+					} else {
+						customer = customerEdit.getText().toString();
+						String a = "政企单位".equals(customerType)?"1":"";
+						Intent intent = new Intent();
+						intent.setClass(context, CustomerActivity.class);
+						intent.putExtra("name", customer);
+						intent.putExtra("type", a);
+						startActivityForResult(intent, GET_CUSTOMER);
+					}
 					break;
 				case R.id.txt_preserve:
 					aim = aimEdit.getText().toString();
@@ -161,14 +197,12 @@ public class VisitReachActivity extends BaseActivity {
 					aim = aimEdit.getText().toString();
 					location = addrText.getText().toString();
 					examineResultString = "";
-					if (customerType.equals("请选择")) {
+					if (TextUtils.isEmpty(customerType)||customerType.equals("请选择")) {
 						ToastUtil.toast(context, "请选择客户类别");
 					} else {
-						if (TextUtils.isEmpty(customerType.trim()) ||
-								TextUtils.isEmpty(customer.trim())
+						if (TextUtils.isEmpty(customer.trim())
 								|| TextUtils.isEmpty(person.trim())
-								|| TextUtils.isEmpty(aim.trim())
-								|| TextUtils.isEmpty(location.trim())) {
+								|| TextUtils.isEmpty(aim.trim())) {
 							ToastUtil.toast(context, "数据不能为空");
 						} else if("正在定位...".equals(location)){
 							ToastUtil.toast(context, "请等待位置刷新");
@@ -194,8 +228,8 @@ public class VisitReachActivity extends BaseActivity {
 				customerLat = data.getStringExtra("lat");
 				customerLng = data.getStringExtra("lng");
 				customerCode = data.getStringExtra("ccuscode");//客户编码
-				int scope = Integer.valueOf(data.getStringExtra("scope"));
-				if (Tools.isEmpty(customerLat)){
+				customerScope = Integer.valueOf(data.getStringExtra("scope"));
+				if (Tools.isEmpty(customerLat)||"0".equals(customerLat)){
 					leavetype = "未采集";
 					insideText.setText(leavetype);
 				}else{
@@ -203,12 +237,15 @@ public class VisitReachActivity extends BaseActivity {
 						LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
 						LatLng p2 = new LatLng(Double.valueOf(customerLat),Double.valueOf(customerLng));
 						double distance = DistanceUtil. getDistance(p1, p2);
-						leavetype = distance < scope ? "是" : "否" ;
+						leavetype = distance < customerScope ? "是" : "否" ;
 						insideText.setText(leavetype);
 					}else{
 						ToastUtil.toast(context,"请先等待获取位置信息");
 					}
 				}
+			}else {
+				leavetype = "未采集";
+				insideText.setText(leavetype);
 			}
 		}
 	}
@@ -274,7 +311,7 @@ public class VisitReachActivity extends BaseActivity {
 				longtitude = myApp.getjd();
 				latitude = myApp.getwd();
 				type = myApp.getType();
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					visitServer_getaddr(longtitude,latitude);
 					try {
 						Thread.sleep(3000);
@@ -284,13 +321,13 @@ public class VisitReachActivity extends BaseActivity {
 				}
 				// 未签到时，关闭location服务
 				mLocationClient.stop();
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 				} else {
 					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 				}
 			} else {
-				if (addr == null) {
+				if (TextUtils.isEmpty(addr)) {
 					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 				} else {
 					// 向ui线程发送MSG_SUCCESS标识
@@ -329,7 +366,7 @@ public class VisitReachActivity extends BaseActivity {
 								}
 								ArrayAdapter<String> adapterType = new ArrayAdapter<>(
 										context,
-										R.layout.spinner_item,
+										R.layout.item_spinner,
 										list);
 								typeSpinner.setAdapter(adapterType);
 								typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -352,6 +389,10 @@ public class VisitReachActivity extends BaseActivity {
 //							ToastUtil.toast(context,msg);
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							if (!TextUtils.isEmpty(from)){
+								typeSpinner.setSelection(1,true);
+							}
 						}
 					}
 				});
@@ -386,7 +427,7 @@ public class VisitReachActivity extends BaseActivity {
 							int code = dataJson.getInt("code");
 							if (code == 0) {
 								ToastUtil.toast(context, "到达现场数据上传成功");
-								String reachTime = GetInfo.getDate();
+								String reachTime = DateUtil.getDate();
 								PreferenceUtil.write(context, "reachTime", reachTime);//保存到达时间
 								PreferenceUtil.write(context, "aim", "");//上传成功后清除
 								finish();

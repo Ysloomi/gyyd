@@ -15,20 +15,15 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
-import com.beessoft.dyyd.utils.User;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONObject;
 
 public class DailyWorkFragment extends Fragment implements OnClickListener {
 
-    private Button visitQueryBtn, myworkButton, mileageBtn, queryButton, noticeBtn, workQueryBtn,
+    private Button  myworkButton, mileageBtn, queryButton, noticeBtn, workQueryBtn,
             mymemoBtn, workLocationButton, arrangeBtn;
     private Button photoBtn;
     private Button checkQueryBtn;
     private Button noteBTn;
+    private Button visitQueryBtn;
     private TextView textView;
     private Context context;
 
@@ -45,7 +40,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
 
         textView = (TextView) view.findViewById(R.id.notice_num);
 
-        visitQueryBtn = (Button) view.findViewById(R.id.visitquery_button);
+        visitQueryBtn = (Button) view.findViewById(R.id.btn_visitquery);
         myworkButton = (Button) view.findViewById(R.id.work_button);
         mileageBtn = (Button) view.findViewById(R.id.mileage_button);
         queryButton = (Button) view.findViewById(R.id.query_button);
@@ -58,19 +53,20 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         photoBtn = (Button) view.findViewById(R.id.photo_button);
         checkQueryBtn = (Button) view.findViewById(R.id.checkquery_button);
         noteBTn = (Button) view.findViewById(R.id.btn_note);
-        noteBTn = (Button) view.findViewById(R.id.btn_note);
 
-        photoBtn.setOnClickListener(this);
-        myworkButton.setOnClickListener(this);
-        checkQueryBtn.setOnClickListener(this);
-        workLocationButton.setOnClickListener(this);
-        noteBTn.setOnClickListener(this);
+        photoBtn.setOnClickListener(DailyWorkFragment.this);
+        myworkButton.setOnClickListener(DailyWorkFragment.this);
+        checkQueryBtn.setOnClickListener(DailyWorkFragment.this);
+        workLocationButton.setOnClickListener(DailyWorkFragment.this);
+        noteBTn.setOnClickListener(DailyWorkFragment.this);
+        visitQueryBtn.setOnClickListener(DailyWorkFragment.this);
 
         GetInfo.getButtonRole(context, photoBtn, "5","");
         GetInfo.getButtonRole(context, myworkButton, "6","");
         GetInfo.getButtonRole(context, checkQueryBtn, "7","");
         GetInfo.getButtonRole(context, workLocationButton, "8","");
         GetInfo.getButtonRole(context, noteBTn, "9","");
+        GetInfo.getButtonRole(context, visitQueryBtn, "10","");
 
 //        visitQueryBtn.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
@@ -166,34 +162,35 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
 //        });
     }
 
-    private void visitServer(final Context context) {
-        String httpUrl = User.mainurl + "sf/notice";
-        String mac = GetInfo.getIMEI(getActivity());
-        String pass = GetInfo.getPass(context);
-        String username = GetInfo.getUserName(context);
-        AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-        parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("pass", pass);
-        parameters_userInfo.put("usercode", username);
-
-        client_request.post(httpUrl, parameters_userInfo,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String response) {
-                        try {
-                            JSONObject dataJson = new JSONObject(response);
-                            String noticenum = dataJson.getString("icount");
-                            PreferenceUtil.write(context, "noticenum", noticenum);
-                            textView.setText(noticenum);
-                            String online = dataJson.getString("pernum");
-                            PreferenceUtil.write(context, "online", online);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
+//    private void visitServer(final Context context) {
+//        String httpUrl = User.mainurl + "sf/notice";
+//        String mac = GetInfo.getIMEI(getActivity());
+//        String pass = GetInfo.getPass(context);
+//        String username = GetInfo.getUserName(context);
+//        AsyncHttpClient client_request = new AsyncHttpClient();
+//        RequestParams parameters_userInfo = new RequestParams();
+//        parameters_userInfo.put("mac", mac);
+//        parameters_userInfo.put("pass", pass);
+//        parameters_userInfo.put("usercode", username);
+//
+//
+//        client_request.post(httpUrl, parameters_userInfo,
+//                new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(String response) {
+//                        try {
+//                            JSONObject dataJson = new JSONObject(response);
+//                            String noticenum = dataJson.getString("icount");
+//                            PreferenceUtil.write(context, "noticenum", noticenum);
+//                            textView.setText(noticenum);
+//                            String online = dataJson.getString("pernum");
+//                            PreferenceUtil.write(context, "online", online);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void onClick(View v) {
@@ -242,6 +239,14 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 } else {
                     ToastUtil.toast(context, "无权限");
                 }
+                break;
+            case R.id.btn_visitquery:
+//                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
+                    intent.setClass(context, VisitQueryListActivity.class);
+                    startActivity(intent);
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
                 break;
             default:
                 break;

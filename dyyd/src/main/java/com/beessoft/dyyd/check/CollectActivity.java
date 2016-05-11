@@ -3,7 +3,6 @@ package com.beessoft.dyyd.check;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,7 +17,9 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,10 +28,10 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.utils.Constant;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -49,15 +50,24 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class CollectActivity extends BaseActivity {
-	
+
+	private LinearLayout companyLl;
+	private LinearLayout departLl;
+	private LinearLayout areaLl;
+	private LinearLayout shopLl;
+	private LinearLayout unitLl;
+
 	private TextView addrText;
+	private EditText unitEdt;
 	private ImageView photoImage;
 
+	private Spinner typeSpn;
 	private Spinner companySpn;
 	private Spinner departSpn;
 	private Spinner areaSpn;
 	private Spinner shopSpn;
 	
+	private ArrayList<String> typeList = new ArrayList<String>();
 	private ArrayList<String> companyList = new ArrayList<String>();
 	private ArrayList<String> compantIds = new ArrayList<String>();
 	private ArrayList<String> departList = new ArrayList<String>();
@@ -72,8 +82,9 @@ public class CollectActivity extends BaseActivity {
 	private String addr;
 	private String type;
 	private String shopId;
-	private String mId;
 	private String from;
+	private String customerType;
+
 	private int iflag = 0;
 	//照相
 	private Bitmap bitmap;
@@ -84,17 +95,16 @@ public class CollectActivity extends BaseActivity {
 	private LocationClient mLocationClient;
 	private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
 	private Thread mThread;
-	private static final int MSG_SUCCESS = 0;// 获取定位成功的标识
-	private static final int MSG_FAILURE = 1;// 获取定位失败的标识
+
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_SUCCESS:
+			case Constant.LOCATION_SUCCESS:
 				addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
 				break;
-			case MSG_FAILURE:
+			case Constant.LOCATION_FAIL:
 				addrText.setText("请重新定位");
 				break;
 			}
@@ -106,8 +116,7 @@ public class CollectActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collect);
 		if(savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))){
-//			Log.i(TAG, "拍摄异常，获取原来的shot_path");
-			Logger.e("拍摄异常，获取原来的shot_path");
+//			Logger.e("拍摄异常，获取原来的shot_path");
 			imgPath = savedInstanceState.getString("imgPath");
 		}
 		context= CollectActivity.this;
@@ -123,10 +132,19 @@ public class CollectActivity extends BaseActivity {
 		getData("0","");
 	}
 
-	public void initView() 
-	{
+	public void initView() {
+
+		companyLl = (LinearLayout) findViewById(R.id.ll_company);
+		departLl = (LinearLayout) findViewById(R.id.ll_depart);
+		areaLl = (LinearLayout) findViewById(R.id.ll_area);
+		shopLl = (LinearLayout) findViewById(R.id.ll_shop);
+		unitLl = (LinearLayout) findViewById(R.id.ll_unit);
+
 		addrText = (TextView) findViewById(R.id.location_text);
-		
+		unitEdt = (EditText) findViewById(R.id.edt_unit);
+
+		typeSpn = (Spinner) findViewById(R.id.spn_type);
+		typeSpn.setOnItemSelectedListener(itemSelectedListener);
 		companySpn = (Spinner) findViewById(R.id.block_spinner);
 		companySpn.setOnItemSelectedListener(itemSelectedListener);
 		departSpn = (Spinner) findViewById(R.id.street_spinner);
@@ -135,7 +153,7 @@ public class CollectActivity extends BaseActivity {
 		areaSpn.setOnItemSelectedListener(itemSelectedListener);
 		shopSpn = (Spinner) findViewById(R.id.shop_spinner);
 		shopSpn.setOnItemSelectedListener(itemSelectedListener);
-		
+
 		photoImage = (ImageView) findViewById(R.id.photo_image);
 		photoImage.setOnClickListener(clickListener);
 
@@ -144,6 +162,13 @@ public class CollectActivity extends BaseActivity {
 		findViewById(R.id.txt_take_photo).setOnClickListener(clickListener);
 		findViewById(R.id.txt_get_customer).setOnClickListener(clickListener);
 		findViewById(R.id.btn_submit).setOnClickListener(clickListener);
+
+
+		typeList.add("请选择");
+		typeList.add("渠道商家");
+		typeList.add("政企单位");
+
+		reloadSpinner(typeSpn, typeList);
 	}
 	
 	OnClickListener clickListener = new OnClickListener() 
@@ -152,6 +177,18 @@ public class CollectActivity extends BaseActivity {
 		public void onClick(View v) 
 		{
 			switch (v.getId()) {
+				case R.id.txt_get_customer:
+					if (TextUtils.isEmpty(customerType) || customerType.equals("请选择")) {
+						ToastUtil.toast(context, "请选择客户类别");
+					} else {
+						String customer = unitEdt.getText().toString();
+						Intent intent = new Intent();
+						intent.setClass(context, CustomerActivity.class);
+						intent.putExtra("name", customer);
+						intent.putExtra("type", "1");
+						startActivityForResult(intent, Constant.GET_CUSTOMER);
+					}
+					break;
 				case R.id.txt_refresh:
 					getAddrLocation();
 					break;
@@ -193,62 +230,81 @@ public class CollectActivity extends BaseActivity {
 				int position, long id) {
 			String name ="";
 			switch (parent.getId()) {
-			case R.id.block_spinner:
-				name = companyList.get(position);
-				if(!"请选择".equals(name))
-				{
-					String locaId = "";
-					if(compantIds.size()!=1){
-						locaId = compantIds.get(position - 1);
-					}else{
-						locaId = compantIds.get(0);
+				case R.id.spn_type:
+					customerType = typeList.get(position);
+					if ("政企单位".equals(customerType)){
+						companyLl.setVisibility(View.GONE);
+						departLl.setVisibility(View.GONE);
+						areaLl.setVisibility(View.GONE);
+						shopLl.setVisibility(View.GONE);
+						unitLl.setVisibility(View.VISIBLE);
+						from = "jt";
+					} else if ("渠道商家".equals(customerType)) {
+						companyLl.setVisibility(View.VISIBLE);
+						departLl.setVisibility(View.VISIBLE);
+						areaLl.setVisibility(View.VISIBLE);
+						shopLl.setVisibility(View.VISIBLE);
+						unitLl.setVisibility(View.GONE);
+					} else {
+						companyLl.setVisibility(View.GONE);
+						departLl.setVisibility(View.GONE);
+						areaLl.setVisibility(View.GONE);
+						shopLl.setVisibility(View.GONE);
+						unitLl.setVisibility(View.GONE);
 					}
-					shopId = locaId;
-					from = "fgs";
-					getData("1", locaId);
-				}else if("请选择".equals(name)||"".equals(name)){
-					departList.clear();
-					reloadSpinner(departSpn, departList);
-					shopId= "";
-				}
-				break;
-			case R.id.street_spinner:
-				name = departList.get(position);
-				if(!"请选择".equals(name))
-				{	
-					String locaId = departIds.get(position - 1);
-					shopId = locaId;
-					from = "fj";
-					getData("2", locaId);
-				}else if("请选择".equals(name)||"".equals(name)){
-					areaList.clear();
-					reloadSpinner(areaSpn, areaList);
-				}
-				break;
-			case R.id.community_spinner:
-				name = areaList.get(position);
-				if(!"请选择".equals(name))
-				{
-					String locaId = areaIds.get(position - 1);
-					getData("3", locaId);
-				}else if("请选择".equals(name)||"".equals(name)){
-					shopList.clear();
-					reloadSpinner(shopSpn,shopList);
-				}
-				break;
-			case R.id.shop_spinner:
-				name = shopList.get(position);
-				if(!"请选择".equals(name))
-				{
-					shopId = shopIds.get(position - 1);
-					from = "yyt";
+					break;
+				case R.id.block_spinner:
+					name = companyList.get(position);
+					if (!"请选择".equals(name)) {
+						String locaId = "";
+						if (compantIds.size() != 1) {
+							locaId = compantIds.get(position - 1);
+						} else {
+							locaId = compantIds.get(0);
+						}
+						shopId = locaId;
+						from = "fgs";
+						getData("1", locaId);
+					} else if ("请选择".equals(name) || "".equals(name)) {
+						departList.clear();
+						reloadSpinner(departSpn, departList);
+						shopId = "";
+					}
+					break;
+				case R.id.street_spinner:
+					name = departList.get(position);
+					if (!"请选择".equals(name)) {
+						String locaId = departIds.get(position - 1);
+						shopId = locaId;
+						from = "fj";
+						getData("2", locaId);
+					} else if ("请选择".equals(name) || "".equals(name)) {
+						areaList.clear();
+						reloadSpinner(areaSpn, areaList);
+					}
+					break;
+				case R.id.community_spinner:
+					name = areaList.get(position);
+					if (!"请选择".equals(name)) {
+						String locaId = areaIds.get(position - 1);
+						getData("3", locaId);
+					} else if ("请选择".equals(name) || "".equals(name)) {
+						shopList.clear();
+						reloadSpinner(shopSpn, shopList);
+					}
+					break;
+				case R.id.shop_spinner:
+					name = shopList.get(position);
+					if (!"请选择".equals(name)) {
+						shopId = shopIds.get(position - 1);
+						from = "yyt";
 //					Log.e("main", "shopId>>>>"+shopId);
-				}else if("请选择".equals(name)){
-					shopId= "";
-				}
-				break;
-			default:
-				break;
+					} else if ("请选择".equals(name)) {
+						shopId = "";
+					}
+					break;
+				default:
+					break;
 			}
 		}
 		@Override
@@ -277,9 +333,9 @@ public class CollectActivity extends BaseActivity {
 	// 返回处理
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK) {
-		uploadBuffer = "";
 		switch (requestCode) {
 			case PHOTO_CODE:
+				uploadBuffer = "";
 				if (!Tools.isEmpty(imgPath)) {
 					File imageFile = new File(imgPath);
 					bitmap = PhotoUtil.imageEncode(imageFile);
@@ -288,12 +344,20 @@ public class CollectActivity extends BaseActivity {
 					imgPath="";
 				}
 				break;
+			case Constant.GET_CUSTOMER:
+				if (data !=null){
+					unitEdt.setText(data.getStringExtra("name"));
+					shopId = data.getStringExtra("ccuscode");//客户编码
+				}else{
+					shopId ="";
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	}
-	
+
 
 	@SuppressLint("HandlerLeak")
 	public void getAddrLocation() 
@@ -305,7 +369,7 @@ public class CollectActivity extends BaseActivity {
 			longitude = Gps.getJd(distanceHelper);
 			latitude = Gps.getWd(distanceHelper);
 			type = Gps.getType(distanceHelper);
-			visitServer_getaddr(context, longitude, latitude);
+			getaddr(longitude, latitude);
 			mThread.start();// 线程启动
 			distanceHelper.close();// 关闭数据库
 		} else {
@@ -341,7 +405,7 @@ public class CollectActivity extends BaseActivity {
 				latitude = myApp.getwd();
 				type = myApp.getType();
 				if (Tools.isEmpty(addr)) {
-					visitServer_getaddr(context, longitude, latitude);
+					getaddr(longitude, latitude);
 					try {
 						Thread.sleep(3000);
 					} catch (InterruptedException e) {
@@ -349,16 +413,15 @@ public class CollectActivity extends BaseActivity {
 					}
 				}
 				if (Tools.isEmpty(addr)) {
-					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
+					mHandler.obtainMessage(Constant.LOCATION_FAIL).sendToTarget();
 				} else {
-					// 向ui线程发送MSG_SUCCESS标识
-					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
+					mHandler.obtainMessage(Constant.LOCATION_SUCCESS).sendToTarget();
 				}
 			} else {
 				if (Tools.isEmpty(addr)) {
-					mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
+					mHandler.obtainMessage(Constant.LOCATION_FAIL).sendToTarget();
 				} else {
-					mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
+					mHandler.obtainMessage(Constant.LOCATION_SUCCESS).sendToTarget();
 				}
 			}
 		}
@@ -380,8 +443,7 @@ public class CollectActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 //							Log.e("main", dataJson.toString());
 							String code = dataJson.getString("code");
 							if ("0".equals(code)) {
@@ -517,7 +579,7 @@ public class CollectActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if ("0".equals(code)) {
 								ToastUtil.toast(context, "数据上传成功");
@@ -540,15 +602,10 @@ public class CollectActivity extends BaseActivity {
 				});
 	}
 
-	public void visitServer_getaddr(Context context, String longitude,
-									String latitude) {
+	public void getaddr(String longitude, String latitude) {
 		String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
-
-//		PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-//		client_request.setCookieStore(myCookieStore);
-
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("ak", "jfPNMgVWhuLSzggtryKGSchd");
@@ -574,10 +631,9 @@ public class CollectActivity extends BaseActivity {
 	}
 	
 	public void reloadSpinner(Spinner spinner,ArrayList<String> list) {
-		ArrayAdapter<String> adapter = 
-				new ArrayAdapter<String>(
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(
 				CollectActivity.this,
-				R.layout.spinner_item,
+				R.layout.item_spinner,
 				list);
 		spinner.setAdapter(adapter);
 	}

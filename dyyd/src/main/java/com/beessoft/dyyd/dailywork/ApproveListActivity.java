@@ -106,7 +106,7 @@ public class ApproveListActivity extends BaseActivity {
 									String idTarget = map.get("id");
 									Intent intent = new Intent(context,
 											ApproveActivity.class);
-									intent.putExtra("idTarget", idTarget);
+									intent.putExtra("id", idTarget);
 									startActivity(intent);
 								}
 							});

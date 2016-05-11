@@ -622,7 +622,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                                     String lat = dataJson.getString("lat");
                                     String lng = dataJson.getString("lng");
                                     int scope = dataJson.getInt("fw");
-                                    if (Tools.isEmpty(lat)||Tools.isEmpty(lng)){
+                                    if (Tools.isEmpty(lat)||"0".equals(lat)){
                                         leavetype = "未采集";
                                         ifInsideTxt.setText(leavetype);
                                     }else{

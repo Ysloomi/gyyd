@@ -39,7 +39,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.arrangequery);
+		setContentView(R.layout.activity_arrangequery);
 
 		initView();
 
@@ -69,7 +69,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 		 */
 		String[] judgeList = new String[] { "评价选择", "满意", "一般", "不满意" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(
-				ArrangeQueryActivity.this, R.layout.spinner_item, judgeList);
+				ArrangeQueryActivity.this, R.layout.item_spinner, judgeList);
 		spinner.setAdapter(adapter);
 
 		visitServer();
@@ -254,7 +254,7 @@ public class ArrangeQueryActivity extends BaseActivity {
 						spinner.setBackgroundResource(R.drawable.unedit_text_bg);
 						ArrayAdapter<String> adapter = new ArrayAdapter<>(
 								ArrangeQueryActivity.this,
-								R.layout.spinner_item);
+								R.layout.item_spinner);
 						spinner.setAdapter(adapter);
 					}
 				});

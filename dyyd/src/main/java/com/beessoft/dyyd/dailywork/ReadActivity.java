@@ -37,7 +37,7 @@ public class ReadActivity extends BaseActivity {
 		context = ReadActivity.this;
 		mac = GetInfo.getIMEI(context);
 		username = GetInfo.getUserName(context);
-		id = getIntent().getStringExtra("idTarget");
+		id = getIntent().getStringExtra("id");
 
 		listView = (ListView) findViewById(R.id.list_view);
 

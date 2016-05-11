@@ -18,6 +18,7 @@ import android.widget.Spinner;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -82,8 +83,8 @@ public class AskLeaveActivity extends BaseActivity {
         startEdit.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
         overEdit = (EditText) findViewById(R.id.over_et);
         overEdit.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
-        startEdit.setText(GetInfo.Date());
-        overEdit.setText(GetInfo.Date());
+        startEdit.setText(DateUtil.Date());
+        overEdit.setText(DateUtil.Date());
 
         reasonEdit = (EditText) findViewById(R.id.reason_et);
         amCheckBox = (CheckBox) findViewById(R.id.am_cb);
@@ -206,7 +207,7 @@ public class AskLeaveActivity extends BaseActivity {
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                                 context,
-                                R.layout.spinner_item,
+                                R.layout.item_spinner,
                                 list);
                         typeSpinner.setAdapter(adapter);
                     }

@@ -87,7 +87,7 @@ public class PhotoQueryListDetailActivity extends BaseActivity {
 								simAdapter = new SimpleAdapter(
 										PhotoQueryListDetailActivity.this,
 										datas,// 数据源
-										R.layout.photoquery_item,// 显示布局
+										R.layout.item_photoquery,// 显示布局
 										new String[] { "idate", "username",
 												"explanation" }, new int[] {
 												R.id.date, R.id.name,

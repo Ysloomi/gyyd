@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -58,14 +59,14 @@ public class WorkLocationActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.worklocation);
+		setContentView(R.layout.activity_worklocation);
 		
 		context = WorkLocationActivity.this;
 		mac = GetInfo.getIMEI(context);
 
 		initView();
 
-		dateEdit.setText(GetInfo.Date());
+		dateEdit.setText(DateUtil.Date());
 		dateEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -92,7 +93,7 @@ public class WorkLocationActivity extends BaseActivity {
 						.get(Calendar.DAY_OF_MONTH)).show();
 			}
 		});
-		timeEdit.setText(GetInfo.TimeNoSecond());
+		timeEdit.setText(DateUtil.TimeNoSecond());
 		timeEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -291,7 +292,7 @@ public class WorkLocationActivity extends BaseActivity {
 //
 //								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 //										WorkLocationActivity.this,
-//										R.layout.spinner_item,
+//										R.layout.item_spinner,
 //										list);
 //								// 把定义好的Adapter设定到spinner中
 //								departSpinner.setAdapter(adapter);
@@ -462,7 +463,7 @@ public class WorkLocationActivity extends BaseActivity {
 	private void reloadSpinner(Spinner spinner,ArrayList<String> list) {
 		ArrayAdapter<String> adapter =
 				new ArrayAdapter<String>(context,
-						R.layout.spinner_item,
+						R.layout.item_spinner,
 						list);
 		spinner.setAdapter(adapter);
 	}

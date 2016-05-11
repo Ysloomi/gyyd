@@ -45,7 +45,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.askapprove);
+        setContentView(R.layout.activity_askapprove);
 
         context = AskLeaveApproveActivity.this;
         mac = GetInfo.getIMEI(context);
@@ -132,7 +132,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
     @SuppressLint("InflateParams")
     private void inputExamineDialog() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.unagree, null);
+        View view = inflater.inflate(R.layout.dialog_unagree, null);
 
         final EditText editText1 = (EditText) view.findViewById(R.id.reason_text);
 

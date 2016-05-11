@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.model.GetJSON;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -37,7 +36,6 @@ public class VisitQueryListActivity extends BaseActivity implements View.OnClick
     public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
     private ListView listView;
     private SimpleAdapter simAdapter;
-    // private Spinner spinner;
     private AutoCompleteTextView autoCompleteTextView;
 
     @Override
@@ -50,15 +48,16 @@ public class VisitQueryListActivity extends BaseActivity implements View.OnClick
         username = GetInfo.getUserName(context);
 
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.act_search);
-        listView = (ListView) findViewById(R.id.visitquery_list);
+        listView = (ListView) findViewById(R.id.list_view);
 
 
-        GetJSON.visitServer_GetInfo_NoSpecial(VisitQueryListActivity.this, autoCompleteTextView, mac);
-        autoCompleteTextView.setHint("专业、姓名、分局");
+//        GetJSON.visitServer_GetInfo_NoSpecial(VisitQueryListActivity.this, autoCompleteTextView, mac);
+//        autoCompleteTextView.setHint("专业、姓名、分局");
 
         ProgressDialogUtil.showProgressDialog(context);
-        String level = "[全部人员]";
-        visitServer(level);
+//        String level = "[全部人员]";
+//        visitServer(level);
+        visitServer("");
 
         autoCompleteTextView.setOnTouchListener(new OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -73,11 +72,17 @@ public class VisitQueryListActivity extends BaseActivity implements View.OnClick
     }
 
     private void visitServer(String level) {
+
         String httpUrl = User.mainurl + "sf/visitlist";
+
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
+
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("psn", Escape.escape(level));
+
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -105,23 +110,17 @@ public class VisitQueryListActivity extends BaseActivity implements View.OnClick
                                     datas,// 数据源
                                     R.layout.item_visitquerylist,// 显示布局
                                     new String[]{"idate", "name"},
-                                    new int[]{R.id.date, R.id.person});
+                                    new int[]{
+                                            R.id.date, R.id.name});
                             listView.setAdapter(simAdapter);
                             listView.setOnItemClickListener(new OnItemClickListener() {
-                                @SuppressWarnings("unchecked")
                                 @Override
-                                public void onItemClick(
-                                        AdapterView<?> parent, View view,
-                                        int position, long id) {
-
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     ListView listView = (ListView) parent;
-                                    HashMap<String, String> map = (HashMap<String, String>) listView
-                                            .getItemAtPosition(position);
+                                    HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
                                     String idate = map.get("idate");
                                     String name = map.get("name");
-
-                                    Intent intent = new Intent(context,
-                                            VisitQueryListDetailActivity.class);
+                                    Intent intent = new Intent(context, VisitQueryListDetailActivity.class);
                                     intent.putExtra("idate", idate);
                                     intent.putExtra("name", name);
                                     startActivity(intent);

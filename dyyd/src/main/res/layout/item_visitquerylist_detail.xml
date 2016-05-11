@@ -7,57 +7,47 @@
 
     <TextView
         android:id="@+id/date"
-        style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp" />
+        style="@style/ListItemText" />
 
     <TextView
         android:id="@+id/person"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/date"
-        android:layout_alignTop="@+id/date"
-        android:layout_marginLeft="15dp"
+        android:layout_toEndOf="@+id/date"
         android:layout_toRightOf="@+id/date" />
+
 
     <TextView
         android:id="@+id/reach_time"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/person"
         android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/leave_time"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/reach_time"
-        android:layout_alignTop="@+id/reach_time"
-        android:layout_toRightOf="@+id/reach_time" />
+        android:layout_toEndOf="@+id/reach_time"
+        android:layout_toRightOf="@+id/reach_time"/>
 
     <TextView
         android:id="@+id/total_time"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/leave_time"
-        android:layout_marginLeft="15dp"
+        android:layout_alignBaseline="@+id/leave_time"
+        android:layout_toEndOf="@+id/leave_time"
         android:layout_toRightOf="@+id/leave_time" />
 
-    
     <TextView
         android:id="@+id/read_time"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/total_time"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/total_time" />
+        android:layout_toRightOf="@+id/total_time"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/type"
+        style="@style/ListItemText"
+        android:layout_alignBaseline="@+id/total_time"
+        android:layout_toEndOf="@+id/total_time"
+        android:layout_toRightOf="@+id/total_time"/>
+
 </RelativeLayout>

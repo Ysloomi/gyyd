@@ -54,7 +54,7 @@ public class AdviseListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.adviselist_item, null);
+			convertView = mInflater.inflate(R.layout.item_adviselist, null);
 			holder = new ViewHolder();
 			holder.mImg = (ImageView) convertView.findViewById(R.id.adviselist_image);
 			holder.mAdvise= (TextView) convertView

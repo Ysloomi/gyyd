@@ -238,7 +238,7 @@ public class Tools {
 	 */
 	public static  void reloadSpinner(Context context,Spinner spinner,List<String> lists){
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-				R.layout.spinner_item,
+				R.layout.item_spinner,
 				lists);
 		spinner.setAdapter(arrayAdapter);
 	}

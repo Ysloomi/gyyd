@@ -365,7 +365,7 @@ public class PhotoActivity extends BaseActivity {
 								// 现实数组在system里面需要启动Arrays.deepToString(string)
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 										PhotoActivity.this,
-										R.layout.spinner_item,
+										R.layout.item_spinner,
 										list);
 								typeSpinner.setAdapter(adapter);
 							} else if (1==code) {

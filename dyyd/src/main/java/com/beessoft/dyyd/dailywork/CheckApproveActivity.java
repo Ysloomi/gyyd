@@ -112,7 +112,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 	@SuppressLint("InflateParams")
 	private void inputExamineDialog() {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.unagree, null);
+		View view = inflater.inflate(R.layout.dialog_unagree, null);
 
 		final EditText editText1 = (EditText) view
 				.findViewById(R.id.reason_text);

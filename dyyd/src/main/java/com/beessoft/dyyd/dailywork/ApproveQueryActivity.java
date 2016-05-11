@@ -36,8 +36,8 @@ public class ApproveQueryActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_read:
-                Intent intent = new Intent(this, ReadActivity.class);
-                intent.putExtra("idTarget", id);
+                Intent intent = new Intent(context, ReadActivity.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
                 return true;
         }
@@ -47,7 +47,7 @@ public class ApproveQueryActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.approvequery);
+        setContentView(R.layout.activity_approvequery);
 
         context = ApproveQueryActivity.this;
         mac = GetInfo.getIMEI(context);

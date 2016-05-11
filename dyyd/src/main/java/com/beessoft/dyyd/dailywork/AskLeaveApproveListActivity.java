@@ -91,7 +91,7 @@ public class AskLeaveApproveListActivity extends BaseActivity {
 							simAdapter = new SimpleAdapter(
 									AskLeaveApproveListActivity.this,
 									datas,// 数据源
-									R.layout.askleaveapprovelist_item,// 显示布局
+									R.layout.item_askleaveapprovelist,// 显示布局
 									new String[] { "start", "over",
 											"username" ,"type" },
 									new int[] {

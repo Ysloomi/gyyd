@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -88,7 +89,7 @@ public class MyMemoActivity extends BaseActivity {
 		calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 
-		editText1.setText(GetInfo.Date());
+		editText1.setText(DateUtil.Date());
 		editText1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -121,7 +122,7 @@ public class MyMemoActivity extends BaseActivity {
 								.get(Calendar.DAY_OF_MONTH)).show();
 			}
 		});
-		editText2.setText(GetInfo.Time());
+		editText2.setText(DateUtil.Time());
 		editText2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

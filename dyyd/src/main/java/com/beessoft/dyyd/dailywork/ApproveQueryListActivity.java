@@ -110,8 +110,7 @@ public class ApproveQueryListActivity extends BaseActivity {
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
 									String idTarget = map.get("id");
-									Intent intent = new Intent(
-											context,
+									Intent intent = new Intent(context,
 											ApproveQueryActivity.class);
 									intent.putExtra("id", idTarget);
 									startActivity(intent);

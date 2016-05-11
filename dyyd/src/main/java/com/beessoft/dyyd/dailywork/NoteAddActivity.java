@@ -99,8 +99,8 @@ public class NoteAddActivity extends BaseActivity
             addrCode = "";
             departText.setText(GetInfo.getDepart(context));
             nameText.setText(GetInfo.getName(context));
-            startEdit.setText(GetInfo.Date());
-            endEdit.setText(GetInfo.behindWeekDate());
+            startEdit.setText(DateUtil.Date());
+            endEdit.setText(DateUtil.behindWeekDate());
         }
     }
 

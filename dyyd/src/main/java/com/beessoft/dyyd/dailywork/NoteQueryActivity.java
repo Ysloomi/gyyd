@@ -194,8 +194,8 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
 
     private void initData() {
-        startEdit.setText(GetInfo.forwardWeekDate());
-        endEdit.setText(GetInfo.Date());
+        startEdit.setText(DateUtil.forwardWeekDate());
+        endEdit.setText(DateUtil.Date());
     }
 
 
@@ -431,7 +431,7 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
     private void reloadSpinner(Spinner spinner,List<String> lists){
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
-                R.layout.spinner_item,
+                R.layout.item_spinner,
                 lists);
         spinner.setAdapter(arrayAdapter);
     }

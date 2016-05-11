@@ -61,7 +61,7 @@ public class AdviseActivity extends BaseActivity {
 				list.add(advises.get(j).getAdviseType());
 		}
 		ArrayAdapter<String> adapterType = new ArrayAdapter<>(context,
-				R.layout.spinner_item, list);
+				R.layout.item_spinner, list);
 		spinner.setAdapter(adapterType);
 
 		button.setOnClickListener(new ClickListener());

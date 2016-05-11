@@ -41,7 +41,7 @@ public class AdviseDetailActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.advisedetail);
+		setContentView(R.layout.activity_advisedetail);
 
 		context = AdviseDetailActivity.this;
 		mac = GetInfo.getIMEI(context);
@@ -126,7 +126,7 @@ public class AdviseDetailActivity extends BaseActivity {
 								adapter = new SimpleAdapter(
 										AdviseDetailActivity.this,
 										datas,// 数据源
-										R.layout.advisedetail_item,// 显示布局
+										R.layout.item_advisedetail,// 显示布局
 										new String[] { "name", "text", "time" },
 										new int[] { R.id.name, R.id.text,
 												R.id.time });

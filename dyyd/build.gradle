@@ -9,8 +9,8 @@ android {
         applicationId "com.beessoft.dyyd"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 29
-        versionName "2.9"
+        versionCode 30
+        versionName "3.0"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7

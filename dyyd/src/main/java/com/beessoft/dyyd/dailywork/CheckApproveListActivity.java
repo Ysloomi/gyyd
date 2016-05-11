@@ -56,6 +56,7 @@ public class CheckApproveListActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("pass", "");
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -77,8 +78,7 @@ public class CheckApproveListActivity extends BaseActivity {
 									map.put("id", obj.getString("id"));
 									map.put("name", obj.getString("username"));
 									map.put("date", obj.getString("iday"));
-									map.put("explanation",
-											obj.getString("iclass"));
+									map.put("explanation", obj.getString("iclass"));
 									datas.add(map);
 								}
 							}
@@ -94,15 +94,12 @@ public class CheckApproveListActivity extends BaseActivity {
 							listView.setAdapter(simAdapter);
 							// 添加点击
 							listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-								@SuppressWarnings("unchecked")
 								@Override
 								public void onItemClick(
 										AdapterView<?> parent, View view,
 										int position, long id) {
-
 									ListView listView = (ListView) parent;
-									HashMap<String, String> map = (HashMap<String, String>) listView
-											.getItemAtPosition(position);
+									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
 									String idTarget = map.get("id");
 									Intent intent = new Intent(context,
 											CheckApproveActivity.class);

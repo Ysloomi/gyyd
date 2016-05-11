@@ -2,7 +2,6 @@ package com.beessoft.dyyd.dailywork;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -18,11 +17,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.material.BossWorkBookActivity;
-import com.beessoft.dyyd.material.BranchTargetActivity;
-import com.beessoft.dyyd.material.CompanyTargetActivity;
-import com.beessoft.dyyd.material.SalesWorkBookActivity;
-import com.beessoft.dyyd.material.WorkBookActivity;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
@@ -128,7 +122,7 @@ public class NoticeListActivity extends BaseActivity {
                             simAdapter = new SimpleAdapter(
                                     NoticeListActivity.this,
                                     dataList,// 数据源
-                                    R.layout.noticelist_item,// 显示布局
+                                    R.layout.item_noticelist,// 显示布局
                                     new String[]{"date", "fbperson",
                                             "state", "context"},
                                     new int[]{R.id.date, R.id.person,
@@ -157,28 +151,28 @@ public class NoticeListActivity extends BaseActivity {
                                         inputTitleDialog(date, person, myContext);
 
                                     } else if ("1".equals(itype)) {
-                                        visitServer_save(idTarget);
-                                        String bookclass = map.get("bookclass");
-                                        Intent intent = new Intent();
-                                        if ("1".equals(bookclass)) {
-                                            intent.setClass(context,
-                                                    WorkBookActivity.class);
-                                        } else if ("2".equals(bookclass)) {
-                                            intent.setClass(context,
-                                                    SalesWorkBookActivity.class);
-                                        } else if ("3".equals(bookclass)) {
-                                            intent.setClass(context,
-                                                    BossWorkBookActivity.class);
-                                        } else if ("4".equals(bookclass)) {
-                                            intent.setClass(context,
-                                                    CompanyTargetActivity.class);
-                                        } else if ("5".equals(bookclass)) {
-                                            intent.setClass(context,
-                                                    BranchTargetActivity.class);
-                                        }
-                                        intent.putExtra("from", "notice");
-                                        intent.putExtra("url", map.get("url") + "&mac=" + mac + "&usercode=" + username);
-                                        startActivity(intent);
+//                                        visitServer_save(idTarget);
+//                                        String bookclass = map.get("bookclass");
+//                                        Intent intent = new Intent();
+//                                        if ("1".equals(bookclass)) {
+//                                            intent.setClass(context,
+//                                                    WorkBookActivity.class);
+//                                        } else if ("2".equals(bookclass)) {
+//                                            intent.setClass(context,
+//                                                    SalesWorkBookActivity.class);
+//                                        } else if ("3".equals(bookclass)) {
+//                                            intent.setClass(context,
+//                                                    BossWorkBookActivity.class);
+//                                        } else if ("4".equals(bookclass)) {
+//                                            intent.setClass(context,
+//                                                    CompanyTargetActivity.class);
+//                                        } else if ("5".equals(bookclass)) {
+//                                            intent.setClass(context,
+//                                                    BranchTargetActivity.class);
+//                                        }
+//                                        intent.putExtra("from", "notice");
+//                                        intent.putExtra("url", map.get("url") + "&mac=" + mac + "&usercode=" + username);
+//                                        startActivity(intent);
                                     }
                                 }
                             });
@@ -204,7 +198,7 @@ public class NoticeListActivity extends BaseActivity {
     private void inputTitleDialog(String date, String person, String myContext) {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.noticeinfo, null);
+        View view = inflater.inflate(R.layout.item_noticeinfo, null);
         // EditText editText = (EditText)findViewById(R.id.content);// error
         TextView textView1 = (TextView) view.findViewById(R.id.info_date);
         TextView textView2 = (TextView) view.findViewById(R.id.info_person);

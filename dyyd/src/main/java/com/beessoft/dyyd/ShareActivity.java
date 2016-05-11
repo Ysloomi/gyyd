@@ -36,7 +36,7 @@ public class ShareActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sharepage);
+		setContentView(R.layout.activity_sharepage);
 
 		mainWebView = (WebView) findViewById(R.id.material_web);
 		editText1 = (EditText) findViewById(R.id.phonenum_text);

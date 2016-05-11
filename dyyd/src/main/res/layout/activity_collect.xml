@@ -15,8 +15,7 @@
             android:orientation="vertical">
 
 
-            <LinearLayout style="@style/TextOutLayout"
-                android:visibility="gone">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
                     style="@style/MyTitle"
@@ -149,7 +148,7 @@
 
                 <TextView
                     style="@style/MyText"
-                    android:text="若采集分局位置，请只选择分公司和分局，不选择片区和营业厅" />
+                    android:text="请先选择类别，再采集。若采集分局位置，请只选择分公司和分局，不选择片区和营业厅" />
             </LinearLayout>
         </LinearLayout>
 

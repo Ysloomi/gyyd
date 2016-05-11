@@ -5,21 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        style="@style/TextOutLayout"
-        android:visibility="gone">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="日期" />
-
-        <EditText
-            android:id="@+id/date_et"
-            style="@style/MyText" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/department_ll"
+        android:id="@+id/departLl"
         style="@style/TextOutLayout">
 
         <TextView
@@ -27,13 +13,12 @@
             android:text="部门" />
 
         <Spinner
-            android:id="@+id/department_sp"
+            android:id="@+id/department_spinner"
             style="@style/MyText" />
     </LinearLayout>
 
-
     <LinearLayout
-        android:id="@+id/group_ll"
+        android:id="@+id/groupLl"
         style="@style/TextOutLayout">
 
         <TextView
@@ -41,13 +26,12 @@
             android:text="班组" />
 
         <Spinner
-            android:id="@+id/group_sp"
+            android:id="@+id/group_spinner"
             style="@style/MyText" />
     </LinearLayout>
 
-
     <LinearLayout
-        android:id="@+id/person_ll"
+        android:id="@+id/personLl"
         style="@style/TextOutLayout">
 
         <TextView
@@ -55,26 +39,51 @@
             android:text="人员" />
 
         <Spinner
-            android:id="@+id/person_sp"
+            android:id="@+id/person_spinner"
+            style="@style/MyText" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="选择日期" />
+
+        <EditText
+            android:id="@+id/date_text"
+            style="@style/MyText" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="选择时间" />
+
+        <EditText
+            android:id="@+id/time_text"
             style="@style/MyText" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/mycheck_bt"
+        android:id="@+id/orbit_button"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@color/blue"
-        android:text="我的考勤"
+        android:text="查看轨迹"
         android:textColor="@android:color/white" />
 
+
     <Button
-        android:id="@+id/subordinatecheck_bt"
+        android:id="@+id/location_button"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp"
         android:background="@color/blue"
-        android:text="下属考勤"
+        android:text="实时查岗"
         android:textColor="@android:color/white" />
 
 </LinearLayout>
