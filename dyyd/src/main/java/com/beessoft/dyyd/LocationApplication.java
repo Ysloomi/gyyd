@@ -8,6 +8,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -120,7 +121,7 @@ public class LocationApplication extends Application {
 				distance = "0";
 				totalDistance = "0";
 
-				String time = GetInfo.getDateLoca();
+				String time = DateUtil.getDateLoca();
 
 				distanceHelper.getReadableDatabase()
 						.execSQL(

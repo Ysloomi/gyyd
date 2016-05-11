@@ -22,6 +22,7 @@ import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -418,7 +419,7 @@ public class VisitReachActivity extends BaseActivity {
 							int code = dataJson.getInt("code");
 							if (code == 0) {
 								ToastUtil.toast(context, "到达现场数据上传成功");
-								String reachTime = GetInfo.getDate();
+								String reachTime = DateUtil.getDate();
 								PreferenceUtil.write(context, "reachTime", reachTime);//保存到达时间
 								PreferenceUtil.write(context, "aim", "");//上传成功后清除
 								finish();

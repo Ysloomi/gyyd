@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.CheckQueryDetailActivity;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -65,7 +66,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 		mac = GetInfo.getIMEI(context);
 		initView();
 
-		String now = GetInfo.YearMonth();
+		String now = DateUtil.YearMonth();
 		String[] a = now.split("-");
 		yearStr = a[0];
 		month = a[1];

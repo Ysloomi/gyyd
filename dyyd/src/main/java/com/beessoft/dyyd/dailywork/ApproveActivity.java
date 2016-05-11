@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -154,7 +155,7 @@ public class ApproveActivity extends BaseActivity {
 								Toast.makeText(ApproveActivity.this,
 										"工作审批数据上传成功", Toast.LENGTH_SHORT)
 										.show();
-								String time = GetInfo.getDate();
+								String time = DateUtil.getDate();
 								textView5.setText(time);
 								finish();
 							} else {

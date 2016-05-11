@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -65,7 +66,7 @@ public class WorkLocationActivity extends BaseActivity {
 
 		initView();
 
-		dateEdit.setText(GetInfo.Date());
+		dateEdit.setText(DateUtil.Date());
 		dateEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -92,7 +93,7 @@ public class WorkLocationActivity extends BaseActivity {
 						.get(Calendar.DAY_OF_MONTH)).show();
 			}
 		});
-		timeEdit.setText(GetInfo.TimeNoSecond());
+		timeEdit.setText(DateUtil.TimeNoSecond());
 		timeEdit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

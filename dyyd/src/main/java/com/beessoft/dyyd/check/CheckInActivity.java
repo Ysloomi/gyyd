@@ -33,6 +33,7 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.update.UpdateManager;
 import com.beessoft.dyyd.utils.AlarmReceiver;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -489,7 +490,7 @@ public class CheckInActivity extends BaseActivity {
                                 deleteDatabase("distance.db");
                                 distanceHelper = new DistanceDatabaseHelper(
                                         getApplicationContext(), "distance.db", 1);
-                                String time = GetInfo.getDateLoca();
+                                String time = DateUtil.getDateLoca();
                                 distanceHelper
                                         .getReadableDatabase()
                                         .execSQL(

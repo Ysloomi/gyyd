@@ -194,8 +194,8 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
 
     private void initData() {
-        startEdit.setText(GetInfo.forwardWeekDate());
-        endEdit.setText(GetInfo.Date());
+        startEdit.setText(DateUtil.forwardWeekDate());
+        endEdit.setText(DateUtil.Date());
     }
 
 

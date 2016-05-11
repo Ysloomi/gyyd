@@ -23,6 +23,7 @@ import com.beessoft.dyyd.swipemenulistview.SwipeMenuCreator;
 import com.beessoft.dyyd.swipemenulistview.SwipeMenuHelper;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -155,6 +156,8 @@ public class NoteActivity extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
+        start = startEdit.getText().toString();
+        end = endEdit.getText().toString();
         ProgressDialogUtil.showProgressDialog(context);
         visitRefresh();
     }
@@ -174,8 +177,8 @@ public class NoteActivity extends BaseActivity
     }
 
     private void initData() {
-        startEdit.setText(GetInfo.forwardWeekDate());
-        endEdit.setText(GetInfo.Date());
+        startEdit.setText(DateUtil.monthFirstDay());
+        endEdit.setText(DateUtil.monthLastDay());
         start = startEdit.getText().toString();
         end = endEdit.getText().toString();
     }
@@ -195,7 +198,7 @@ public class NoteActivity extends BaseActivity
         parameters_userInfo.put("date2", end);
         parameters_userInfo.put("currentPage", currentPage + "");
 
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
+        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
