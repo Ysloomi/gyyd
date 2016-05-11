@@ -66,7 +66,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         GetInfo.getButtonRole(context, checkQueryBtn, "7","");
         GetInfo.getButtonRole(context, workLocationButton, "8","");
         GetInfo.getButtonRole(context, noteBTn, "9","");
-        GetInfo.getButtonRole(context, visitQueryBtn, "10","");
+        GetInfo.getButtonRole(context, visitQueryBtn, "11","");
 
 //        visitQueryBtn.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
@@ -241,7 +241,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 }
                 break;
             case R.id.btn_visitquery:
-                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode11"))) {
                     intent.setClass(context, VisitQueryListActivity.class);
                     startActivity(intent);
                 } else {
