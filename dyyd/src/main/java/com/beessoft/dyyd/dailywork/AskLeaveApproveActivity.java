@@ -192,7 +192,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
-                            if (code==1) {
+                            if (code==0) {
                                 ToastUtil.toast(context, "审批成功");
                                 finish();
                             } else {
