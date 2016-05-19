@@ -572,7 +572,8 @@ public class CollectActivity extends BaseActivity {
 		parameters_userInfo.put("image", uploadBuffer);
 		parameters_userInfo.put("type", "1");
 		parameters_userInfo.put("cdepperson",shopId);
-		parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("fj", from);
 		
 		client_request.post(httpUrl, parameters_userInfo,new AsyncHttpResponseHandler() {

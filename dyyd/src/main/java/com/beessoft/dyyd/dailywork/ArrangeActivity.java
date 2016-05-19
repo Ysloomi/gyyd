@@ -67,7 +67,7 @@ public class ArrangeActivity extends BaseActivity {
 
         initView();
 
-        GetJSON.visitServer_GetInfo(ArrangeActivity.this, autoCompleteTextView, mac);
+        GetJSON.visitServer_GetInfo(context, autoCompleteTextView, mac,username);
 
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

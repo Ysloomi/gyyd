@@ -1,43 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/advise_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/LinearLayout" >
-    </ListView>
-
-    <LinearLayout
-        android:id="@+id/LinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp" >
+    <LinearLayout style="@style/TextOutLayout">
 
         <EditText
             android:id="@+id/advise_edittext"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="3"
-            android:background="@drawable/text_bg"
-            android:hint="问题关键字搜索">
+            style="@style/MyText"
+            android:hint="问题关键字搜索" />
 
-            <requestFocus />
-        </EditText>
+        <TextView
+            android:id="@+id/txt_search"
+            style="@style/TapText"
+            android:text="搜索" />
 
-        <Button
-            android:id="@+id/advise_button"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="@color/blue"
-            android:text="搜索"
-            android:textColor="@android:color/white" />
     </LinearLayout>
 
-</RelativeLayout>
+    <include layout="@layout/baselist" />
+
+</LinearLayout>

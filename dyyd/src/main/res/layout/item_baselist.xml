@@ -4,5 +4,6 @@
     android:layout_width="match_parent"
     android:gravity="left"
     android:text="请选择类别"
+    android:background="@drawable/my_list_txt_background"
     android:padding="15dp"
     android:textSize="16sp"/>

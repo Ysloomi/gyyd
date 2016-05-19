@@ -195,9 +195,9 @@ public class AskLeaveActivity extends BaseActivity {
             @Override
             public void onSuccess(String response) {
                 try {
-                    JSONObject dataJson = new JSONObject(Escape.unescape(response));
-                    String code = dataJson.getString("code");
-                    if ("0".equals(code)) {
+                    JSONObject dataJson = new JSONObject(response);
+                    int code = dataJson.getInt("code");
+                    if (code == 0) {
                         JSONArray array = dataJson.getJSONArray("list");
                         List<String> list = new ArrayList<String>();
                         list.add("请选择");
@@ -239,12 +239,12 @@ public class AskLeaveActivity extends BaseActivity {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
-                            String code = dataJson.getString("code");
-                            if ("0".equals(code)) {
+                            JSONObject dataJson = new JSONObject(response);
+                            int code = dataJson.getInt("code");
+                            if (code == 0) {
                                 ToastUtil.toast(context, "提交成功，待领导审批");
                                 finish();
-                            } else if ("1".equals(code)) {
+                            } else {
                                 ToastUtil.toast(context, "请重新提交");
                             }
                         } catch (Exception e) {

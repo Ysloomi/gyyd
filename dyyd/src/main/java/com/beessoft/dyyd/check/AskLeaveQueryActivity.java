@@ -58,8 +58,9 @@ public class AskLeaveQueryActivity extends BaseActivity {
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(response);
-
-                            if (dataJson.getString("code").equals("0")) {
+                            datas.clear();
+                            int code = dataJson.getInt("code");
+                            if (code == 0) {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
@@ -97,18 +98,18 @@ public class AskLeaveQueryActivity extends BaseActivity {
                                     map.put("username", "审批人:" + obj.getString("username"));
                                     datas.add(map);
                                 }
-                                simAdapter = new SimpleAdapter(
-                                        AskLeaveQueryActivity.this,
-                                        datas,// 数据源
-                                        R.layout.item_askleavequery,// 显示布局
-                                        new String[]{"start", "over",
-                                                "type", "isagree", "reason", "username"},
-                                        new int[]{R.id.start, R.id.over,
-                                                R.id.state, R.id.isagree, R.id.reason, R.id.person});
-                                listView.setAdapter(simAdapter);
                             } else {
                                 ToastUtil.toast(context, "暂无通知");
                             }
+                            simAdapter = new SimpleAdapter(
+                                    context,
+                                    datas,// 数据源
+                                    R.layout.item_askleavequery,// 显示布局
+                                    new String[]{"start", "over",
+                                            "type", "isagree", "reason", "username"},
+                                    new int[]{R.id.start, R.id.over,
+                                            R.id.state, R.id.isagree, R.id.reason, R.id.person});
+                            listView.setAdapter(simAdapter);
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {

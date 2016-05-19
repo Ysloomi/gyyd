@@ -27,7 +27,6 @@ import com.beessoft.dyyd.utils.AlarmReceiver;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -102,6 +101,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 
 		context =CheckOutActivity.this;
 		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 		initView();
 
 
@@ -214,18 +214,18 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 		}
 	};
 	
-	private void openYesterday() {
-
-		final EditText inputServer = new EditText(this);
-		inputServer.setBackgroundResource(R.drawable.bigtext_bg);
-		inputServer.setText(yesterday);
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("昨日计划").setView(inputServer);
-		builder.setPositiveButton("确认", null);
-		builder.show();
-	}
-
+//
+//private void openYesterday() {
+//
+//		final EditText inputServer = new EditText(this);
+//		inputServer.setBackgroundResource(R.drawable.bigtext_bg);
+//		inputServer.setText(yesterday);
+//
+//		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//		builder.setTitle("昨日计划").setView(inputServer);
+//		builder.setPositiveButton("确认", null);
+//		builder.show();
+//	}
 	private void getSummary() {
 
 		String httpUrl = User.mainurl + "sf/offwork";
@@ -245,7 +245,6 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-//							Logger.e("checkout>>>>>>>>>"+dataJson);
 							String text1 = "";
 							if (!"".equals(dataJson.getString("yday"))) {
 								text1 = "[上级" + dataJson.getString("yday") + "号意见]"
@@ -335,8 +334,8 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 					public void onSuccess(String response) {
 
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
-							Logger.e(dataJson.toString());
+							JSONObject dataJson = new JSONObject(response);
+//							Logger.e(dataJson.toString());
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 //								ToastUtil.toast(context, "提交成功" + "今日距离为" + distance + "公里,请提醒上级审批");
@@ -394,8 +393,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							JSONObject obj = dataJson.getJSONObject("result");
 							addr = obj.getString("formatted_address");
 						} catch (Exception e) {

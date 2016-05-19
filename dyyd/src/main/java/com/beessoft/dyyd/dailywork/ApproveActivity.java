@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ApproveActivity extends BaseActivity {
-	private Button button;
+
 	private TextView textView1, textView2, textView3, textView4, textView5, textView6;
 	private EditText editText1;
 	private String  advise, id, time;
@@ -63,7 +62,9 @@ public class ApproveActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_approve);
 
-		mac = GetInfo.getIMEI(ApproveActivity.this);
+		context = ApproveActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 
 		textView1 = (TextView) findViewById(R.id.approve_person);
 		textView2 = (TextView) findViewById(R.id.approve_outtime);
@@ -72,13 +73,12 @@ public class ApproveActivity extends BaseActivity {
 		textView5 = (TextView) findViewById(R.id.approve_plan);
 		editText1 = (EditText) findViewById(R.id.approve_advise);
 		textView6 = (TextView) findViewById(R.id.approve_time);
-		button = (Button) findViewById(R.id.approve_confirm);
 
 		id = getIntent().getStringExtra("id");
 
 		visitServer();
 
-		button.setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				advise = editText1.getText().toString();
 				time = textView6.getText().toString();
@@ -104,6 +104,7 @@ public class ApproveActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("mac",mac);
+		parameters_userInfo.put("usercode",username);
 		parameters_userInfo.put("id", id);
 
 		client_request.post(httpUrl, parameters_userInfo,

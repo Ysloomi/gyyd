@@ -21,6 +21,7 @@ import com.beessoft.dyyd.dailywork.CheckApproveActivity;
 import com.beessoft.dyyd.model.GetJSON;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -44,6 +45,8 @@ public class SubordinateCheckFragment extends Fragment {
 
 	private String mac, year, month, btn = "1", psn="", idGet, idate, state,
 			flag = "";
+	private String username;
+	private Context context;
 	private Date dateMonth;
 	private CalendarView calendar;
 	// private Spinner spinner;
@@ -68,9 +71,13 @@ public class SubordinateCheckFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		context = getActivity();
+		mac = GetInfo.getIMEI(context);
+		username =GetInfo.getUserName(context);
+
 		initView();
 
-		mac = GetInfo.getIMEI(getActivity());
+
 		Calendar cal = Calendar.getInstance();
 		year = String.valueOf(cal.get(Calendar.YEAR));
 		month = String.valueOf(cal.get(Calendar.MONTH) + 1);
@@ -78,7 +85,7 @@ public class SubordinateCheckFragment extends Fragment {
 
 		if ("1".equals(role)) {
 			initEvent();
-			GetJSON.visitServer_GetInfo(getActivity(), autoCompleteTextView, mac);
+			GetJSON.visitServer_GetInfo(context, autoCompleteTextView, mac,username);
 		} else {
 			calendar.setVisibility(View.GONE);
 			// spinner.setVisibility(View.GONE);
@@ -95,7 +102,7 @@ public class SubordinateCheckFragment extends Fragment {
 
 				psn = autoCompleteTextView.getText().toString();
 
-				visitServer(getActivity());
+				visitServer();
 
 				Tools.closeInput(getActivity(), autoCompleteTextView);//关闭键盘
 			}
@@ -172,9 +179,10 @@ public class SubordinateCheckFragment extends Fragment {
 				flag = "monthChange";
 				dateMonth = dateOfMonth;
 				if ("[全部人员]".equals(psn)) {
-					GetJSON.visitServer_GetInfo(getActivity(), autoCompleteTextView, mac);
+					GetJSON.visitServer_GetInfo(context, autoCompleteTextView, mac,username);
 				} else {
-					visitServer(getActivity());
+					ProgressDialogUtil.showProgressDialog(context);
+					visitServer();
 				}
 			}
 		});
@@ -227,13 +235,14 @@ public class SubordinateCheckFragment extends Fragment {
 		return data;
 	}
 
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/kqlist";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("year", year);
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);//0为个人考勤，1为下属考勤
@@ -243,12 +252,10 @@ public class SubordinateCheckFragment extends Fragment {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-//						System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 
 								for (int i = 0; i < array.length(); i++) {
@@ -277,26 +284,19 @@ public class SubordinateCheckFragment extends Fragment {
 										String[] strState = idateState
 												.split("\\-");
 
-										int yearState = Integer
-												.valueOf(strState[0]);
-										int monthState = Integer
-												.valueOf(strState[1]) - 1;
-										int dayState = Integer
-												.valueOf(strState[2]);
+										int yearState = Integer.valueOf(strState[0]);
+										int monthState = Integer.valueOf(strState[1]) - 1;
+										int dayState = Integer.valueOf(strState[2]);
 
-										// System.out.println("state"+yearState+" "+monthState+" "+dayState);
-
-										Calendar calState = Calendar
-												.getInstance();
-										calState.set(yearState, monthState,
-												dayState, 0, 0, 0);
+										Calendar calState = Calendar.getInstance();
+										calState.set(yearState, monthState, dayState, 0, 0, 0);
 										calendars.add(calState);
 									}
 								}
-							} else if ("1".equals(dataJson.getString("code"))) {
+							} else if (1==code) {
 								Toast.makeText(getActivity(), "没有数据",
 										Toast.LENGTH_SHORT).show();
-							} else if ("－2".equals(dataJson.getString("code"))) {
+							} else if (-2==code) {
 								Toast.makeText(getActivity(), "无权限，请与管理员联系",
 										Toast.LENGTH_SHORT).show();
 							}
@@ -312,7 +312,15 @@ public class SubordinateCheckFragment extends Fragment {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
+					}
+
+					@Override
+					public void onFailure(Throwable throwable, String s) {
+						super.onFailure(throwable, s);
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

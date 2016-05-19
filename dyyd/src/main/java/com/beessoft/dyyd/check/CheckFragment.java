@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -80,7 +79,7 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 //							Log.e("dyyd", dataJson.toString());
 							String code= dataJson.getString("icount");
 							Intent intent = new Intent();

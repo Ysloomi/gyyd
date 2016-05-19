@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.widget.TextView;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -43,7 +42,7 @@ public class MapActivity extends BaseActivity {
 	MapView mMapView = null;
 //	private Marker mMarker = null;
 	private TextView textView;
-	private String department, person, itype, itime, mac,pass,myId;
+	private String department, person, itype, itime,myId;
 	private String flag;
 	// 构建Marker图标
 	BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -54,13 +53,11 @@ public class MapActivity extends BaseActivity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SDKInitializer.initialize(getApplicationContext());
 		setContentView(R.layout.activity_map);
 
 		context= MapActivity.this;
 		mac = GetInfo.getIMEI(context);
 		username = GetInfo.getUserName(context);
-		pass = GetInfo.getPass(context);
 
 		textView =(TextView) findViewById(R.id.mileage_text);
 		// 获取地图控件引用
@@ -109,11 +106,14 @@ public class MapActivity extends BaseActivity {
 	}
 
 	private void visitServer_do() {
+
 		String httpUrl = User.mainurl + "sf/map_do";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", itype);
 		parameters_userInfo.put("flag", flag);
 		parameters_userInfo.put("itime", itime);
@@ -128,8 +128,8 @@ public class MapActivity extends BaseActivity {
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-							String code = dataJson.getString("code");
-							if (code.equals("0")) {
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 
 								List<OverlayOptions> optionsList = new ArrayList<OverlayOptions>();
@@ -200,7 +200,7 @@ public class MapActivity extends BaseActivity {
 								mBaiduMap.setOnMarkerClickListener(overlayManager);
 								overlayManager.addToMap();
 								overlayManager.zoomToSpan();// 缩放
-							} else if ("-1".equals(code)) {
+							} else if (-1==code) {
 								ToastUtil.toast(context, "所选时间无位置信息");
 								finish();
 							}
@@ -226,7 +226,7 @@ public class MapActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", itype);
 		parameters_userInfo.put("flag", flag);
 		parameters_userInfo.put("itime", itime);
@@ -239,11 +239,10 @@ public class MapActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-
 						try {
-
 							JSONObject dataJson = new JSONObject(response);
-							if (dataJson.getString("code").equals("0")) {
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								List<LatLng> list = new ArrayList<LatLng>();
 								LatLng point = null;
@@ -264,7 +263,7 @@ public class MapActivity extends BaseActivity {
 										.animateMapStatus(MapStatusUpdateFactory
 												.newLatLngZoom(point, 16));
 								// mBaiduMap.setViewport(list);
-							} else if ("-1".equals(dataJson.getString("code"))) {
+							} else if (-1==code) {
 								ToastUtil.toast(context, "所选时间无位置信息");
 								finish();
 							}

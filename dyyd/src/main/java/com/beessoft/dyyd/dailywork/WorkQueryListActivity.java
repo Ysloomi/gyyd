@@ -47,12 +47,14 @@ public class WorkQueryListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_workquerylist);
 
+		context = WorkQueryListActivity.this;
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
+
 		initView();
 
-		mac = GetInfo.getIMEI(WorkQueryListActivity.this);
-
-		GetJSON.visitServer_GetInfo_NoSpecial(WorkQueryListActivity.this,
-				autoCompleteTextView, mac);
+		GetJSON.visitServer_GetInfo_NoSpecial(context, autoCompleteTextView, mac,username);
 		autoCompleteTextView.setHint("专业、姓名、分局、日期");
 
 		ProgressDialogUtil.showProgressDialog(context);

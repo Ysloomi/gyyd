@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -31,15 +30,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AdviseListActivity extends BaseActivity {
+public class AdviseListActivity extends BaseActivity implements OnClickListener {
 
     private String mac, pass, type = "", question = "", condition = "";
 
     private ListView listView;
     private EditText editText;
-    private Button button;
 
-    private ArrayList<HashMap<String, String>> datas;
+    private ArrayList<HashMap<String, String>> datas = new ArrayList<>();
 
     private AdviseListAdapter adapter;
     private Boolean isFinish = false;
@@ -77,10 +75,7 @@ public class AdviseListActivity extends BaseActivity {
         type = getIntent().getStringExtra("type");
         condition = getIntent().getStringExtra("condition");
 
-        datas = new ArrayList<HashMap<String, String>>();
-
         listView.setOnItemClickListener(new ItemClickListener());
-        button.setOnClickListener(new ClickListener());
     }
 
     @Override
@@ -91,36 +86,37 @@ public class AdviseListActivity extends BaseActivity {
     }
 
     public void initView() {
-        listView = (ListView) findViewById(R.id.advise_list);
+        listView = (ListView) findViewById(R.id.list_view);
         editText = (EditText) findViewById(R.id.advise_edittext);
-        button = (Button) findViewById(R.id.advise_button);
+
+        findViewById(R.id.txt_search).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.txt_search:
+                if (isFinish) {
+                    question = editText.getText().toString();
+                    getAdviseList();
+                    isFinish = false;
+                } else {
+                    ToastUtil.toast(AdviseListActivity.this, "请等待数据加载");
+                }
+                break;
+        }
     }
 
     class ItemClickListener implements OnItemClickListener {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long rowid) {
-
             HashMap<String, String> map = datas.get(position);
             String id = map.get("id");
             String state = map.get("state");
-            Intent intent = new Intent(AdviseListActivity.this,
-                    AdviseDetailActivity.class);
+            Intent intent = new Intent(context, AdviseDetailActivity.class);
             intent.putExtra("idTarget", id);
             intent.putExtra("state", state);
             startActivity(intent);
-        }
-    }
-
-    class ClickListener implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (isFinish) {
-                question = editText.getText().toString();
-                getAdviseList();
-                isFinish = false;
-            } else {
-                ToastUtil.toast(AdviseListActivity.this, "请等待数据加载");
-            }
         }
     }
 
@@ -129,6 +125,7 @@ public class AdviseListActivity extends BaseActivity {
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("pass", pass);
         parameters_userInfo.put("type", Escape.escape(type));
         parameters_userInfo.put("question", Escape.escape(question));
@@ -163,8 +160,7 @@ public class AdviseListActivity extends BaseActivity {
                                     datas.add(hashMap);
                                 }
                             }
-                            adapter = new AdviseListAdapter(
-                                    AdviseListActivity.this, datas);
+                            adapter = new AdviseListAdapter(context, datas);
                             listView.setAdapter(adapter);
                         } catch (Exception e) {
                             e.printStackTrace();

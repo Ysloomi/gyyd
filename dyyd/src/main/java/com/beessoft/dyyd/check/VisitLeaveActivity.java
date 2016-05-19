@@ -104,8 +104,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave);
         if (savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath"))) {
-//			Log.i(TAG, "拍摄异常，获取原来的shot_path");
-            Logger.e("拍摄异常，获取原来的shot_path");
+//            Logger.e("拍摄异常，获取原来的shot_path");
             imgPath = savedInstanceState.getString("imgPath");
         }
         context = VisitLeaveActivity.this;
@@ -236,7 +235,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
 
-        Logger.e(httpUrl+"?"+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

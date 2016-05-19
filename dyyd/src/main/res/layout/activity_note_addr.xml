@@ -3,45 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context="com.beessoft.dyyd.dailywork.NoteAddrActivity">
 
-    <LinearLayout style="@style/TextOutLayout">
+    <ListView
+        android:id="@+id/type_list"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/wangyibg"
+        android:divider="@null"
+        android:scrollbars="none" />
 
-        <TextView
-            style="@style/MyTitle"
-            android:text="类型" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spn_type"
-            style="@style/NoteSpinner"
-            android:background="@drawable/spinner_down" />
+        <LinearLayout style="@style/TextOutLayout">
+
+            <EditText
+                android:id="@+id/edt_search"
+                style="@style/NoteText"
+                android:background="@android:color/white"
+                android:hint="请输入计划走访地点" />
+
+            <TextView
+                android:id="@+id/txt_search"
+                style="@style/MyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="筛选" />
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:divider="@null"
+            android:listSelector="@drawable/search_more_morelistselect" />
 
     </LinearLayout>
-
-    <LinearLayout style="@style/TextOutLayout">
-
-        <TextView
-            style="@style/MyTitle"
-            android:text="关键字" />
-
-        <EditText
-            android:id="@+id/edt_search"
-            style="@style/NoteText"
-            android:hint="请输入计划走访地点"/>
-
-        <TextView
-            android:id="@+id/txt_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="5dp"
-            android:layout_marginLeft="10dp"
-            style="@style/MyTitle"
-            android:text="筛选" />
-
-    </LinearLayout>
-
-    <include layout="@layout/baselist_without_color" />
 
 </LinearLayout>

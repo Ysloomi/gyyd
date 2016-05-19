@@ -16,6 +16,7 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.dailywork.CheckApproveActivity;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -37,6 +38,8 @@ import java.util.List;
 public class MyCheckFragment extends Fragment {
 
 	private String mac, year, month, btn = "0", idGet, idate, state, flag = "";
+	private String username;
+	private Context context;
 	private Date dateMonth;
 	private CalendarView calendar;
 	private TextView textView;
@@ -57,13 +60,17 @@ public class MyCheckFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mac = GetInfo.getIMEI(getActivity());
+		context = getActivity();
+		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
+
 		Calendar calendar = Calendar.getInstance();
 		year = String.valueOf(calendar.get(Calendar.YEAR));
 		month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
 
 		initEvent();
-		visitServer(getActivity());
+
+		visitServer();
 	}
 
 	private void initView(View view) {
@@ -120,7 +127,8 @@ public class MyCheckFragment extends Fragment {
 				month = format.format(dateOfMonth);
 				flag = "monthChange";
 				dateMonth = dateOfMonth;
-				visitServer(getActivity());
+				ProgressDialogUtil.showProgressDialog(context);
+				visitServer();
 			}
 		});
 		// new
@@ -190,15 +198,14 @@ public class MyCheckFragment extends Fragment {
 		return data;
 	}
 
-	// 访问服务器http post
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/kqlist";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("year", year);
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);
@@ -209,12 +216,10 @@ public class MyCheckFragment extends Fragment {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-
-							if (dataJson.getString("code").equals("0")) {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
-
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(i);
 									idGet = obj.getString("id");
@@ -253,10 +258,10 @@ public class MyCheckFragment extends Fragment {
 										calendars.add(calState);
 									}
 								}
-							} else if ("1".equals(dataJson.getString("code"))) {
+							} else if (1==code) {
 								Toast.makeText(getActivity(), "没有数据",
 										Toast.LENGTH_SHORT).show();
-							} else if ("－2".equals(dataJson.getString("code"))) {
+							} else if (-2==code) {
 								Toast.makeText(getActivity(), "无权限，请与管理员联系",
 										Toast.LENGTH_SHORT).show();
 							}
@@ -272,7 +277,15 @@ public class MyCheckFragment extends Fragment {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
+						}finally {
+							ProgressDialogUtil.closeProgressDialog();
 						}
+					}
+
+					@Override
+					public void onFailure(Throwable throwable, String s) {
+						super.onFailure(throwable, s);
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}

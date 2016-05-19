@@ -24,7 +24,7 @@ public class GetJSON {
      * @param mac
      */
     public static void visitServer_GetInfo(final Context context,
-                                           final AutoCompleteTextView autoCompleteTextView, String mac) {
+                                           final AutoCompleteTextView autoCompleteTextView, String mac,String username) {
 
         String httpUrl = User.mainurl + "app/getpsn2";
 
@@ -32,6 +32,7 @@ public class GetJSON {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -83,7 +84,8 @@ public class GetJSON {
      * @param mac
      */
     public static void visitServer_GetInfo_NoSpecial(final Context context,
-                                                     final AutoCompleteTextView autoCompleteTextView, String mac) {
+                                                     final AutoCompleteTextView autoCompleteTextView,
+                                                     String mac,String username) {
 
         String httpUrl = User.mainurl + "app/getpsn";
 
@@ -91,7 +93,8 @@ public class GetJSON {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
-//		parameters_userInfo.put("usercode", );
+        parameters_userInfo.put("usercode", username);
+
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

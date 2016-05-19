@@ -55,6 +55,7 @@ public class CheckQueryDetailActivity extends BaseActivity {
 
 		context = CheckQueryDetailActivity.this;
 		mac = GetInfo.getIMEI(context);
+		username = GetInfo.getUserName(context);
 
 		Calendar calendar = Calendar.getInstance();
 		year = String.valueOf(calendar.get(Calendar.YEAR));
@@ -198,6 +199,7 @@ public class CheckQueryDetailActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("year", year);
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);
@@ -208,9 +210,7 @@ public class CheckQueryDetailActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-//							Logger.e("dataJson>>>"+dataJson.toString());
+							JSONObject dataJson = new JSONObject(response);
 
 							String code = dataJson.getString("code");;
 

@@ -99,7 +99,6 @@ public class LocationApplication extends Application {
 		// 注意该方法要再setContentView方法之前实现
 		SDKInitializer.initialize(getApplicationContext());
 //		Stetho.initializeWithDefaults(this);
-
 		mInstance =this;
 	}
 

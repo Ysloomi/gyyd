@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.NoteAddrAdapter;
+import com.beessoft.dyyd.adapter.NoteAddrTypeAdapter;
 import com.beessoft.dyyd.bean.NoteAddr;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -32,16 +32,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteAddrActivity extends BaseActivity
-        implements View.OnClickListener,AdapterView.OnItemSelectedListener,
-        AdapterView.OnItemClickListener {
+        implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private Spinner typeSp;
+//    private Spinner typeSp;
     private EditText keywordEdt;
 
 //    private PullToRefreshListView mPullRefreshListView;
+
     private ListView mListView;
     private List<NoteAddr> noteAddrs = new ArrayList<>();
     private NoteAddrAdapter noteAddrAdapter;
+
+    private ListView typeList;
+    private NoteAddrTypeAdapter addrTypeAdapter;
 
     private int currentPage = 1;
     private String keyword = "";
@@ -171,18 +174,22 @@ public class NoteAddrActivity extends BaseActivity
 //                startActivity(intent);
 //            }
 //        });
+
+        visitRefresh();
     }
 
 
 
     private void initView() {
 //        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+        typeList = (ListView) findViewById(R.id.type_list);
         mListView = (ListView) findViewById(R.id.list_view);
-        typeSp = (Spinner) findViewById(R.id.spn_type);
+//        typeSp = (Spinner) findViewById(R.id.spn_type);
         keywordEdt = (EditText) findViewById(R.id.edt_search);
 
+        typeList.setOnItemClickListener(this);
         mListView.setOnItemClickListener(this);
-        typeSp.setOnItemSelectedListener(this);
+//        typeSp.setOnItemSelectedListener(this);
         findViewById(R.id.txt_search).setOnClickListener(this);
     }
 
@@ -195,7 +202,8 @@ public class NoteAddrActivity extends BaseActivity
         lists.add("政企单位");
         lists.add("渠道商家");
         lists.add("公司部门");
-        Tools.reloadSpinner(context,typeSp,lists);
+        addrTypeAdapter = new NoteAddrTypeAdapter(context,lists);
+        typeList.setAdapter(addrTypeAdapter);
     }
 
     private void visitRefresh() {
@@ -226,7 +234,6 @@ public class NoteAddrActivity extends BaseActivity
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(response);
-//							Logger.e(response.toString());
                             Integer code = dataJson.getInt("code");
 //                            String msg = dataJson.getString("msg");
 //                            NoteAddrDBManager.getInstance().delete("0");
@@ -367,26 +374,25 @@ public class NoteAddrActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
-            case R.id.spn_type:
-                type = position+"";
-                keyword = "";
-                keywordEdt.setText("");
-                visitRefresh();
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        switch (parent.getId()){
+//            case R.id.spn_type:
+//                type = position+"";
+//                keyword = "";
+//                keywordEdt.setText("");
+//                visitRefresh();
+//                break;
+//        }
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Logger.e("parent.getId>>>>"+parent.getId());
         switch (parent.getId()){
             case R.id.list_view:
                 NoteAddr noteAddr = noteAddrs.get(position);
@@ -397,6 +403,14 @@ public class NoteAddrActivity extends BaseActivity
                 }
 //                NoteAddrDBManager.getInstance().update(noteAddr);
                 noteAddrAdapter.notifyDataSetChanged();
+                break;
+            case R.id.type_list:
+                addrTypeAdapter.setSelectItem(position);
+                addrTypeAdapter.notifyDataSetChanged();
+                type = position+"";
+                keyword = "";
+                keywordEdt.setText("");
+                visitRefresh();
                 break;
         }
     }
