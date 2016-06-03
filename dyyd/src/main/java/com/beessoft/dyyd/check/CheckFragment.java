@@ -9,8 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.baidu.location.LocationClient;
+import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.utils.AlarmUtils;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -25,8 +31,13 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 	private Button checkInButton, checkOutButton, visitReachBtn, visitLeaveBtn;
 	private Button collectBtn;
 	private Button askLeaveBtn;
+
+
 	private String itype;
 	private Context context;
+
+	private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
+	private LocationClient mLocationClient;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +45,7 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 		View check = inflater.inflate(R.layout.fragment_check, container, false);
 		context = getActivity();
 		initView(check);
+		mLocationClient = ((LocationApplication) getActivity().getApplication()).mLocationClient;
 		return check;
 	}
 
@@ -43,9 +55,9 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 		checkOutButton = (Button) view.findViewById(R.id.checkout_button);
 		visitReachBtn = (Button) view.findViewById(R.id.visit_button);
 		visitLeaveBtn = (Button) view.findViewById(R.id.leave_button);
-
 		collectBtn = (Button) view.findViewById(R.id.collect_button);
 		askLeaveBtn = (Button) view.findViewById(R.id.askleave_button);
+
 
 		checkInButton.setOnClickListener(CheckFragment.this);
 		checkOutButton.setOnClickListener(CheckFragment.this);
@@ -60,6 +72,7 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 		GetInfo.getButtonRole(context,visitLeaveBtn,"2","leave");
 		GetInfo.getButtonRole(context,collectBtn,"3","");
 		GetInfo.getButtonRole(context,askLeaveBtn,"4","");
+
 	}
 
 	private void visitServer() {
@@ -92,6 +105,25 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 										ToastUtil.toast(context, "请签到");
 									}
 								} else if ("1".equals(code)) {
+
+									if (!Gps.exist(context, "distance.db")) {
+										distanceHelper = new DistanceDatabaseHelper(context.getApplicationContext(), "distance.db",2);
+
+										String time = DateUtil.getDateLoca();
+
+										distanceHelper
+												.getReadableDatabase()
+												.execSQL(
+														"insert into distance_table values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+														new String[] { time, "0",
+																"0", "0", "0",
+																"0", "", "0", "0",""});
+										distanceHelper.close();
+										Gps.GPS_do(mLocationClient, 8000);// 启动百度定位的8秒轮询
+
+										AlarmUtils.doalarm(context);
+									}
+
 									switch (itype) {
 									case "checkin":
 										ToastUtil.toast(context, "已签到");

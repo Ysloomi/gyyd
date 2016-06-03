@@ -338,7 +338,7 @@ public class CollectActivity extends BaseActivity {
 				uploadBuffer = "";
 				if (!Tools.isEmpty(imgPath)) {
 					File imageFile = new File(imgPath);
-					bitmap = PhotoUtil.imageEncode(imageFile);
+					bitmap = PhotoUtil.imageEncode(imageFile,true);
 					photoImage.setImageBitmap(bitmap);
 					uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
 					imgPath="";
@@ -400,9 +400,9 @@ public class CollectActivity extends BaseActivity {
 			}
 			if (!Gps.exist(context, "distance.db")) {
 				LocationApplication myApp = (LocationApplication) getApplication();
-				addr = myApp.getaddr();
-				longitude = myApp.getjd();
-				latitude = myApp.getwd();
+				addr = myApp.getAddr();
+				longitude = myApp.getJd();
+				latitude = myApp.getWd();
 				type = myApp.getType();
 				if (Tools.isEmpty(addr)) {
 					getaddr(longitude, latitude);

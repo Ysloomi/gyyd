@@ -27,7 +27,7 @@
                 android:id="@+id/edt_search"
                 style="@style/NoteText"
                 android:background="@android:color/white"
-                android:hint="请输入计划走访地点" />
+                android:hint="请输入计划走访地点或编码" />
 
             <TextView
                 android:id="@+id/txt_search"
@@ -42,7 +42,7 @@
 
         </LinearLayout>
 
-        <ListView
+        <com.beessoft.dyyd.view.MyListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"

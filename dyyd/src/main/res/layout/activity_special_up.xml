@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="启动时间" />
+
+
+                <TextView
+                    android:id="@+id/start"
+                    style="@style/MyEdit" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="完成时限" />
+
+
+                <TextView
+                    android:id="@+id/end"
+                    style="@style/MyEdit" />
+
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="活动要求" />
+
+                <TextView
+                    android:id="@+id/require"
+                    style="@style/MyEdit" />
+
+            </LinearLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/photo_num"
+                    style="@style/MyTitle"
+                    android:text="当前地址" />
+
+                <TextView
+                    android:id="@+id/location_text"
+                    style="@style/MyEdit"
+                    android:layout_alignTop="@+id/photo_num"
+                    android:layout_toRightOf="@+id/photo_num" />
+
+                <ImageView
+                    android:id="@+id/refresh_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="matrix"
+                    android:src="@drawable/refresh_button" />
+
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    style="@style/MyTitle"
+                    android:text="执行结果" />
+
+                <ImageView
+                    android:id="@+id/photo_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_alignTop="@+id/TextView01"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+
+                <ImageView
+                    android:id="@+id/photo_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/photo_photo"
+                    android:scaleType="matrix"
+                    android:src="@drawable/photo_button" />
+
+                <ImageView
+                    android:id="@+id/template_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/photo_photo"
+                    android:layout_below="@+id/photo_iv"
+                    android:scaleType="matrix"
+                    android:src="@drawable/template" />
+
+            </RelativeLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="专员反馈" />
+
+                <EditText
+                    android:id="@+id/result"
+                    style="@style/MyEdit"
+                    android:hint="请输入" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_finish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/linearlayout"
+        style="@style/RelativeBottom">
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="#00000000"
+            android:drawableTop="@drawable/next" />
+
+        <Button
+            android:id="@+id/btn_last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:background="#00000000"
+            android:drawableTop="@drawable/last"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>

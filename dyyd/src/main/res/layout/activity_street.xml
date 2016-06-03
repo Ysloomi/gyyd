@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/MyTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="选择分局"/>
+
+    <Spinner
+        android:id="@+id/departmenr_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@drawable/text_bg"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/MyTitle"
+        android:layout_below="@+id/departmenr_spinner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="选择街道"/>
+
+    <Spinner
+        android:id="@+id/person_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/textView2"
+        android:background="@drawable/text_bg"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/add_bt"
+        style="@style/MyButton"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/person_spinner"
+        android:layout_below="@+id/person_spinner"
+        android:layout_marginTop="19dp"
+        android:text="新增商户"/>
+
+    <Button
+        android:id="@+id/requery_bt"
+        style="@style/MyButton"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/person_spinner"
+        android:layout_below="@+id/add_bt"
+        android:layout_marginTop="19dp"
+        android:text="查询商户"/>
+
+</RelativeLayout>

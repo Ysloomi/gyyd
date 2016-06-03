@@ -164,11 +164,22 @@ public class LoginActivity extends Activity {
 								registerXGPush(user);
 //								String role = dataJson.getString("role");
 //								PreferenceUtil.write(context, "role", role);
-								String ifCheck = dataJson.getString("kq");//0考，1不
-								PreferenceUtil.write(context, "ifCheck", ifCheck);
+								int ifCheck = dataJson.getInt("kq");//0考，1不
+								if (0==ifCheck){
+									PreferenceUtil.write(context, "ifCheck", true);
+								}
+								PreferenceUtil.write(context, "ifSf", true);
+								if (dataJson.has("sf")) {
+									int ifSf = dataJson.getInt("sf");//0什邡，1不是
+									if (0 == ifSf) {
+										PreferenceUtil.write(context, "ifSf", true);
+									}
+								}
 
 								int ifgps = dataJson.getInt("ifgps");//ifgps 0 允许室外签到 1不允许
-								PreferenceUtil.write(context, "ifgps", ifgps);
+								if (0==ifgps){
+									PreferenceUtil.write(context, "ifgps", true);
+								}
 
 								int roleCode = dataJson.getInt("rolecode");//权限控制
 								if (roleCode==0){

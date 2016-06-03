@@ -14,12 +14,15 @@ import android.widget.TextView;
 import com.beessoft.dyyd.DetailActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.update.UpdateManager;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.User;
 
 public class MyMeansFragment extends Fragment {
 	private TextView unitTxt, departTxt, nameTxt, telTxt, macTxt, onlineTxt;
+	private TextView detailTxt;
 	private Button updateBtn;
+	private Button adviseBtn;
 	private UpdateManager mUpdateManager;
 	private Context context;
 
@@ -44,15 +47,25 @@ public class MyMeansFragment extends Fragment {
 		updateBtn.setText("在线升级   v"+ User.getVersionName(context));
 		updateBtn.setOnClickListener(onClickListener);
 
+		adviseBtn = (Button) view.findViewById(R.id.btn_advise);
+		adviseBtn.setOnClickListener(onClickListener);
+
+		detailTxt =(TextView) view.findViewById(R.id.txt_detail);
+		detailTxt.setOnClickListener(onClickListener);
+
+		if (GetInfo.getIfSf(context)){
+			adviseBtn.setVisibility(View.VISIBLE);
+			departTxt.setVisibility(View.VISIBLE);
+		}
+
 		view.findViewById(R.id.btn_changepassword).setOnClickListener(onClickListener);
-		view.findViewById(R.id.btn_advise).setOnClickListener(onClickListener);
-		view.findViewById(R.id.txt_detail).setOnClickListener(onClickListener);
-		
+
 		unitTxt.setText(PreferenceUtil.readString(context, "dw"));
 		departTxt.setText(PreferenceUtil.readString(context, "cdepname"));
 		nameTxt.setText(PreferenceUtil.readString(context, "name"));
 		telTxt.setText(PreferenceUtil.readString(context, "tel"));
 		macTxt.setText(PreferenceUtil.readString(context, "sim"));
+		onlineTxt.setText(PreferenceUtil.readString(context,"online"));
 	}
 
 	

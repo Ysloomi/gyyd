@@ -307,9 +307,9 @@ public class VisitReachActivity extends BaseActivity {
 			}
 			if (!Gps.exist(VisitReachActivity.this, "distance.db")) {
 				LocationApplication myApp = (LocationApplication) getApplication();
-				addr = myApp.getaddr();
-				longtitude = myApp.getjd();
-				latitude = myApp.getwd();
+				addr = myApp.getAddr();
+				longtitude = myApp.getJd();
+				latitude = myApp.getWd();
 				type = myApp.getType();
 				if (TextUtils.isEmpty(addr)) {
 					visitServer_getaddr(longtitude,latitude);

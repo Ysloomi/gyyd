@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,8 +10,18 @@
         style="@style/ListItemText" />
 
     <TextView
+        android:id="@+id/message1"
+        style="@style/ListItemText"
+        android:layout_margin="10dp"
+        android:layout_alignBaseline="@+id/name"
+        android:layout_alignParentRight="true"
+        android:text="1"/>
+
+    <TextView
         android:id="@+id/message"
         style="@style/ListItemText"
-        android:layout_marginTop="10dp" />
+        android:layout_below="@+id/name"
+        android:layout_alignLeft="@+id/name"
+        android:text="1"/>
 
-</LinearLayout>
+</RelativeLayout>

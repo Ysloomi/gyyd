@@ -3,138 +3,162 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/photo_button"
+                style="@style/FragmentButton"
+                android:layout_alignTop="@+id/btn_work"
+                android:layout_marginRight="35dp"
+                android:layout_toLeftOf="@+id/btn_work"
+                android:drawableTop="@drawable/photo"
+                android:text="@string/activity_photo" />
+
+            <Button
+                android:id="@+id/btn_work"
+                style="@style/FragmentButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/mywork"
+                android:text="@string/activity_mywork" />
+
+            <Button
+                android:id="@+id/checkquery_button"
+                style="@style/FragmentButton"
+                android:layout_alignTop="@+id/btn_work"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_toEndOf="@+id/btn_work"
+                android:layout_toRightOf="@+id/btn_work"
+                android:drawableTop="@drawable/checkquery"
+                android:text="@string/activity_checkquery" />
+
+            <Button
+                android:id="@+id/btn_note"
+                style="@style/FragmentButton"
+                android:layout_below="@+id/btn_work"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/note"
+                android:text="@string/title_activity_note" />
+
+            <Button
+                android:id="@+id/btn_approve_query"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_visitquery"
+                android:layout_below="@+id/btn_visitquery"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/approvequery"
+                android:text="@string/activity_approvequery" />
+
+            <Button
+                android:id="@+id/btn_notice"
+                style="@style/FragmentButton"
+                android:layout_alignTop="@+id/btn_special"
+                android:layout_centerHorizontal="true"
+                android:drawableTop="@drawable/notice_button"
+                android:text="@string/activity_notice" />
+
+            <TextView
+                android:id="@+id/notice_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/btn_notice"
+                android:layout_alignTop="@+id/btn_notice"
+                android:gravity="top"
+                android:text="0"
+                android:textColor="#FF0000"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/btn_work_query"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_approve_query"
+                android:layout_alignStart="@+id/btn_approve_query"
+                android:layout_below="@+id/btn_approve_query"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/workquery"
+                android:text="@string/activity_workquery" />
+
+            <Button
+                android:id="@+id/btn_memo"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_special"
+                android:layout_alignStart="@+id/btn_special"
+                android:layout_below="@+id/btn_special"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/mymemo"
+                android:text="@string/activity_mymemo" />
+
+            <Button
+                android:id="@+id/btn_arrange"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_notice"
+                android:layout_alignStart="@+id/btn_notice"
+                android:layout_below="@+id/btn_notice"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/arrange"
+                android:text="@string/activity_arrange" />
+
+            <Button
+                android:id="@+id/btn_mileage"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_memo"
+                android:layout_alignStart="@+id/btn_memo"
+                android:layout_below="@+id/btn_memo"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/mymileage"
+                android:text="@string/activity_mymileage" />
+
+            <Button
+                android:id="@+id/btn_location"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/photo_button"
+                android:layout_alignStart="@+id/photo_button"
+                android:layout_below="@+id/photo_button"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/worklocation"
+                android:text="@string/activity_location" />
+
+            <Button
+                android:id="@+id/btn_visitquery"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/checkquery_button"
+                android:layout_alignStart="@+id/checkquery_button"
+                android:layout_below="@+id/checkquery_button"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/visitquery"
+                android:text="@string/activity_visitquery" />
+
+            <Button
+                android:id="@+id/btn_special"
+                style="@style/FragmentButton"
+                android:layout_alignLeft="@+id/btn_location"
+                android:layout_alignStart="@+id/btn_location"
+                android:layout_below="@+id/btn_location"
+                android:layout_marginTop="35dp"
+                android:drawableTop="@drawable/special"
+                android:text="@string/activity_specail" />
 
 
-    <Button
-        android:id="@+id/query_button"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/btn_visitquery"
-        android:layout_below="@+id/btn_visitquery"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/approvequery"
-        android:text="@string/activity_approvequery"
-        android:visibility="gone" />
+            <TextView
+                android:id="@+id/todo_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/btn_work"
+                android:layout_alignTop="@+id/btn_work"
+                android:gravity="top"
+                android:text="0"
+                android:textColor="@color/red"
+                android:textSize="22sp" />
 
-    <Button
-        android:id="@+id/notice_button"
-        style="@style/FragmentButton"
-        android:layout_below="@+id/work_button"
-        android:layout_marginTop="35dp"
-        android:layout_toRightOf="@+id/btn_visitquery"
-        android:drawableTop="@drawable/notice_button"
-        android:text="@string/activity_notice"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/notice_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/notice_button"
-        android:layout_alignTop="@+id/notice_button"
-        android:gravity="top"
-        android:textColor="#FF0000"
-        android:textSize="22sp"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/workquery_button"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/mileage_button"
-        android:layout_below="@+id/mileage_button"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/workquery"
-        android:text="@string/activity_workquery"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/mymemo_button"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/query_button"
-        android:layout_below="@+id/query_button"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/mymemo"
-        android:text="@string/activity_mymemo"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/arrange_button"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/notice_button"
-        android:layout_below="@+id/notice_button"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/arrange"
-        android:text="@string/activity_arrange"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/mileage_button"
-        style="@style/FragmentButton"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/mymileage"
-        android:text="@string/activity_mymileage"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/work_button"
-        style="@style/FragmentButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/mywork"
-        android:text="@string/activity_mywork" />
-
-    <Button
-        android:id="@+id/photo_button"
-        style="@style/FragmentButton"
-        android:layout_alignTop="@+id/work_button"
-        android:layout_marginRight="35dp"
-        android:layout_toLeftOf="@+id/work_button"
-        android:drawableTop="@drawable/photo"
-        android:text="@string/activity_photo" />
-
-    <Button
-        android:id="@+id/worklocation_button"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/photo_button"
-        android:layout_alignStart="@+id/photo_button"
-        android:layout_below="@+id/photo_button"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/worklocation"
-        android:text="@string/activity_location" />
-
-    <Button
-        android:id="@+id/checkquery_button"
-        style="@style/FragmentButton"
-        android:layout_alignTop="@+id/work_button"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_toEndOf="@+id/work_button"
-        android:layout_toRightOf="@+id/work_button"
-        android:drawableTop="@drawable/checkquery"
-        android:text="@string/activity_checkquery" />
-
-
-    <Button
-        android:id="@+id/btn_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/worklocation_button"
-        android:layout_centerHorizontal="true"
-        android:background="#00000000"
-        android:drawableTop="@drawable/note"
-        android:text="@string/title_activity_note"
-        android:textColor="#4db0f6" />
-
-
-    <Button
-        android:id="@+id/btn_visitquery"
-        style="@style/FragmentButton"
-        android:layout_alignLeft="@+id/checkquery_button"
-        android:layout_alignStart="@+id/checkquery_button"
-        android:layout_below="@+id/checkquery_button"
-        android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/visitquery"
-        android:text="@string/activity_visitquery"/>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

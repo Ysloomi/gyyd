@@ -65,7 +65,7 @@ public class NoteAddrAdapter extends BaseAdapter {
 		}
 
 		NoteAddr noteAddr = mDatas.get(position);
-		holder.mName.setText(noteAddr.getName());
+		holder.mName.setText(noteAddr.getCode()+"_"+noteAddr.getName());
 		if (haveCheck){
 			holder.mIfCheck.setVisibility(View.VISIBLE);
 			if ("1".equals(noteAddr.getIscheck())){

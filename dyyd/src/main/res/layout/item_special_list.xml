@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/project"
+        style="@style/ListItemText" />
+
+    <TextView
+        android:id="@+id/person"
+        style="@style/ListItemText"
+        android:layout_alignBaseline="@+id/project"
+        android:layout_alignTop="@+id/project"
+        android:layout_toEndOf="@+id/project"
+        android:layout_toRightOf="@+id/project" />
+
+    <TextView
+        android:id="@+id/shop"
+        style="@style/ListItemText"
+        android:layout_below="@+id/project" />
+
+
+    <TextView
+        android:id="@+id/date"
+        style="@style/ListItemText"
+        android:layout_below="@+id/shop" />
+
+</RelativeLayout>

@@ -26,7 +26,6 @@ public class GetInfo {
 //	}
 
 
-
     public static String getIMEI(Context context) {
         String IMEI = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         return IMEI;
@@ -53,6 +52,29 @@ public class GetInfo {
         return PreferenceUtil.readString(context, "cdepname");
     }
 
+    /*
+        * 是否什邡的用户
+        *
+        * */
+    public static boolean getIfSf(Context context) {
+        return PreferenceUtil.readBoolean(context, "ifSf");
+    }
+
+    /*
+        * 是否签到
+        *
+        * */
+    public static boolean getIfCheck(Context context) {
+        return PreferenceUtil.readBoolean(context, "ifCheck");
+    }
+
+    /*
+    * 是否允许室外GPS定位
+    *
+    * */
+    public static boolean getIfGps(Context context) {
+        return PreferenceUtil.readBoolean(context, "ifgps");
+    }
 
     /**
      * 获取所有的记事本信息
@@ -140,18 +162,18 @@ public class GetInfo {
         return mDatas;
     }
 
-    public static void getButtonRole(Context context, Button button, String type,String from) {
+    public static void getButtonRole(Context context, Button button, String type, String from) {
         if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode" + type))) {
-            int a= R.drawable.checkin_untap;
-            if ("1".equals(type)||"2".equals(type)){
-                 if ("checkout".equals(from)){
+            int a = R.drawable.checkin_untap;
+            if ("1".equals(type) || "2".equals(type)) {
+                if ("checkout".equals(from)) {
                     a = R.drawable.checkout_untap;
-                }else if ("reach".equals(from)){
-                     a = R.drawable.reach_untap;
-                }else if ("leave".equals(from)){
-                     a = R.drawable.leave_untap;
+                } else if ("reach".equals(from)) {
+                    a = R.drawable.reach_untap;
+                } else if ("leave".equals(from)) {
+                    a = R.drawable.leave_untap;
                 }
-            }else{
+            } else {
                 switch (type) {
                     case "3":
                         a = R.drawable.collect_uptap;

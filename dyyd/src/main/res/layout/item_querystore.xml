@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/belong"
+        style="@style/ListItemText" />
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/ListItemText"
+        android:layout_alignLeft="@+id/belong"
+        android:layout_below="@+id/belong" />
+
+    <TextView
+        android:id="@+id/num"
+        style="@style/ListItemText"
+        android:layout_alignBaseline="@+id/name"
+        android:layout_toRightOf="@+id/name" />
+
+</RelativeLayout>

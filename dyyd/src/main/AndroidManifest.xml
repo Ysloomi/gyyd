@@ -402,7 +402,7 @@
             android:icon="@drawable/top_logo"
             android:label="@string/title_activity_note"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".dailywork.NoteAddActivity"
             android:icon="@drawable/top_logo"
@@ -433,7 +433,93 @@
             android:label="@string/title_activity_note_deal"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
+        <activity
+            android:name=".check.SpecialActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_specail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".check.SpecialUpActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_specail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".dailywork.SpecialApproveActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_specail_approve"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".WebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_notice"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".material.TargetQueryListActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_targetquery"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".material.ResearchActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_research"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.StreetActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_research"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.StoreResearchActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_storeresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.QueryStoreActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_storeresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.PersonResearchActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_personresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.QueryPersonActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_personresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.HouseActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_houseresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.HouseResearchActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_research"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".material.QueryHouseActivity"
+            android:icon="@drawable/top_logo"
+            android:label="@string/activity_houseresearch"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <receiver android:name=".utils.AlarmReceiver">
             <intent-filter>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="70dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="分公司" />
+
+                <TextView
+                    android:id="@+id/company_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="分局" />
+
+                <TextView
+                    android:id="@+id/department_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="街道" />
+
+                <TextView
+                    android:id="@+id/street_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="归属商客" />
+
+                <EditText
+                    android:id="@+id/belong_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="门牌号" />
+
+                <EditText
+                    android:id="@+id/num_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="将号码已，分隔开填写" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="商铺名" />
+
+                <EditText
+                    android:id="@+id/name_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="运营商" />
+
+                <EditText
+                    android:id="@+id/card_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="电话号码" />
+
+                <EditText
+                    android:id="@+id/phone_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="月均消费" />
+
+                <EditText
+                    android:id="@+id/mouth_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="语音使用\n情况" />
+
+                <EditText
+                    android:id="@+id/voice_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:text="流量使用\n情况" />
+
+                <EditText
+                    android:id="@+id/flow_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="终端使用\n情况" />
+
+                <EditText
+                    android:id="@+id/terminal_tv"
+                    style="@style/detailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" 
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/title8"
+                    style="@style/MyTitle"
+                    android:layout_marginLeft="10dp"
+                    android:text="照片信息" />
+
+                <ImageView
+                    android:id="@+id/checkin_image"
+                    android:layout_width="150dp"
+                    android:layout_height="120dp"
+                    android:layout_alignTop="@+id/title8"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/photo_iv"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/title8"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/photo_button" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/linearlayout"
+        style="@style/RelativeBottom"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/confirm_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#00000000"
+            android:drawableTop="@drawable/confirm_icon" />
+    </RelativeLayout>
+
+</RelativeLayout>

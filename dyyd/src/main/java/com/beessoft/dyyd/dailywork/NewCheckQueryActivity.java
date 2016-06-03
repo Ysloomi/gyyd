@@ -17,6 +17,7 @@ import com.beessoft.dyyd.check.CheckQueryDetailActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -246,9 +247,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-//							Logger.e(dataJson.toString());
+							JSONObject dataJson = new JSONObject(response);
 //							String code = dataJson.getString("code");
 							flag = dataJson.getString("flag");//考勤权限标示
 							if ("0".equals(flag)) {//可查看部门考勤
@@ -306,7 +305,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 //							Log.e("main", dataJson.toString());
 							String code = dataJson.getString("code");
 //							String flag = dataJson.getString("flag");
@@ -342,13 +341,14 @@ public class NewCheckQueryActivity extends BaseActivity {
 		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("dep", Escape.escape(department));
 
+		Logger.e(httpUrl+"?"+parameters_userInfo);
+
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 //							Log.e("main", dataJson.toString());
 							String code = dataJson.getString("code");
 //							String flag = dataJson.getString("flag");

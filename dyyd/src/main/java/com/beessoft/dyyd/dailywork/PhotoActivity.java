@@ -250,7 +250,7 @@ public class PhotoActivity extends BaseActivity {
 				case PHOTO_CODE:
 					if (imgPath != null) {
 						File imageFile = new File(imgPath);
-						bitmap = PhotoUtil.imageEncode(imageFile);
+						bitmap = PhotoUtil.imageEncode(imageFile,true);
 						photoImage.setImageBitmap(bitmap);
 						uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
 					}
@@ -302,9 +302,9 @@ public class PhotoActivity extends BaseActivity {
 			}
 			if (!Gps.exist(PhotoActivity.this, "distance.db")) {
 				LocationApplication myApp = (LocationApplication) getApplication();
-				addr = myApp.getaddr();
-				longtitude = myApp.getjd();
-				latitude = myApp.getwd();
+				addr = myApp.getAddr();
+				longtitude = myApp.getJd();
+				latitude = myApp.getWd();
 				type = myApp.getType();
 				if (addr == null) {
 					visitServer_getaddr(PhotoActivity.this, longtitude, latitude);

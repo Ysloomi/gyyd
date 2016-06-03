@@ -22,7 +22,7 @@ public class AlarmUtils {
 	 */
 
 	public static void startAlarmService(Context context, Class<?> cls,
-			String action, long triggerAtTime) {
+										 String action, long triggerAtTime) {
 		AlarmManager manager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, cls);
@@ -41,7 +41,7 @@ public class AlarmUtils {
 	 */
 
 	public static void stopAlarmService(Context context, Class<?> cls,
-			String action) {
+										String action) {
 		AlarmManager manager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, cls);
@@ -60,7 +60,7 @@ public class AlarmUtils {
 	 * @param action
 	 */
 	public static void startAlarmRepeatService(Context context, int seconds,
-			Class<?> cls, String action) {
+											   Class<?> cls, String action) {
 		AlarmManager manager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, cls);
@@ -80,7 +80,7 @@ public class AlarmUtils {
 	 * @param action
 	 */
 	public static void stopAlarmRepeatService(Context context, Class<?> cls,
-			String action) {
+											  String action) {
 		AlarmManager manager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, cls);
@@ -88,5 +88,30 @@ public class AlarmUtils {
 		PendingIntent pendingIntent = PendingIntent.getService(context, 0,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		manager.cancel(pendingIntent);
+	}
+
+
+
+	public static void doalarm(Context context) {
+		// 定义闹钟参数
+		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		Intent in = new Intent(context, AlarmReceiver.class);
+		in.setAction("Test");
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0, in, 0);
+
+		// 设置闹钟为循环模式，每两分钟触发一次
+		am.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime(),
+				1000 * 60, pi); // Millisec * Second * Minute
+	}
+
+
+	// 取消闹钟
+	public static void cancelAlarm(Context context) {
+		Intent intent = new Intent(context, AlarmReceiver.class);
+		PendingIntent sender = PendingIntent
+				.getBroadcast(context, 0, intent, 0);
+		AlarmManager alarmManager = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(sender);
 	}
 }

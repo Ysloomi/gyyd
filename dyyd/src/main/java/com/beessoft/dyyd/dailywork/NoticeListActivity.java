@@ -149,14 +149,12 @@ public class NoticeListActivity extends BaseActivity {
                                     if ("0".equals(itype)) {
                                         visitServer_save(idTarget);
                                         inputTitleDialog(date, person, myContext);
-
                                     } else if ("1".equals(itype)) {
 //                                        visitServer_save(idTarget);
 //                                        String bookclass = map.get("bookclass");
 //                                        Intent intent = new Intent();
 //                                        if ("1".equals(bookclass)) {
-//                                            intent.setClass(context,
-//                                                    WorkBookActivity.class);
+//                                            intent.setClass(context, WebViewActivity.class);
 //                                        } else if ("2".equals(bookclass)) {
 //                                            intent.setClass(context,
 //                                                    SalesWorkBookActivity.class);

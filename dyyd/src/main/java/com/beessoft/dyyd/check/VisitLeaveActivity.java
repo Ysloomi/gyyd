@@ -27,7 +27,6 @@ import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.PreferenceUtil;
@@ -196,9 +195,9 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             }
             if (!Gps.exist(VisitLeaveActivity.this, "distance.db")) {
                 LocationApplication myApp = (LocationApplication) getApplication();
-                addr = myApp.getaddr();
-                longitude = myApp.getjd();
-                latitude = myApp.getwd();
+                addr = myApp.getAddr();
+                longitude = myApp.getJd();
+                latitude = myApp.getWd();
                 type = myApp.getType();
                 if (TextUtils.isEmpty(addr)) {
                     getAddr(longitude, latitude);
@@ -384,7 +383,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 case PHOTO_CODE:
                     if (!Tools.isEmpty(imgPath)) {
                         File imageFile = new File(imgPath);
-                        bitmap = PhotoUtil.imageEncode(imageFile);
+                        bitmap = PhotoUtil.imageEncode(imageFile,true);
                         photoImage.setImageBitmap(bitmap);
                         uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
                         imgPath = "";

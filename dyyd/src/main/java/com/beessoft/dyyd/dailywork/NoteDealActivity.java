@@ -465,7 +465,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 case PHOTO_CODE:
                     if (!Tools.isEmpty(imgPath)) {
                         File imageFile = new File(imgPath);
-                        bitmap = PhotoUtil.imageEncode(imageFile);
+                        bitmap = PhotoUtil.imageEncode(imageFile,true);
                         photoImage.setImageBitmap(bitmap);
                         uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
                         imgPath = "";
@@ -545,9 +545,9 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             }
             if (!Gps.exist(context, "distance.db")) {
                 LocationApplication myApp = (LocationApplication) getApplication();
-                location = myApp.getaddr();
-                longtitude = myApp.getjd();
-                latitude = myApp.getwd();
+                location = myApp.getAddr();
+                longtitude = myApp.getJd();
+                latitude = myApp.getWd();
                 type = myApp.getType();
                 if (Tools.isEmpty(location)) {
                     visitServer_getaddr(longtitude, latitude);

@@ -73,7 +73,7 @@
     <string name="activity_askleavequery">请假查询</string>
     <string name="activity_arrange">安排工作</string>
     <string name="activity_arrangequery">安排查询</string>
-    <string name="activity_mymemo">我的备忘录</string>
+    <string name="activity_mymemo">备忘录</string>
     <string name="activity_notice">通知</string>
     <string name="activity_terminal">终端管理</string>
     <string name="activity_todo">渠道拜访</string>
@@ -89,6 +89,12 @@
     <string name="title_activity_note_query">查询记事本</string>
     <string name="title_activity_note_query_detail">查询明细</string>
     <string name="title_activity_note_deal">计划处理</string>
+    <string name="activity_research">信息收集</string>
+    <string name="activity_storeresearch">商铺信息</string>
+    <string name="activity_personresearch">商铺个人信息</string>
+    <string name="activity_houseresearch">小区居民信息</string>
+    <string name="activity_specail">专项执行</string>
+    <string name="activity_specail_approve">专项审批</string>
 
 
     <string name="xlistview_header_hint_normal">下拉刷新</string>

@@ -151,4 +151,24 @@ public class DateUtil {
         String strnowtime = format1.format(nowtime);
         return strnowtime;
     }
+
+
+    @SuppressLint("SimpleDateFormat")
+    public static String queryDate(Date nowtime,String datestyle) {
+        SimpleDateFormat format1 = new SimpleDateFormat(datestyle);
+        String strnowtime = format1.format(nowtime);
+        return strnowtime;
+    }
+
+
+    public static Calendar trimToDate(long time) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.setTimeInMillis(time);
+        Calendar result = Calendar.getInstance();
+        result.clear();
+        result.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
+                0, 0, 0);
+        return result;
+    }
 }

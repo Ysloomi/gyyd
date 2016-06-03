@@ -3,6 +3,7 @@ package com.beessoft.dyyd.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -22,25 +23,48 @@ public class PhotoUtil {
 
 	/**
 	 * 照片编码
-	 * 
+	 *
 	 * @param file
+	 * @param ifTake 是否拍照
 	 * @return
 	 */
-	public static Bitmap imageEncode(File file) {
+	public static Bitmap imageEncode(File file, Boolean ifTake){
 		// 创建Options对象
 		BitmapFactory.Options opts = new BitmapFactory.Options();
-//		opts.inJustDecodeBounds = false;
-//		Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
-//		if (PhotoUtil.sizeOf(bitmap) / 1000 > 10000) {
-		opts.inPreferredConfig = Bitmap.Config.RGB_565;//选取本地图片
+		opts.inPreferredConfig = Bitmap.Config.RGB_565;
 		opts.inJustDecodeBounds = false;
-		opts.inSampleSize = 5; // width，hight设为原来的五分一
-		Bitmap bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
-//		}
-		Bitmap bitmapCompress = PhotoUtil.comp(bitmap);
+		Bitmap bitmap = null;
+
+
+//		File mFile=new File(path);
+		//若该文件存在
+//		if (mFile.exists()) {
+		long size = 0;
+		try {
+			FileInputStream fis = null;
+			fis = new FileInputStream(file);
+			size = fis.available();
+			fis.close();
+		}catch (IOException e){
+			e.printStackTrace(System.out);
+		}
+		int sizeKb = (int) (size / (1024));
+		if (ifTake) {
+			opts.inSampleSize = 5; // width，hight设为原来的五分一
+			bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
+		} else if (sizeKb > 10000) {
+			opts.inSampleSize = 5; // width，hight设为原来的五分一
+			bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
+		} else {
+			bitmap = BitmapFactory.decodeFile(file.getPath(), opts);
+		}
+		if (bitmap != null) {
+			Bitmap bitmapCompress = PhotoUtil.comp(bitmap);
+			return bitmapCompress;
+		}
 		bitmap.recycle();
 		System.gc(); // 提醒系统及时回收
-		return bitmapCompress;
+		return null;
 	}
 
 	/**

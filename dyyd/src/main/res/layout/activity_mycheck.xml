@@ -4,20 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!--
-         <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="44dp" 
-        android:showWeekNumber="false"
-        android:dateTextAppearance="@android:style/TextAppearance.Large.Inverse"
-        android:focusedMonthDateColor="#ff00ff"
-        />
-    -->
-
     <com.squareup.timessquare.CalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"

@@ -66,7 +66,6 @@ public class CustomerActivity extends BaseActivity {
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("type", type);
 
-
 //        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
@@ -80,14 +79,16 @@ public class CustomerActivity extends BaseActivity {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject obj = array.getJSONObject(i);
-                                    datas.add(obj.getString("ccusname"));
                                     HashMap<String,String> map = new HashMap<String, String>();
+                                    String name = obj.getString("ccusname");
+                                    String ccuscode = obj.getString("ccuscode");
+                                    datas.add(ccuscode+"_"+name);
+                                    map.put("name",name);
                                     map.put("lat",obj.getString("lat"));
                                     map.put("lng",obj.getString("lng"));
                                     map.put("scope",obj.getString("fw"));
-                                    map.put("ccuscode",obj.getString("ccuscode"));
+                                    map.put("ccuscode",ccuscode);
                                     latlngs.add(map);
-
                                 }
                                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
                                         R.layout.item_baselist,
@@ -97,8 +98,8 @@ public class CustomerActivity extends BaseActivity {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Intent intent = new Intent();
-                                        intent.putExtra("name", datas.get(position));
                                         HashMap<String,String> map = latlngs.get(position);
+                                        intent.putExtra("name", map.get("name"));
                                         intent.putExtra("lat", map.get("lat"));
                                         intent.putExtra("lng", map.get("lng"));
                                         intent.putExtra("scope", map.get("scope"));

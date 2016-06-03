@@ -57,7 +57,7 @@ public class NoteAddrTypeAdapter extends BaseAdapter {
 		if (convertView == null) {
 			hold = new Holder();
 			
-			convertView = mInflater.inflate(R.layout.search_more_mainlist_item, null);
+			convertView = mInflater.inflate(R.layout.item_search_more_mainlist, null);
 			hold.txt = (TextView) convertView.findViewById(R.id.Search_more_mainitem_txt);
 			hold.layout = (LinearLayout) convertView.findViewById(R.id.Search_more_mainitem_layout);
 			

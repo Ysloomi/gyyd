@@ -1,10 +1,8 @@
 package com.beessoft.dyyd.dailywork;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -28,6 +25,7 @@ import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
+import com.bigkoo.pickerview.TimePickerView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.loopj.android.http.AsyncHttpClient;
@@ -40,6 +38,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NoteQueryActivity extends BaseActivity implements View.OnClickListener,OnItemSelectedListener{
@@ -70,6 +69,10 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
     private String from;
     private String type;
+
+
+    private TimePickerView pvTime;
+    private int dateType = 0;
 
 
     @Override
@@ -186,6 +189,32 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
         endEdit = (EditText) findViewById(R.id.edt_end);
         endEdit.setInputType(InputType.TYPE_NULL);// 不弹出输入键盘
 
+
+        //时间选择器
+        pvTime = new TimePickerView(this, TimePickerView.Type.YEAR_MONTH_DAY);
+        //控制时间范围
+//        Calendar calendar = Calendar.getInstance();
+//        pvTime.setRange(calendar.get(Calendar.YEAR) - 20, calendar.get(Calendar.YEAR));
+        pvTime.setTime(new Date());
+        pvTime.setCyclic(false);
+        pvTime.setCancelable(true);
+        //时间选择后回调
+        pvTime.setOnTimeSelectListener(new TimePickerView.OnTimeSelectListener() {
+
+            @Override
+            public void onTimeSelect(Date date) {
+                if (dateType==0){
+                    startEdit.setText(DateUtil.queryDate(date,"yyyy-MM-dd"));
+                }else{
+                    String start = startEdit.getText().toString();
+                    //选择日期早于now
+                    if (date.getTime() >= DateUtil.String2Date(start).getTime())
+                        endEdit.setText(DateUtil.queryDate(date,"yyyy-MM-dd"));
+                    else ToastUtil.toast(context,"结束日期不到早于开始日期");
+                }
+            }
+        });
+
         departSpn.setOnItemSelectedListener(this);
         nameSpn.setOnItemSelectedListener(this);
         startEdit.setOnClickListener(this);
@@ -299,52 +328,56 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
         Calendar c = Calendar.getInstance();
         switch (v.getId()) {
             case R.id.edt_start:
-                new DatePickerDialog(context,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                String yearStr = String.valueOf(year);
-                                String month = String.valueOf(monthOfYear + 1);
-                                String day = String.valueOf(dayOfMonth);
-                                if ((monthOfYear + 1) < 10) {
-                                    month = "0" + month;
-                                }
-                                if (dayOfMonth < 10) {
-                                    day = "0" + day;
-                                }
-                                startEdit.setText(yearStr + "-" + month + "-" + day);
-                            }
-                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-                        .get(Calendar.DAY_OF_MONTH)).show();
+//                new DatePickerDialog(context,
+//                        new DatePickerDialog.OnDateSetListener() {
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year,
+//                                                  int monthOfYear, int dayOfMonth) {
+//                                String yearStr = String.valueOf(year);
+//                                String month = String.valueOf(monthOfYear + 1);
+//                                String day = String.valueOf(dayOfMonth);
+//                                if ((monthOfYear + 1) < 10) {
+//                                    month = "0" + month;
+//                                }
+//                                if (dayOfMonth < 10) {
+//                                    day = "0" + day;
+//                                }
+//                                startEdit.setText(yearStr + "-" + month + "-" + day);
+//                            }
+//                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
+//                        .get(Calendar.DAY_OF_MONTH)).show();
+                dateType = 0;
+                pvTime.show();
                 break;
             case R.id.edt_end:
-                DatePickerDialog datePickerDialog =new DatePickerDialog(context,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                String yearStr = String.valueOf(year);
-                                String month = String.valueOf(monthOfYear + 1);
-                                String day = String.valueOf(dayOfMonth);
-                                if ((monthOfYear + 1) < 10) {
-                                    month = "0" + month;
-                                }
-                                if (dayOfMonth < 10) {
-                                    day = "0" + day;
-                                }
-                                endEdit.setText(yearStr + "-" + month + "-" + day);
-                            }
-                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-                        .get(Calendar.DAY_OF_MONTH));
-                start = startEdit.getText().toString();
-                if (!TextUtils.isEmpty(start)){
-                    long timeInMillisSinceEpoch = DateUtil.getTimeInMillisSinceEpoch(start);
-                    datePickerDialog.getDatePicker().setMinDate(timeInMillisSinceEpoch);
-                    datePickerDialog.show();
-                }else{
-                    ToastUtil.toast(context,"请先选择开始日期");
-                }
+//                DatePickerDialog datePickerDialog =new DatePickerDialog(context,
+//                        new DatePickerDialog.OnDateSetListener() {
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year,
+//                                                  int monthOfYear, int dayOfMonth) {
+//                                String yearStr = String.valueOf(year);
+//                                String month = String.valueOf(monthOfYear + 1);
+//                                String day = String.valueOf(dayOfMonth);
+//                                if ((monthOfYear + 1) < 10) {
+//                                    month = "0" + month;
+//                                }
+//                                if (dayOfMonth < 10) {
+//                                    day = "0" + day;
+//                                }
+//                                endEdit.setText(yearStr + "-" + month + "-" + day);
+//                            }
+//                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
+//                        .get(Calendar.DAY_OF_MONTH));
+//                start = startEdit.getText().toString();
+//                if (!TextUtils.isEmpty(start)){
+//                    long timeInMillisSinceEpoch = DateUtil.getTimeInMillisSinceEpoch(start);
+//                    datePickerDialog.getDatePicker().setMinDate(timeInMillisSinceEpoch);
+//                    datePickerDialog.show();
+//                }else{
+//                    ToastUtil.toast(context,"请先选择开始日期");
+//                }
+                dateType = 1;
+                pvTime.show();
                 break;
         }
     }
