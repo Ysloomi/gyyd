@@ -30,10 +30,7 @@ import org.json.JSONObject;
 public class LocationApplication extends Application {
 
 	public LocationClient mLocationClient;
-	// LocationClient mLocationClient = null;
-	// private MyLocationListenner myListener = new MyLocationListenner();
 	public MyLocationListener mMyLocationListener;
-	// private NotifyLister mNotifyer=null;
 	private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
 
 	private String jd, wd, addr;
@@ -87,6 +84,7 @@ public class LocationApplication extends Application {
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public static LocationApplication mInstance;
 
 	public static LocationApplication getInstance() {

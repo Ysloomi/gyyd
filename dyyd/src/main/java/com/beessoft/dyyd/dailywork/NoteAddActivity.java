@@ -57,8 +57,6 @@ public class NoteAddActivity extends BaseActivity
         setContentView(R.layout.activity_note_add);
 
         context = NoteAddActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         Bundle b = getIntent().getExtras();
         note = b.getParcelable("note");
@@ -242,7 +240,7 @@ public class NoteAddActivity extends BaseActivity
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("type", "plan");
 
         parameters_userInfo.put("beginTime", start);

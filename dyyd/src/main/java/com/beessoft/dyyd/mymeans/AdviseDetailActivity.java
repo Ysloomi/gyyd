@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class AdviseDetailActivity extends BaseActivity {
 
-	private String mac, pass, mId = "", advise,state;
+	private String mId = "", advise,state;
 
 	private ListView listView;
 	private EditText editText;
@@ -44,9 +44,6 @@ public class AdviseDetailActivity extends BaseActivity {
 		setContentView(R.layout.activity_advisedetail);
 
 		context = AdviseDetailActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
-		pass = GetInfo.getPass(context);
 
 		mId = getIntent().getStringExtra("idTarget");
 		state = getIntent().getStringExtra("state");
@@ -89,8 +86,10 @@ public class AdviseDetailActivity extends BaseActivity {
 		String httpUrl = User.mainurl + "sf/answerlist";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", mId);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -157,7 +156,8 @@ public class AdviseDetailActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("advise_id", mId);
 		parameters_userInfo.put("answer", Escape.escape(advise));
 
@@ -165,18 +165,13 @@ public class AdviseDetailActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response:" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
-
 							if ("1".equals(code)) {
-								ToastUtil.toast(AdviseDetailActivity.this,
-										"没有相关信息");
+								ToastUtil.toast(context, "没有相关信息");
 							} else if ("0".equals(code)) {
-								ToastUtil.toast(AdviseDetailActivity.this,
-										"提交成功");
+								ToastUtil.toast(context, "提交成功");
 								finish();
 							}
 						} catch (Exception e) {

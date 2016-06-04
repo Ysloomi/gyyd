@@ -46,6 +46,7 @@ public class SubordinateCheckFragment extends Fragment {
 	private String mac, year, month, btn = "1", psn="", idGet, idate, state,
 			flag = "";
 	private String username;
+	private String ifSf;
 	private Context context;
 	private Date dateMonth;
 	private CalendarView calendar;
@@ -74,6 +75,7 @@ public class SubordinateCheckFragment extends Fragment {
 		context = getActivity();
 		mac = GetInfo.getIMEI(context);
 		username =GetInfo.getUserName(context);
+		ifSf =GetInfo.getIfSf(context)?"0":"1";
 
 		initView();
 
@@ -247,6 +249,7 @@ public class SubordinateCheckFragment extends Fragment {
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);//0为个人考勤，1为下属考勤
 		parameters_userInfo.put("psn", Escape.escape(psn));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

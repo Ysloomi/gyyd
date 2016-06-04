@@ -2,6 +2,7 @@ package com.beessoft.dyyd.dailywork;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -10,8 +11,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
+import com.beessoft.dyyd.MainActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,13 +33,38 @@ public class ApproveListActivity extends BaseActivity {
 	private SimpleAdapter simAdapter;
 
 
+	private boolean isNotice;
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (isNotice) {
+					Intent intent = new Intent();
+					intent.setClass(context,MainActivity.class);
+					startActivity(intent);
+				}else{
+					finish();
+				}
+
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_list);
+
+		isNotice = getIntent().getBooleanExtra("notice",false);
 		context = ApproveListActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 	}
@@ -61,6 +87,7 @@ public class ApproveListActivity extends BaseActivity {
 		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", "0");//审批人
 		parameters_userInfo.put("btn", "2");//
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -123,5 +150,17 @@ public class ApproveListActivity extends BaseActivity {
 						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (isNotice) {
+			Intent intent = new Intent();
+			intent.setClass(context,MainActivity.class);
+			startActivity(intent);
+		}else{
+//			finish();
+			super.onBackPressed();
+		}
 	}
 }

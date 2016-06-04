@@ -7,7 +7,6 @@ import android.widget.EditText;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -27,8 +26,6 @@ public class ChangePasswordActivity extends BaseActivity {
 		setContentView(R.layout.activity_changepassword);
 		
 		context = ChangePasswordActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 		
 		passEdt = (EditText) findViewById(R.id.edt_pass);
 		newpassEdt = (EditText) findViewById(R.id.edt_newpass);
@@ -64,6 +61,7 @@ public class ChangePasswordActivity extends BaseActivity {
 		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("old", password);
 		parameters_userInfo.put("newpass", newpassword);
+		parameters_userInfo.put("sf", ifSf);
 		
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

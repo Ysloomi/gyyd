@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,8 +34,6 @@ public class CheckApproveListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_list);
 		context = CheckApproveListActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 	}
@@ -57,7 +54,7 @@ public class CheckApproveListActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

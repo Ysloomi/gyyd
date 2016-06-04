@@ -27,7 +27,6 @@ import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.db.SfydDB;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
@@ -110,8 +109,6 @@ public class SpecialUpActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_special_up);
 
         context = SpecialUpActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
@@ -425,6 +422,7 @@ public class SpecialUpActivity extends BaseActivity implements View.OnClickListe
         parameters_userInfo.put("ccuscode", shopId);
         parameters_userInfo.put("id", projectId);
         parameters_userInfo.put("type", "2");
+        parameters_userInfo.put("sf", ifSf);
 
         AsyncHttpClient client_request = new AsyncHttpClient();
 //		Logger.e(httpUrl+"?"+parameters_userInfo);

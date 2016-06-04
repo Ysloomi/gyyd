@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,8 +34,6 @@ public class MyMileageActivity extends BaseActivity {
 		setContentView(R.layout.activity_mymileage);
 
 		context = MyMileageActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		mileageTxt = (TextView) findViewById(R.id.mileage_text);
 		totalTxt = (TextView) findViewById(R.id.total_text);
@@ -58,6 +55,7 @@ public class MyMileageActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

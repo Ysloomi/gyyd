@@ -31,7 +31,6 @@ import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
@@ -125,8 +124,6 @@ public class PhotoActivity extends BaseActivity {
 			imgPath = savedInstanceState.getString("imgPath");
 		}
 		context = PhotoActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
@@ -343,6 +340,7 @@ public class PhotoActivity extends BaseActivity {
 
 		 parameters_userInfo.put("mac", mac);
 		 parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -387,6 +385,7 @@ public class PhotoActivity extends BaseActivity {
 		
 		parameters_userInfo.put("cmaker", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("addr", Escape.escape(addr));
 		parameters_userInfo.put("jd", longtitude);
 		parameters_userInfo.put("wd", latitude);

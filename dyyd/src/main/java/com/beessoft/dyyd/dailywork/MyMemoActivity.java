@@ -44,8 +44,8 @@ public class MyMemoActivity extends BaseActivity {
 		setContentView(R.layout.activity_mymemo);
 
 		context = MyMemoActivity.this;
-		mac = GetInfo.getIMEI(context);
-		idTarget = getIntent().getStringExtra("idTarget");
+
+		idTarget = getIntent().getStringExtra("id");
 		pass = GetInfo.getPass(this);
 
 		initView();

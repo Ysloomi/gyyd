@@ -141,33 +141,31 @@ public class MyMemoListActivity extends BaseActivity {
 									map.put("memo", obj.getString("item"));
 									datas.add(map);
 								}
-								simAdapter = new SimpleAdapter(
-										MyMemoListActivity.this, datas,// 数据源
-										R.layout.item_mymemo,// 显示布局
-										new String[] { "idate", "itime",
-												"state", "memo" }, new int[] {
-												R.id.date, R.id.time,
-												R.id.state, R.id.memo });
-								listView.setAdapter(simAdapter);
-								listView.setOnItemClickListener(new OnItemClickListener() {
-									@SuppressWarnings("unchecked")
-									@Override
-									public void onItemClick(
-											AdapterView<?> parent, View view,
-											int position, long id) {
-										ListView listView = (ListView) parent;
-										HashMap<String, String> map = (HashMap<String, String>) listView
-												.getItemAtPosition(position);
-										String idTarget = map.get("id");
-										Intent intent = new Intent(
-												MyMemoListActivity.this,
-												MyMemoActivity.class);
-										intent.putExtra("idTarget", idTarget);
-										startActivity(intent);
-									}
-								});
-
 							}
+							simAdapter = new SimpleAdapter(
+									MyMemoListActivity.this, datas,// 数据源
+									R.layout.item_mymemo,// 显示布局
+									new String[] { "idate", "itime",
+											"state", "memo" }, new int[] {
+									R.id.date, R.id.time,
+									R.id.state, R.id.memo });
+							listView.setAdapter(simAdapter);
+							listView.setOnItemClickListener(new OnItemClickListener() {
+								@SuppressWarnings("unchecked")
+								@Override
+								public void onItemClick(
+										AdapterView<?> parent, View view,
+										int position, long id) {
+									ListView listView = (ListView) parent;
+									HashMap<String, String> map = (HashMap<String, String>) listView
+											.getItemAtPosition(position);
+									String idTarget = map.get("id");
+									Intent intent = new Intent(context,
+											MyMemoActivity.class);
+									intent.putExtra("id", idTarget);
+									startActivity(intent);
+								}
+							});
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {

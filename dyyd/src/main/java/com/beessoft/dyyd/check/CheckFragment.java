@@ -80,12 +80,14 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 
 		String mac = GetInfo.getIMEI(context);
 		String username = GetInfo.getUserName(context);
+		String ifSf = GetInfo.getIfSf(context)?"0":"1";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -129,16 +131,24 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 										ToastUtil.toast(context, "已签到");
 										break;
 									case "checkout":
-	//									if ("1".equals(dataJson.getString("notice"))) {
-	//										ToastUtil.toast(getActivity(), "通知中有未阅读的文件请处理");
-	//									} else {
-	//										if ("1".equals(dataJson.getString("bin"))) {
-	//											ToastUtil.toast(getActivity(), "签到待审批不能签退");
-	//										} else {
-												intent.setClass(context,CheckOutActivity.class);
-												startActivity(intent);
-	//										}
-	//									}
+
+										if (GetInfo.getIfSf(context)){
+											if ("1".equals(dataJson.getString("notice"))) {
+												ToastUtil.toast(context, "通知中有未阅读的文件请处理");
+											} else {
+												if ("1".equals(dataJson.getString("bin"))) {
+													ToastUtil.toast(context, "签到待审批不能签退");
+												} else {
+													startActivity(new Intent()
+															.setClass(
+																	getActivity(),
+																	CheckOutActivity.class));
+												}
+											}
+										}else{
+											intent.setClass(context,CheckOutActivity.class);
+											startActivity(intent);
+										}
 										break;
 									default:
 										break;

@@ -106,8 +106,6 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_note_query);
 
         context = NoteQueryActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         initView();
         initData();
@@ -239,6 +237,7 @@ public class NoteQueryActivity extends BaseActivity implements View.OnClickListe
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", nameCode);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("date1", start);
         parameters_userInfo.put("date2", end);
         parameters_userInfo.put("currentPage", currentPage + "");

@@ -25,7 +25,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
@@ -107,8 +106,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             imgPath = savedInstanceState.getString("imgPath");
         }
         context = VisitLeaveActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         initView();
 
@@ -233,8 +230,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -327,6 +323,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("ccuscode", customerCode);
         parameters_userInfo.put("question",  Escape.escape(question));
         parameters_userInfo.put("questiontype", questionTypeCode);
+        parameters_userInfo.put("sf", ifSf);
+
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

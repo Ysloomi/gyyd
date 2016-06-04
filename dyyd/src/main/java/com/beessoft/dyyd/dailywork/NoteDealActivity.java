@@ -109,8 +109,6 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         }
 
         context = NoteDealActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
@@ -338,6 +336,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
 //        try {
 //            addr = URLEncoder.encode(addr,"UTF-8");
 //            plan = URLEncoder.encode(plan,"UTF-8");

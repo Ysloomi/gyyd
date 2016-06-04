@@ -19,7 +19,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.model.GetJSON;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,7 +31,7 @@ public class ArrangeActivity extends BaseActivity {
 
     private Button button1;
     private EditText editText;
-    private String mac, person, message;
+    private String person, message;
 
     private AutoCompleteTextView autoCompleteTextView;
 
@@ -47,8 +46,7 @@ public class ArrangeActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_arrange:
-                Intent intent = new Intent(ArrangeActivity.this,
-                        ArrangeQueryListActivity.class);
+                Intent intent = new Intent(context, ArrangeQueryListActivity.class);
                 intent.putExtra("itype", "1");// 标示为安排人查看自己的安排
                 startActivity(intent);
                 return true;
@@ -62,8 +60,6 @@ public class ArrangeActivity extends BaseActivity {
         setContentView(R.layout.activity_arrange);
 
         context = ArrangeActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         initView();
 
@@ -113,6 +109,7 @@ public class ArrangeActivity extends BaseActivity {
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("workuser", Escape.escape(person));
         parameters_userInfo.put("uptxt", Escape.escape(message));
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

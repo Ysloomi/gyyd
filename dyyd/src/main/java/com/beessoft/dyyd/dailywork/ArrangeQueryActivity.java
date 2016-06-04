@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -27,11 +26,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ArrangeQueryActivity extends BaseActivity {
+
 	private Button button1, button2, button3, button4;
 	private TextView textView1, textView2, textView3, textView4, textView5,
 			textView6;
 	private EditText editText1, editText2;
-	private String mac, advise, idTarget, state, itype, pass, btn, judge = "",
+	private String  advise, idTarget, state, itype,btn, judge = "",
 			iflag, appeal = "";
 
 	private Spinner spinner;
@@ -44,10 +44,8 @@ public class ArrangeQueryActivity extends BaseActivity {
 		initView();
 
 		itype = getIntent().getStringExtra("itype");// 0为上级安排，1为安排查询
-		idTarget = getIntent().getStringExtra("idTarget");
+		idTarget = getIntent().getStringExtra("id");
 		iflag = getIntent().getStringExtra("iflag");// 0为不能执行，1为可操作
-		mac = GetInfo.getIMEI(ArrangeQueryActivity.this);
-		pass = GetInfo.getPass(this);
 
 		if ("1".equals(itype)) {
 			button1.setVisibility(View.GONE);
@@ -155,17 +153,16 @@ public class ArrangeQueryActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", idTarget);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
 
 								JSONArray array = dataJson.getJSONArray("list");
@@ -181,19 +178,13 @@ public class ArrangeQueryActivity extends BaseActivity {
 									String getJudge = obj.getString("pj");
 
 									if (!"".equals(getJudge)) {
-
-										Tools.setSpinnerItemSelectedByValue(
-												spinner, getJudge);// 显示评价
-
+										Tools.setSpinnerItemSelectedByValue(spinner, getJudge);// 显示评价
 									}
 
 									editText2.setText(obj.getString("ss"));
-
 								}
 
 								state = textView6.getText().toString();
-
-								// System.out.println("state:" + state);
 
 								if ("已确认".equals(state)) {
 									button1.setVisibility(View.GONE);
@@ -265,12 +256,13 @@ public class ArrangeQueryActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", idTarget);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("pj", Escape.escape(judge));
 		parameters_userInfo.put("ss", Escape.escape(appeal));
 		parameters_userInfo.put("worktxt", Escape.escape(advise));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

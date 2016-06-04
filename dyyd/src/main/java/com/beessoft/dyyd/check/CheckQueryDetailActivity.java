@@ -54,8 +54,6 @@ public class CheckQueryDetailActivity extends BaseActivity {
 		setContentView(R.layout.activity_mycheck);
 
 		context = CheckQueryDetailActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		Calendar calendar = Calendar.getInstance();
 		year = String.valueOf(calendar.get(Calendar.YEAR));
@@ -204,6 +202,7 @@ public class CheckQueryDetailActivity extends BaseActivity {
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("psn", Escape.escape(psn));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

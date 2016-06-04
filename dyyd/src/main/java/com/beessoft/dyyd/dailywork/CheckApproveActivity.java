@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.QueryMapActivity;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -56,9 +55,6 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 		setContentView(R.layout.activity_checkapprove);
 
 		context = CheckApproveActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
-
 		initView();
 
 		id =  getIntent().getStringExtra("idTarget");
@@ -122,7 +118,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 				.setPositiveButton("确认", null).setNegativeButton("取消", null)
 				.setCancelable(false).create();
 
-		myDialog.setTitle("请输入检查结果");
+		myDialog.setTitle("不同意的原因");
 		myDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(DialogInterface dialog) {
@@ -155,15 +151,13 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/startwork_check2";
 
-		String pass = GetInfo.getPass(context);
-
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", pass);
 		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -209,9 +203,11 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", id);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("unagree_reason", unagree_reason);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

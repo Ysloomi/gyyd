@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.material;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.Spinner;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -29,11 +26,10 @@ import java.util.List;
 
 public class HouseActivity extends BaseActivity {
 
-	private String mac, department, street, flag = "wait";
+	private String department, street, flag = "wait";
 	private String departCode;
 	private Spinner departSpinner, spinner2;
-	private Context context;
-	
+
 	private List<String> listDepCodes = new ArrayList<String>();
 	private String research ;
 
@@ -44,8 +40,7 @@ public class HouseActivity extends BaseActivity {
 		
 		context = HouseActivity.this;
 		research = getIntent().getStringExtra("research");
-		mac = GetInfo.getIMEI(context);
-				
+
 		departSpinner = (Spinner) findViewById(R.id.departmenr_spinner);
 		spinner2 = (Spinner) findViewById(R.id.person_spinner);
 
@@ -105,14 +100,15 @@ public class HouseActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if ("0".equals(code)) {
 								JSONArray array = dataJson.getJSONArray("list");
@@ -171,6 +167,8 @@ public class HouseActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("cdepcode", departCode);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -178,7 +176,7 @@ public class HouseActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
@@ -187,7 +185,7 @@ public class HouseActivity extends BaseActivity {
 
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
-									list.add(obj.get("villagename").toString());
+									list.add(obj.getString("villagename"));
 								}
 								// 声明一个ArrayAdapter用于存放简单数据
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(

@@ -6,7 +6,6 @@ import android.widget.SimpleAdapter;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -33,8 +32,6 @@ public class AskLeaveQueryActivity extends BaseActivity {
         setContentView(R.layout.activity_base_list);
 
         context = AskLeaveQueryActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         listView = (ListView) findViewById(R.id.list_view);
 
@@ -51,6 +48,7 @@ public class AskLeaveQueryActivity extends BaseActivity {
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

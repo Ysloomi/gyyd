@@ -25,7 +25,6 @@ import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -113,8 +112,6 @@ public class VisitReachActivity extends BaseActivity {
 		setContentView(R.layout.activity_reach);
 
 		context = VisitReachActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 		// 声明百度定位sdk的构造函数
 		mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 		from = getIntent().getStringExtra("from");
@@ -346,8 +343,7 @@ public class VisitReachActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-
-//		Logger.e(httpUrl+"?"+parameters_userInfo);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -417,6 +413,7 @@ public class VisitReachActivity extends BaseActivity {
 		parameters_userInfo.put("type", Escape.escape(customerType));
 		parameters_userInfo.put("checkresult",Escape.escape(examineResultString));
 		parameters_userInfo.put("leavetype",Escape.escape(leavetype));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

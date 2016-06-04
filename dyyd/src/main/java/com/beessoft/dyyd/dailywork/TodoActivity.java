@@ -11,7 +11,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.VisitReachActivity;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -39,8 +38,6 @@ public class TodoActivity extends BaseActivity {
         setContentView(R.layout.activity_base_list);
 
         context = TodoActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         listView = (ListView) findViewById(R.id.list_view);
 
@@ -48,19 +45,18 @@ public class TodoActivity extends BaseActivity {
         from = getIntent().getStringExtra("from");
 
         RequestParams parameters_userInfo = new RequestParams();
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         if ("shop".equals(from)) {
             setTitle("渠道拜访");
             ProgressDialogUtil.showProgressDialog(context);
-            parameters_userInfo.put("mac", mac);
-            parameters_userInfo.put("usercode", username);
             parameters_userInfo.put("ccus", Escape.escape(step));
             parameters_userInfo.put("ishow", "0");
             visitServer(parameters_userInfo);
         } else {
             setTitle("政企拜访");
             ProgressDialogUtil.showProgressDialog(context);
-            parameters_userInfo.put("mac", mac);
-            parameters_userInfo.put("usercode", username);
             parameters_userInfo.put("ccusType", "1");
             visitServer(parameters_userInfo);
         }
@@ -149,6 +145,7 @@ public class TodoActivity extends BaseActivity {
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -48,8 +47,6 @@ public class AskLeaveApproveActivity extends BaseActivity {
         setContentView(R.layout.activity_askapprove);
 
         context = AskLeaveApproveActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         initView();
 
@@ -184,6 +181,7 @@ public class AskLeaveApproveActivity extends BaseActivity {
         parameters_userInfo.put("intodate", intodate);
         parameters_userInfo.put("btn", btn);
         parameters_userInfo.put("reason", Escape.escape(unagree_reason));
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

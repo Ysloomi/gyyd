@@ -1,7 +1,5 @@
 package com.beessoft.dyyd.material;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +10,7 @@ import android.widget.TextView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -24,8 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PersonResearchActivity extends BaseActivity {
-	
-    private Context context;
 
     private EditText belongEdit;
     private EditText numEdit;
@@ -58,9 +54,7 @@ public class PersonResearchActivity extends BaseActivity {
     
     private String itype;
     private String id;
-    
-    private ProgressDialog progressDialog;
-   
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,8 +119,7 @@ public class PersonResearchActivity extends BaseActivity {
 					}
 				}
 			     if(a){
-	//				显示ProgressDialog
-					progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+					 ProgressDialogUtil.showProgressDialog(context);
 					visitServer();
 				}else{
 					ToastUtil.toast(context, "门牌号不能大于街道门牌");
@@ -135,7 +128,7 @@ public class PersonResearchActivity extends BaseActivity {
 		});
 		
 		if(!Tools.isEmpty(id)){
-			progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+			ProgressDialogUtil.showProgressDialog(context);
 			visitGet();
 		}
 	} 
@@ -144,8 +137,10 @@ public class PersonResearchActivity extends BaseActivity {
 		String httpUrl = User.mainurl + "survey/AppShopPersonalSurveyQuery";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		
-		parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", id);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -175,14 +170,14 @@ public class PersonResearchActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
@@ -191,8 +186,10 @@ public class PersonResearchActivity extends BaseActivity {
 			String httpUrl = User.mainurl + "survey/AppShopPersonalSurveySave";
 			AsyncHttpClient client_request = new AsyncHttpClient();
 			RequestParams parameters_userInfo = new RequestParams();
-			
-			parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+
+			parameters_userInfo.put("mac", mac);
+			parameters_userInfo.put("usercode", username);
+			parameters_userInfo.put("sf", ifSf);
 			parameters_userInfo.put("cdepcode", departmentCode);
 			parameters_userInfo.put("company", Escape.escape(company));
 			parameters_userInfo.put("attach_shop", Escape.escape(belong));
@@ -217,7 +214,7 @@ public class PersonResearchActivity extends BaseActivity {
 						@Override
 						public void onSuccess(String response) {
 							try {
-								JSONObject dataJson = new JSONObject(Escape.unescape(response));
+								JSONObject dataJson = new JSONObject(response);
 								Log.e("sfyd", dataJson.toString());
 								String code = dataJson.getString("code");
 								if (code.equals("0")) {
@@ -229,14 +226,14 @@ public class PersonResearchActivity extends BaseActivity {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}finally {
-								progressDialog.dismiss();
+								ProgressDialogUtil.closeProgressDialog();
 							}
 						}
 
 						@Override
 						public void onFailure(Throwable error, String data) {
 							error.printStackTrace(System.out);
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					});
 		}

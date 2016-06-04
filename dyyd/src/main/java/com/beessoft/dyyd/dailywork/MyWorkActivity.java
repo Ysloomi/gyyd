@@ -11,7 +11,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.MyWorkAdapter;
 import com.beessoft.dyyd.check.SpecialActivity;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -38,7 +37,7 @@ public class MyWorkActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = MyWorkActivity.this;
-		mac = GetInfo.getIMEI(context);
+
 		listView = (ListView) findViewById(R.id.list_view);
 
 		myWorkAdapter = new MyWorkAdapter(context, datas);
@@ -54,10 +53,15 @@ public class MyWorkActivity extends BaseActivity {
 						.getItemAtPosition(position);
 				String name = map.get("name");
 				Intent intent = new Intent();
-				if ("渠道拜访".equals(name)) {
-					intent.setClass(context, TodoListActivity.class);
-					startActivity(intent);
-				} else if ("政企拜访".equals(name)) {
+//				if ("渠道拜访".equals(name)) {
+//					intent.setClass(context, TodoListActivity.class);
+//					startActivity(intent);
+//				} else if ("政企拜访".equals(name)) {
+//					intent.setClass(context, TodoActivity.class);
+//					intent.putExtra("from","unit");
+//					startActivity(intent);
+//				}
+				 if ("拜访".equals(name)) {
 					intent.setClass(context, TodoActivity.class);
 					intent.putExtra("from","unit");
 					startActivity(intent);
@@ -105,10 +109,15 @@ public class MyWorkActivity extends BaseActivity {
 	}
 
 	private void visitServer_Main() {
+
 		String httpUrl = User.mainurl + "sf/mywork_wait";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

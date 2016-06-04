@@ -32,7 +32,7 @@
 
             <EditText
                 android:id="@+id/visit_customer"
-                style="@style/Text" />
+                style="@style/MyText" />
 
 
             <TextView
@@ -112,7 +112,7 @@
 
             <TextView
                 android:id="@+id/location_text"
-                style="@style/Text" />
+                style="@style/MyText" />
 
             <TextView
                 android:id="@+id/txt_refresh"

@@ -93,8 +93,6 @@ public class NoteActivity extends BaseActivity
         setContentView(R.layout.activity_note);
 
         context = NoteActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         initView();
         initData();
@@ -221,6 +219,7 @@ public class NoteActivity extends BaseActivity
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("date1", start);
         parameters_userInfo.put("date2", end);
         parameters_userInfo.put("currentPage", currentPage + "");
@@ -274,6 +273,7 @@ public class NoteActivity extends BaseActivity
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("date1", start);
         parameters_userInfo.put("date2", end);
         parameters_userInfo.put("currentPage", currentPage + "");
@@ -319,6 +319,7 @@ public class NoteActivity extends BaseActivity
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("rdcode", id);
         parameters_userInfo.put("type", "del");
 

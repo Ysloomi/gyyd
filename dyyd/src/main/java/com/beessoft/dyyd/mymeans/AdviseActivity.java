@@ -14,7 +14,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Advise;
 import com.beessoft.dyyd.db.AdviseDao;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -29,7 +28,7 @@ import java.util.List;
 
 public class AdviseActivity extends BaseActivity {
 
-	private String pass, type, advise;
+	private String type, advise;
 	private Button button;
 	private EditText editText;
 	private Spinner spinner;
@@ -44,10 +43,6 @@ public class AdviseActivity extends BaseActivity {
 		context = AdviseActivity.this;
 
 		initView();
-
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
-		pass = GetInfo.getPass(context);
 
 		adviseDao = new AdviseDao(this);
 
@@ -95,9 +90,10 @@ public class AdviseActivity extends BaseActivity {
 		String httpUrl = User.mainurl + "sf/advise_save";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("type", Escape.escape(type));
 		parameters_userInfo.put("activity_advise", Escape.escape(advise));
 

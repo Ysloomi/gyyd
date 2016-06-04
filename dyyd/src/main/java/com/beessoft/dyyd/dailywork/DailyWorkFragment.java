@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.SpecialActivity;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -127,21 +126,22 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         String httpUrl = User.mainurl + "sf/notice";
 
         String mac = GetInfo.getIMEI(getActivity());
-        String pass = GetInfo.getPass(context);
         String username = GetInfo.getUserName(context);
+        String ifSf = GetInfo.getIfSf(context)?"0":"1";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
+
         parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("pass", pass);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         try {
-                            JSONObject dataJson = new JSONObject(Escape.unescape(response));
+                            JSONObject dataJson = new JSONObject(response);
                             String noticenum = dataJson.getString("icount");
                             String mesnum = dataJson.getString("mesnum");
                             PreferenceUtil.write(context, "noticenum", noticenum);
@@ -225,8 +225,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 break;
             case R.id.btn_approve_query:
 //                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {
-                intent.setClass(getActivity(),
-                        ApproveQueryListActivity.class);
+                intent.setClass(context, ApproveQueryListActivity.class);
                 startActivity(intent);
 //                } else {
 //                    ToastUtil.toast(context, "无权限");
@@ -258,7 +257,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 break;
             case R.id.btn_arrange:
 //                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {
-                intent.setClass(getActivity(), MyMemoListActivity.class);
+                intent.setClass(getActivity(), ArrangeActivity.class);
                 startActivity(intent);
 //                } else {
 //                    ToastUtil.toast(context, "无权限");

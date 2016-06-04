@@ -216,6 +216,7 @@ public class NoteAddrActivity extends BaseActivity
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("page", currentPage+"");
         parameters_userInfo.put("type", type);
 //        parameters_userInfo.put("pid", Escape.escape(keyword));

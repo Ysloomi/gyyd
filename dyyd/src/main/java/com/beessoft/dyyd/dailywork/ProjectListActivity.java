@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.VisitReachActivity;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,8 +37,6 @@ public class ProjectListActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context =ProjectListActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 		
 		listView = (ListView) findViewById(R.id.list_view);
 
@@ -52,6 +49,8 @@ public class ProjectListActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

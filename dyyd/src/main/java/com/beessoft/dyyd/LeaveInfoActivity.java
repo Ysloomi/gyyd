@@ -5,7 +5,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,9 +31,6 @@ public class LeaveInfoActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = LeaveInfoActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
-
 
 		listView = (ListView) findViewById(R.id.list_view);
 
@@ -59,19 +55,14 @@ public class LeaveInfoActivity extends BaseActivity {
 							if (dataJson.getString("code").equals("1")) {
 								Toast.makeText(LeaveInfoActivity.this, "没有相关信息",
 										Toast.LENGTH_SHORT).show();
-							} else if (dataJson.getString("code")
-									.equals("0")) {
-
+							} else if (dataJson.getString("code").equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
 									map.put("name", obj.getString("username"));
-									map.put("department",
-											obj.getString("cdepname"));
-									map.put("offtime",
-											"离开区域时间:"
-													+ obj.getString("cmakertime"));
+									map.put("department", obj.getString("cdepname"));
+									map.put("offtime", "离开区域时间:" + obj.getString("cmakertime"));
 									datas.add(map);
 								}
 								simAdapter = new SimpleAdapter(

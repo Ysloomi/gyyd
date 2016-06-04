@@ -37,8 +37,6 @@ public class CustomerActivity extends BaseActivity {
         setContentView(R.layout.activity_customer);
 
         context = CustomerActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         datas = new ArrayList<>();
         latlngs = new ArrayList<>();
@@ -65,6 +63,7 @@ public class CustomerActivity extends BaseActivity {
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("type", type);
+        parameters_userInfo.put("sf", ifSf);
 
 //        Logger.e(httpUrl+"?"+parameters_userInfo);
 

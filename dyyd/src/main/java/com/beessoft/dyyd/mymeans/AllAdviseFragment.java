@@ -15,7 +15,6 @@ import android.widget.ListView;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Advise;
 import com.beessoft.dyyd.db.AdviseDao;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -32,7 +31,7 @@ import java.util.List;
 
 public class AllAdviseFragment extends Fragment {
 
-	private String mac, pass, condition;
+	private String mac, username, condition,ifSf;
 	private ListView listView;
 	private List<String> list;
 	private AdviseDao adviseDao;
@@ -49,8 +48,10 @@ public class AllAdviseFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
 		mac = GetInfo.getIMEI(context);
-		pass = GetInfo.getPass(context);
+		username = GetInfo.getUserName(context);
+		ifSf = GetInfo.getIfSf(context)?"0":"1";
 
 
 		adviseDao = new AdviseDao(getActivity());
@@ -79,8 +80,10 @@ public class AllAdviseFragment extends Fragment {
 		String httpUrl = User.mainurl + "sf/adviseType";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -88,8 +91,7 @@ public class AllAdviseFragment extends Fragment {
 					public void onSuccess(String response) {
 						try {
 							Advise advise = null;
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if ("1".equals(code)) {
 								ToastUtil.toast(getActivity(), "没有相关信息");

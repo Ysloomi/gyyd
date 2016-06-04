@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 public class MyAdviseFragment extends Fragment implements OnClickListener {
 
-	private String mac,username, pass, type, condition, question = "";
+	private String mac,username, ifSf, type, condition, question = "";
 	private ListView listView;
 	private Context context;
 	private EditText editText;
@@ -45,14 +45,14 @@ public class MyAdviseFragment extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View check = inflater.inflate(R.layout.fragment_myadvise, container, false);
+		View view = inflater.inflate(R.layout.fragment_myadvise, container, false);
 		context = getActivity();
 
-		listView = (ListView) check.findViewById(R.id.advise_list);
-		editText = (EditText) check.findViewById(R.id.advise_edittext);
-		check.findViewById(R.id.txt_search).setOnClickListener(this);
+		listView = (ListView) view.findViewById(R.id.advise_list);
+		editText = (EditText) view.findViewById(R.id.advise_edittext);
+		view.findViewById(R.id.txt_search).setOnClickListener(this);
 
-		return check;
+		return view;
 	}
 
 	@Override
@@ -63,7 +63,8 @@ public class MyAdviseFragment extends Fragment implements OnClickListener {
 
 		mac = GetInfo.getIMEI(context);
 		username = GetInfo.getUserName(context);
-		pass = GetInfo.getPass(context);
+		ifSf = GetInfo.getIfSf(context)?"0":"1";
+
 
 		type = "全部";
 		condition = "我的问题";
@@ -108,12 +109,15 @@ public class MyAdviseFragment extends Fragment implements OnClickListener {
 
 
 	private void getAdviseList() {
+
 		String httpUrl = User.mainurl + "sf/adviselist";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("type", Escape.escape(type));
 		parameters_userInfo.put("question", Escape.escape(question));
 		parameters_userInfo.put("condition", Escape.escape(condition));

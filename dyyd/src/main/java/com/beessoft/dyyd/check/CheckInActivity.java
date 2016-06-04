@@ -73,7 +73,7 @@ public class CheckInActivity extends BaseActivity {
 
 
     private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
-    private UpdateManager mUpdateManager;
+
     private AutoCompleteTextView notInsideAutoCompleteText;
     private AutoCompleteTextView typeAutoCompleteText;
 
@@ -130,8 +130,6 @@ public class CheckInActivity extends BaseActivity {
         }
 
         context = CheckInActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
@@ -149,7 +147,7 @@ public class CheckInActivity extends BaseActivity {
         notInsideAutoCompleteText.setInputType(InputType.TYPE_NULL);
         typeAutoCompleteText.setInputType(InputType.TYPE_NULL);
 
-        mUpdateManager = new UpdateManager(this);
+        UpdateManager mUpdateManager = new UpdateManager(this);
         mUpdateManager.checkUpdate(false);//判断是否应该升级,是否显示说明
 
         Gps gps = new Gps(this);
@@ -203,34 +201,34 @@ public class CheckInActivity extends BaseActivity {
                     iclass = notInsideAutoCompleteText.getText().toString();
                     journey = typeAutoCompleteText.getText().toString();
 //                    if (!TextUtils.isEmpty(journey.trim())) {
-                    if (GetInfo.getIfSf(context)) {
-                        if (uploadBuffer != null) {
-                            if (!TextUtils.isEmpty(journey.trim())) {
-                                if ("Gps".equals(type) || "Wifi".equals(type)) {
-                                    ProgressDialogUtil.showProgressDialog(context);
-                                    if (code != 0) {
-                                        if (TextUtils.isEmpty(explain.trim())
-                                                || TextUtils.isEmpty(iclass.trim())) {
-                                            ToastUtil.toast(context, "请填写数据，再上传");
-                                            ProgressDialogUtil.closeProgressDialog();
-                                        } else {
-                                            ProgressDialogUtil.showProgressDialog(context);
-                                            visitServer(location, iclass, explain, journey);
-                                        }
-                                    } else {
-                                        ProgressDialogUtil.showProgressDialog(context);
-                                        visitServer(location, iclass, explain, journey);
-                                    }
-                                } else {
-                                    ToastUtil.toast(context, "无GPS或Wifi信号，请刷新定位");
-                                }
-                            } else {
-                                ToastUtil.toast(context, "请选择出行方式");
-                            }
-                        } else {
-                            ToastUtil.toast(context, "请先拍照，再提交");
-                        }
-                    } else {
+//                    if (GetInfo.getIfSf(context)) {
+//                        if (TextUtils.isEmpty(uploadBuffer)) {
+//                            ToastUtil.toast(context, "请先拍照，再提交");
+//                            return;
+//                        }
+//                        if (TextUtils.isEmpty(journey.trim())) {
+//                            ToastUtil.toast(context, "请选择出行方式");
+//                            return;
+//                        }
+//                        if ("Gps".equals(type) || "Wifi".equals(type)) {
+//                            ProgressDialogUtil.showProgressDialog(context);
+//                            if (code != 0) {
+//                                if (TextUtils.isEmpty(explain.trim())
+//                                        || TextUtils.isEmpty(iclass.trim())) {
+//                                    ToastUtil.toast(context, "请填写数据，再上传");
+//                                    ProgressDialogUtil.closeProgressDialog();
+//                                } else {
+//                                    ProgressDialogUtil.showProgressDialog(context);
+//                                    visitServer(location, iclass, explain, journey);
+//                                }
+//                            } else {
+//                                ProgressDialogUtil.showProgressDialog(context);
+//                                visitServer(location, iclass, explain, journey);
+//                            }
+//                        } else {
+//                            ToastUtil.toast(context, "无GPS或Wifi信号，请刷新定位");
+//                        }
+//                    } else {
                         if (GetInfo.getIfGps(context)) {
                             if ("Gps".equals(type)) {
                                 postData();
@@ -242,7 +240,7 @@ public class CheckInActivity extends BaseActivity {
                         }
 //                    } else {
 //                        ToastUtil.toast(context, "请选择出行方式");
-                    }
+//                    }
                 } else {
                     ToastUtil.toast(context, "请等待，有效范围判断");
                 }
@@ -266,6 +264,12 @@ public class CheckInActivity extends BaseActivity {
 
     private void postData() {
         if (code == 0) {//正常
+            if (GetInfo.getIfSf(context)){
+                if (TextUtils.isEmpty(uploadBuffer)){
+                    ToastUtil.toast(context, "请先拍照，再提交");
+                    return;
+                }
+            }
             ProgressDialogUtil.showProgressDialog(context);
             visitServer(location, iclass, explain, journey);
         } else if (code == 1) {//非有效范围
@@ -390,6 +394,7 @@ public class CheckInActivity extends BaseActivity {
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("jd", longitude);
         parameters_userInfo.put("wd", latitude);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -495,6 +500,7 @@ public class CheckInActivity extends BaseActivity {
         parameters_userInfo.put("iclass", Escape.escape(iclass));
         parameters_userInfo.put("cmemo", Escape.escape(explain));
         parameters_userInfo.put("type", Escape.escape(journey));
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

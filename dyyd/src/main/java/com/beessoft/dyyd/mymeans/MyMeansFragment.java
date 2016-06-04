@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.DetailActivity;
@@ -24,6 +25,7 @@ public class MyMeansFragment extends Fragment {
 	private Button updateBtn;
 	private Button adviseBtn;
 	private UpdateManager mUpdateManager;
+	private LinearLayout onlineLl;
 	private Context context;
 
 	@Override
@@ -43,6 +45,8 @@ public class MyMeansFragment extends Fragment {
 		telTxt = (TextView) view.findViewById(R.id.tel_text);
 		macTxt = (TextView) view.findViewById(R.id.mac_text);
 		onlineTxt = (TextView) view.findViewById(R.id.online_text);
+		onlineLl = (LinearLayout) view.findViewById(R.id.ll_online);
+
 		updateBtn = (Button) view.findViewById(R.id.btn_update);
 		updateBtn.setText("在线升级   v"+ User.getVersionName(context));
 		updateBtn.setOnClickListener(onClickListener);
@@ -54,6 +58,7 @@ public class MyMeansFragment extends Fragment {
 		detailTxt.setOnClickListener(onClickListener);
 
 		if (GetInfo.getIfSf(context)){
+			onlineLl.setVisibility(View.VISIBLE);
 			adviseBtn.setVisibility(View.VISIBLE);
 			departTxt.setVisibility(View.VISIBLE);
 		}

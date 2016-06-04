@@ -11,7 +11,6 @@ import android.widget.SimpleAdapter;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -39,8 +38,6 @@ public class PhotoQueryListDetailActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = PhotoQueryListDetailActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 
@@ -58,7 +55,8 @@ public class PhotoQueryListDetailActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("dep", Escape.escape(department));
 		parameters_userInfo.put("imgtype", Escape.escape(type));
 
@@ -103,8 +101,8 @@ public class PhotoQueryListDetailActivity extends BaseActivity {
 										HashMap<String, String> map = (HashMap<String, String>) listView
 												.getItemAtPosition(position);
 										String idTarget = map.get("id");
-										Intent intent = new Intent(PhotoQueryListDetailActivity.this,PhotoQueryActivity.class);
-										intent.putExtra("idTarget", idTarget);
+										Intent intent = new Intent(context,PhotoQueryActivity.class);
+										intent.putExtra("id", idTarget);
 										startActivity(intent);
 									}
 								});

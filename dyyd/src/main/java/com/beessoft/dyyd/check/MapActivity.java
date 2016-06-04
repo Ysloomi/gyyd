@@ -1,7 +1,6 @@
 package com.beessoft.dyyd.check;
 
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -19,7 +18,8 @@ import com.baidu.mapapi.model.LatLng;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.overlayutil.OverlayManager;
-import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Escape;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -45,19 +45,15 @@ public class MapActivity extends BaseActivity {
 	private String department, person, itype, itime,myId;
 	private String flag;
 	// 构建Marker图标
-	BitmapDescriptor bitmap = BitmapDescriptorFactory
-			.fromResource(R.drawable.icon_marka);
+	BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka);
 	// 构建Marker图标
-	BitmapDescriptor bitmapGreen = BitmapDescriptorFactory
-			.fromResource(R.drawable.icon_marka_green);
+	BitmapDescriptor bitmapGreen = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka_green);
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
 
 		context= MapActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		textView =(TextView) findViewById(R.id.mileage_text);
 		// 获取地图控件引用
@@ -118,9 +114,9 @@ public class MapActivity extends BaseActivity {
 		parameters_userInfo.put("flag", flag);
 		parameters_userInfo.put("itime", itime);
 		parameters_userInfo.put("id", myId);
-		String strBase64 = new String(Base64.encode(person.getBytes(), Base64.DEFAULT));
-		parameters_userInfo.put("usercode", strBase64);
+		parameters_userInfo.put("usercode1", Escape.escape(person));
 		parameters_userInfo.put("cdepcode", department);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -202,7 +198,7 @@ public class MapActivity extends BaseActivity {
 								overlayManager.zoomToSpan();// 缩放
 							} else if (-1==code) {
 								ToastUtil.toast(context, "所选时间无位置信息");
-								finish();
+//								finish();
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -216,24 +212,29 @@ public class MapActivity extends BaseActivity {
 						error.printStackTrace(System.out);
 						ProgressDialogUtil.closeProgressDialog();
 						ToastUtil.toast(context, "服务器连接超时");
-						finish();
+//						finish();
 					}
 				});
 	}
 
 	private void visitServer_run() {
+
 		String httpUrl = User.mainurl + "sf/map_do";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", itype);
 		parameters_userInfo.put("flag", flag);
 		parameters_userInfo.put("itime", itime);
 		parameters_userInfo.put("id", myId);
-		String strBase64 = new String(Base64.encode(person.getBytes(), Base64.DEFAULT));
-		parameters_userInfo.put("usercode", strBase64);
+		parameters_userInfo.put("usercode1", Escape.escape(person));
 		parameters_userInfo.put("cdepcode", department);
+		parameters_userInfo.put("sf", ifSf);
+
+		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -265,7 +266,7 @@ public class MapActivity extends BaseActivity {
 								// mBaiduMap.setViewport(list);
 							} else if (-1==code) {
 								ToastUtil.toast(context, "所选时间无位置信息");
-								finish();
+//								finish();
 							}
 							if (!"".equals(myId)) {
 								textView.setText(dataJson.getString("car"));
@@ -282,7 +283,7 @@ public class MapActivity extends BaseActivity {
 						error.printStackTrace(System.out);
 						ProgressDialogUtil.closeProgressDialog();
 						ToastUtil.toast(context, "服务器连接超时");
-						finish();
+//						finish();
 					}
 				});
 

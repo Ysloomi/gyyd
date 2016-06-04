@@ -39,6 +39,7 @@ public class MyCheckFragment extends Fragment {
 
 	private String mac, year, month, btn = "0", idGet, idate, state, flag = "";
 	private String username;
+	private String ifSf;
 	private Context context;
 	private Date dateMonth;
 	private CalendarView calendar;
@@ -63,6 +64,7 @@ public class MyCheckFragment extends Fragment {
 		context = getActivity();
 		mac = GetInfo.getIMEI(context);
 		username = GetInfo.getUserName(context);
+		ifSf = GetInfo.getIfSf(context)?"0":"1";
 
 		Calendar calendar = Calendar.getInstance();
 		year = String.valueOf(calendar.get(Calendar.YEAR));
@@ -210,6 +212,7 @@ public class MyCheckFragment extends Fragment {
 		parameters_userInfo.put("month", month);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("psn", Escape.escape(""));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

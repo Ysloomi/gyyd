@@ -231,8 +231,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("jd", longtitude);
         parameters_userInfo.put("wd", latitude);
-
-//		Logger.e(httpUrl+"?"+parameters_userInfo);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -322,6 +321,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         parameters_userInfo.put("km", distance);
         parameters_userInfo.put("kmsum", distanceSum);
         parameters_userInfo.put("kmcar", distanceCar);
+        parameters_userInfo.put("sf", ifSf);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

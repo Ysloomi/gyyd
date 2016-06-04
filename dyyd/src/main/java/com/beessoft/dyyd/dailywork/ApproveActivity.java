@@ -16,7 +16,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -42,7 +41,6 @@ public class ApproveActivity extends BaseActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-
 		case R.id.action_mileage:
 			Intent intent = new Intent(ApproveActivity.this,
 					MapActivity.class);
@@ -63,8 +61,6 @@ public class ApproveActivity extends BaseActivity {
 		setContentView(R.layout.activity_approve);
 
 		context = ApproveActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		textView1 = (TextView) findViewById(R.id.approve_person);
 		textView2 = (TextView) findViewById(R.id.approve_outtime);
@@ -106,6 +102,7 @@ public class ApproveActivity extends BaseActivity {
 		parameters_userInfo.put("mac",mac);
 		parameters_userInfo.put("usercode",username);
 		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -144,6 +141,7 @@ public class ApproveActivity extends BaseActivity {
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("id", id);
 		parameters_userInfo.put("yj", Escape.escape(advise));
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

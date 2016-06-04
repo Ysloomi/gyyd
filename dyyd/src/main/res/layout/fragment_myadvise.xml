@@ -29,15 +29,10 @@
             <requestFocus />
         </EditText>
 
-        <Button
-            android:id="@+id/advise_button"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="@color/blue"
-            android:text="搜索"
-            android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/txt_search"
+            style="@style/TapText"
+            android:text="搜索"/>
     </LinearLayout>
 
 </RelativeLayout>

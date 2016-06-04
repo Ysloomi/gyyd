@@ -16,7 +16,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.AdviseListAdapter;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 
 public class AdviseListActivity extends BaseActivity implements OnClickListener {
 
-    private String mac, pass, type = "", question = "", condition = "";
+    private String type = "", question = "", condition = "";
 
     private ListView listView;
     private EditText editText;
@@ -66,9 +65,6 @@ public class AdviseListActivity extends BaseActivity implements OnClickListener 
         setContentView(R.layout.activity_adviselist);
 
         context = AdviseListActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
-        pass = GetInfo.getPass(context);
 
         initView();
 
@@ -126,7 +122,7 @@ public class AdviseListActivity extends BaseActivity implements OnClickListener 
         RequestParams parameters_userInfo = new RequestParams();
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("pass", pass);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("type", Escape.escape(type));
         parameters_userInfo.put("question", Escape.escape(question));
         parameters_userInfo.put("condition", Escape.escape(condition));

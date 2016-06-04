@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,8 +36,6 @@ public class ApproveQueryListActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = ApproveQueryListActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 
@@ -63,14 +59,14 @@ public class ApproveQueryListActivity extends BaseActivity {
 		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("itype", "1");// 查询人
 		parameters_userInfo.put("btn", "0");
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code ==1) {
 								Toast.makeText(ApproveQueryListActivity.this,
@@ -90,7 +86,7 @@ public class ApproveQueryListActivity extends BaseActivity {
 								}
 							}
 							simAdapter = new SimpleAdapter(
-									ApproveQueryListActivity.this,
+									context,
 									datas,// 数据源
 									R.layout.item_approvelist,// 显示布局
 									new String[] { "date", "name",
@@ -107,11 +103,9 @@ public class ApproveQueryListActivity extends BaseActivity {
 										View view, int position, long id) {
 
 									ListView listView = (ListView) parent;
-									HashMap<String, String> map = (HashMap<String, String>) listView
-											.getItemAtPosition(position);
+									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
 									String idTarget = map.get("id");
-									Intent intent = new Intent(context,
-											ApproveQueryActivity.class);
+									Intent intent = new Intent(context, ApproveQueryActivity.class);
 									intent.putExtra("id", idTarget);
 									startActivity(intent);
 								}

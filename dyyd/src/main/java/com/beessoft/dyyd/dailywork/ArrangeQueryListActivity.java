@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ArrangeQueryListActivity extends BaseActivity {
 
-    private String mac, itype, state, iflag;
+    private String itype, state, iflag;
 
     public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 
@@ -66,8 +66,6 @@ public class ArrangeQueryListActivity extends BaseActivity {
         setContentView(R.layout.activity_base_list);
 
         context = ArrangeQueryListActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         itype = getIntent().getStringExtra("itype");
 
@@ -89,14 +87,17 @@ public class ArrangeQueryListActivity extends BaseActivity {
 
     private void visitServer() {
         String httpUrl = User.mainurl + "sf/upwork";
-        String pass = GetInfo.getPass(context);
+
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
+
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("pass", pass);
         parameters_userInfo.put("itype", itype);// 0为执行人，1为安排人
         parameters_userInfo.put("state", state);// 0为待办，1为完成
+        parameters_userInfo.put("sf", ifSf);
+
+        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -114,7 +115,7 @@ public class ArrangeQueryListActivity extends BaseActivity {
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
                                     HashMap<String, Object> map = new HashMap<String, Object>();
-                                    map.put("idTarget", obj.getString("id"));
+                                    map.put("id", obj.getString("id"));
                                     map.put("idate", obj.getString("uptime"));
                                     map.put("username", obj.getString("upuser"));
                                     map.put("work", obj.getString("uptxt"));
@@ -141,12 +142,10 @@ public class ArrangeQueryListActivity extends BaseActivity {
                                     HashMap<String, String> map = (HashMap<String, String>) listView
                                             .getItemAtPosition(position);
 
-                                    String idTarget = map.get("idTarget");
+                                    String idTarget = map.get("id");
                                     iflag = map.get("iflag");
-                                    Intent intent = new Intent(
-                                            ArrangeQueryListActivity.this,
-                                            ArrangeQueryActivity.class);
-                                    intent.putExtra("idTarget", idTarget);
+                                    Intent intent = new Intent(context, ArrangeQueryActivity.class);
+                                    intent.putExtra("id", idTarget);
                                     intent.putExtra("itype", itype);// 0为上级安排，1为安排查询
                                     intent.putExtra("iflag", iflag);// 0为不能执行，1为可操作
                                     startActivity(intent);

@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -67,8 +66,6 @@ public class VisitQueryActivity extends BaseActivity implements View.OnClickList
 		setContentView(R.layout.activity_visitquery);
 
 		context = VisitQueryActivity.this;
-		mac= GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		id = getIntent().getStringExtra("id");
 		
@@ -113,9 +110,7 @@ public class VisitQueryActivity extends BaseActivity implements View.OnClickList
 		parameters_userInfo.put("id", id);
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-
-
-		Logger.e(httpUrl+"?"+parameters_userInfo);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

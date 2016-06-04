@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,7 +38,7 @@ public class WorkQueryActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_read:
                 Intent intent = new Intent(this, ReadActivity.class);
-                intent.putExtra("idTarget", id);
+                intent.putExtra("id", id);
                 startActivity(intent);
                 return true;
             case R.id.action_mileage:
@@ -61,10 +60,8 @@ public class WorkQueryActivity extends BaseActivity {
         setContentView(R.layout.activity_workquery);
 
         context =WorkQueryActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
-        id = getIntent().getStringExtra("idTarget");
+        id = getIntent().getStringExtra("id");
 
         initView();
 
@@ -81,16 +78,16 @@ public class WorkQueryActivity extends BaseActivity {
         textView5 = (TextView) findViewById(R.id.query_plan);
         textView6 = (TextView) findViewById(R.id.query_advise);
         textView7 = (TextView) findViewById(R.id.query_time);
-
     }
 
     private void visitServer() {
-        String httpUrl = User.mainurl + "sf/fragment_check";
+        String httpUrl = User.mainurl + "sf/check";
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("id", id);
 
         client_request.post(httpUrl, parameters_userInfo,

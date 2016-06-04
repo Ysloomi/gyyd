@@ -103,8 +103,6 @@ public class NoteQueryDetailActivity extends BaseActivity implements AdapterView
         setContentView(R.layout.activity_note_query_detail);
 
         context = NoteQueryDetailActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         Bundle b = getIntent().getExtras();
         note = b.getParcelable("note");

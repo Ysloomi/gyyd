@@ -3,12 +3,11 @@ package com.beessoft.dyyd.dailywork;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -35,8 +34,7 @@ public class ReadActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = ReadActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
+
 		id = getIntent().getStringExtra("id");
 
 		listView = (ListView) findViewById(R.id.list_view);
@@ -47,12 +45,13 @@ public class ReadActivity extends BaseActivity {
 
 	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/readrecord";
-		String pass = GetInfo.getPass(context);
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", id);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -61,10 +60,10 @@ public class ReadActivity extends BaseActivity {
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-							if ("1".equals(dataJson.getString("code"))) {
-								Toast.makeText(ReadActivity.this, "没有相关信息",
-										Toast.LENGTH_SHORT).show();
-							} else if ("0".equals(dataJson.getString("code"))) {
+							int code = dataJson.getInt("code");
+							if (1==code) {
+								ToastUtil.toast(context,"没有相关信息");
+							} else if (0==code) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);

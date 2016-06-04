@@ -1,9 +1,6 @@
 package com.beessoft.dyyd;
 
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,11 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 public class ShareActivity extends BaseActivity {
 	private Button button;
@@ -75,7 +73,7 @@ public class ShareActivity extends BaseActivity {
 		});
 
 		mainWebView.loadUrl(url);
-		visitServer(this);
+		visitServer();
 
 		// 如果页面中链接，如果希望点击链接继续在当前browser中响应，
 		// 而不是新开Android的系统browser中响应该链接，必须覆盖webview的WebViewClient对象
@@ -98,19 +96,7 @@ public class ShareActivity extends BaseActivity {
 		});
 	}
 
-	// @Override
-	// //设置回退
-	// //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
-	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// if ((keyCode == KeyEvent.KEYCODE_BACK) && mainWebView.canGoBack()) {
-	// mainWebView.goBack(); //goBack()表示返回WebView的上一页面
-	// return true;
-	// }
-	// return false;
-	// }
-
-	// 访问服务器http post
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/share";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -120,13 +106,9 @@ public class ShareActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
-							message = dataJson.getString("url")
-									+ dataJson.getString("ps");
-							;
+							JSONObject dataJson = new JSONObject(response);
+							message = dataJson.getString("url") + dataJson.getString("ps");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

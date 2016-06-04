@@ -1,7 +1,6 @@
 package com.beessoft.dyyd.dailywork;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -43,6 +41,8 @@ public class PhotoQueryActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photoquery);
 
+		context = PhotoQueryActivity.this;
+
 		textView1 = (TextView) findViewById(R.id.location_text);
 		textView2 = (TextView) findViewById(R.id.phototype_text);
 		textView3 = (TextView) findViewById(R.id.context_text);
@@ -51,10 +51,9 @@ public class PhotoQueryActivity extends BaseActivity {
 		imageView = (ImageView) findViewById(R.id.photo_image);
 		progressBar = (ProgressBar) findViewById(R.id.photo_progressbar);
 
-		mac = GetInfo.getIMEI(PhotoQueryActivity.this);
-		idTarget = getIntent().getStringExtra("idTarget");
+		idTarget = getIntent().getStringExtra("id");
 
-		visitServer(PhotoQueryActivity.this);
+		visitServer();
 
 		imageView.setOnClickListener(new ImageView.OnClickListener() {
 			@Override
@@ -65,13 +64,14 @@ public class PhotoQueryActivity extends BaseActivity {
 		});
 	}
 
-	private void visitServer(Context context) {
+	private void visitServer() {
 		String httpUrl = User.mainurl + "sf/imglist3";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", idTarget);
 
 		client_request.post(httpUrl, parameters_userInfo,

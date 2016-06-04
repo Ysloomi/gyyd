@@ -5,65 +5,35 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
-    <!--
-          <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:textColor="#000000"
-        android:textSize="15dp" />
-    -->
-
     <TextView
         android:id="@+id/date"
-        style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp" />
+        style="@style/ListItemText" />
 
     <TextView
         android:id="@+id/person"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/date"
         android:layout_alignTop="@+id/date"
-        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/date" />
 
     <TextView
         android:id="@+id/verifier"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/date"
         android:layout_below="@+id/date"
         android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/state"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/verifier"
         android:layout_alignTop="@+id/verifier"
-        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/verifier" />
 
     <TextView
         android:id="@+id/readtime"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/state"
         android:layout_alignTop="@+id/state"
-        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/state" />
 
 </RelativeLayout>

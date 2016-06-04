@@ -17,7 +17,7 @@ import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 
 public class MaterialFragment extends Fragment {
-    private Button button1, button2, button3, button4, button5, button6, button7;
+    private Button terminalBtn, salesBtn, bossBtn, workBtn, companyBtn, branchBtn, targetQueryBtn;
     private String role;
     private Context context;
     private Button researchButton;
@@ -33,153 +33,145 @@ public class MaterialFragment extends Fragment {
     }
 
     private void initView(View view) {
-        button1 = (Button) view.findViewById(R.id.terminal_button);
-        button2 = (Button) view.findViewById(R.id.sales_button);
-        button3 = (Button) view.findViewById(R.id.boss_button);
-        button4 = (Button) view.findViewById(R.id.workbook_button);
-        button5 = (Button) view.findViewById(R.id.companytarget_button);
-        button6 = (Button) view.findViewById(R.id.branchtarget_button);
-        button7 = (Button) view.findViewById(R.id.targetquery_button);
+        terminalBtn = (Button) view.findViewById(R.id.terminal_button);
+        salesBtn = (Button) view.findViewById(R.id.sales_button);
+        bossBtn = (Button) view.findViewById(R.id.boss_button);
+        workBtn = (Button) view.findViewById(R.id.workbook_button);
+        companyBtn = (Button) view.findViewById(R.id.companytarget_button);
+        branchBtn = (Button) view.findViewById(R.id.branchtarget_button);
+        targetQueryBtn = (Button) view.findViewById(R.id.targetquery_button);
 
         researchButton = (Button) view.findViewById(R.id.research_button);
 
-        Drawable drawableTopTerminal = getResources().getDrawable(
-                R.drawable.terminal_untap);
-        Drawable drawableTopSales = getResources().getDrawable(
-                R.drawable.sales_untap);
-        Drawable drawableTopBoss = getResources().getDrawable(
-                R.drawable.boss_untap);
-        Drawable drawableTopWorkBook = getResources().getDrawable(
-                R.drawable.workbook_untap);
-        Drawable drawableTopCompany = getResources().getDrawable(
-                R.drawable.company_untap);
-        Drawable drawableTopBranch = getResources().getDrawable(
-                R.drawable.branch_untap);
-        Drawable drawableTopTarget = getResources().getDrawable(
-                R.drawable.target_untap_icon);
+        Drawable drawableTopTerminal = getResources().getDrawable(R.drawable.terminal_untap);
+        Drawable drawableTopSales = getResources().getDrawable(R.drawable.sales_untap);
+        Drawable drawableTopBoss = getResources().getDrawable(R.drawable.boss_untap);
+        Drawable drawableTopWorkBook = getResources().getDrawable(R.drawable.workbook_untap);
+        Drawable drawableTopCompany = getResources().getDrawable(R.drawable.company_untap);
+        Drawable drawableTopBranch = getResources().getDrawable(R.drawable.branch_untap);
+        Drawable drawableTopTarget = getResources().getDrawable(R.drawable.target_untap_icon);
 
-        if (role.equals("3")) {
-//			button1.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
-//					null, null);
-//			button1.setTextColor(0xffc8c8c8);
-            button3.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBoss,
-                    null, null);
-            button3.setTextColor(0xffc8c8c8);
-            button4.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
-                    null, null);
-            button4.setTextColor(0xffc8c8c8);
-            button5.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
-                    null, null);
-            button5.setTextColor(0xffc8c8c8);
-            button6.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
-                    null, null);
-            button6.setTextColor(0xffc8c8c8);
-//			button7.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
-//					null, null);
-//			button7.setTextColor(0xffc8c8c8);
-        }
-        if (role.equals("2")) {
-//			button1.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
-//					null, null);
-//			button1.setTextColor(0xffc8c8c8);
-            button4.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
-                    null, null);
-            button4.setTextColor(0xffc8c8c8);
-            button5.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
-                    null, null);
-            button5.setTextColor(0xffc8c8c8);
-//			button6.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
-//					null, null);
-//			button6.setTextColor(0xffc8c8c8);
-//			button7.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
-//					null, null);
-//			button7.setTextColor(0xffc8c8c8);
-        }
-        if (role.equals("4")) {
-            button1.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
-                    null, null);
-            button1.setTextColor(0xffc8c8c8);
-            button2.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopSales,
-                    null, null);
-            button2.setTextColor(0xffc8c8c8);
-            button3.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBoss,
-                    null, null);
-            button3.setTextColor(0xffc8c8c8);
-            button4.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
-                    null, null);
-            button4.setTextColor(0xffc8c8c8);
-            button5.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
-                    null, null);
-            button5.setTextColor(0xffc8c8c8);
-            button6.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
-                    null, null);
-            button6.setTextColor(0xffc8c8c8);
-            button7.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
-                    null, null);
-            button7.setTextColor(0xffc8c8c8);
-        }
+//        if (role.equals("3")) {
+////			terminalBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
+////					null, null);
+////			terminalBtn.setTextColor(0xffc8c8c8);
+//            bossBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBoss,
+//                    null, null);
+//            bossBtn.setTextColor(0xffc8c8c8);
+//            workBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
+//                    null, null);
+//            workBtn.setTextColor(0xffc8c8c8);
+//            companyBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
+//                    null, null);
+//            companyBtn.setTextColor(0xffc8c8c8);
+//            branchBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
+//                    null, null);
+//            branchBtn.setTextColor(0xffc8c8c8);
+////			targetQueryBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
+////					null, null);
+////			targetQueryBtn.setTextColor(0xffc8c8c8);
+//        }
+//        if (role.equals("2")) {
+////			terminalBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
+////					null, null);
+////			terminalBtn.setTextColor(0xffc8c8c8);
+//            workBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
+//                    null, null);
+//            workBtn.setTextColor(0xffc8c8c8);
+//            companyBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
+//                    null, null);
+//            companyBtn.setTextColor(0xffc8c8c8);
+////			branchBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
+////					null, null);
+////			branchBtn.setTextColor(0xffc8c8c8);
+////			targetQueryBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
+////					null, null);
+////			targetQueryBtn.setTextColor(0xffc8c8c8);
+//        }
+//        if (role.equals("4")) {
+//            terminalBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTerminal,
+//                    null, null);
+//            terminalBtn.setTextColor(0xffc8c8c8);
+//            salesBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopSales,
+//                    null, null);
+//            salesBtn.setTextColor(0xffc8c8c8);
+//            bossBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBoss,
+//                    null, null);
+//            bossBtn.setTextColor(0xffc8c8c8);
+//            workBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopWorkBook,
+//                    null, null);
+//            workBtn.setTextColor(0xffc8c8c8);
+//            companyBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCompany,
+//                    null, null);
+//            companyBtn.setTextColor(0xffc8c8c8);
+//            branchBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopBranch,
+//                    null, null);
+//            branchBtn.setTextColor(0xffc8c8c8);
+//            targetQueryBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopTarget,
+//                    null, null);
+//            targetQueryBtn.setTextColor(0xffc8c8c8);
+//        }
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        terminalBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (!"4".equals(role)) {
+//                if (!"4".equals(role)) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), WebViewActivity.class);
                     intent.putExtra("title", "终端管理");
                     intent.putExtra("url", "http://cmerp.dyg3.net/");
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
             }
         });
         //店员手册
-        button2.setOnClickListener(new View.OnClickListener() {
+        salesBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (!"4".equals(role)) {
+//                if (!"4".equals(role)) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), WebViewActivity.class);
                     intent.putExtra("title", "店员手册");
                     intent.putExtra("url", User.mainurl + "books.jsp?booktype=2&mac="
                             + GetInfo.getIMEI(context) + "&usercode=" + GetInfo.getUserName(context));
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
             }
         });
         //老板手册
-        button3.setOnClickListener(new View.OnClickListener() {
+        bossBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                if ("3".equals(role) || "4".equals(role)) {
-                    ToastUtil.toast(context, "无权限");
-                } else {
+//                if ("3".equals(role) || "4".equals(role)) {
+//                    ToastUtil.toast(context, "无权限");
+//                } else {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), WebViewActivity.class);
                     intent.putExtra("title", "老板手册");
                     intent.putExtra("url", User.mainurl + "books.jsp?booktype=3&mac="
                             + GetInfo.getIMEI(context) + "&usercode=" + GetInfo.getUserName(context));
                     startActivity(intent);
-                }
+//                }
             }
         });
         //员工手册
-        button4.setOnClickListener(new View.OnClickListener() {
+        workBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if ("0".equals(role) || "1".equals(role)) {
+//                if ("0".equals(role) || "1".equals(role)) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), WebViewActivity.class);
                     intent.putExtra("title", "员工手册");
                     intent.putExtra("url", User.mainurl + "books.jsp?booktype=1&mac="
                             + GetInfo.getIMEI(context) + "&usercode=" + GetInfo.getUserName(context));
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
             }
         });
         //公司日报
-        button5.setOnClickListener(new View.OnClickListener() {
+        companyBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if ("0".equals(role) || "1".equals(role)) {
                     Intent intent = new Intent();
@@ -194,43 +186,43 @@ public class MaterialFragment extends Fragment {
             }
         });
         //分局日报
-        button6.setOnClickListener(new View.OnClickListener() {
+        branchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if ("3".equals(role) || "4".equals(role)) {
-                    ToastUtil.toast(context, "无权限");
-                } else {
+//                if ("3".equals(role) || "4".equals(role)) {
+//                    ToastUtil.toast(context, "无权限");
+//                } else {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), WebViewActivity.class);
                     intent.putExtra("title", "分局日报");
                     intent.putExtra("url", User.mainurl + "books.jsp?booktype=5&mac="
                             + GetInfo.getIMEI(context) + "&usercode=" + GetInfo.getUserName(context));
                     startActivity(intent);
-                }
+//                }
             }
         });
         //目标查询
-        button7.setOnClickListener(new View.OnClickListener() {
+        targetQueryBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (!"4".equals(role)) {
+//                if (!"4".equals(role)) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), TargetQueryListActivity.class);
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
             }
         });
 
         researchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("1".equals(role) || "0".equals(role)) {
+//                if ("1".equals(role) || "0".equals(role)) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), ResearchActivity.class);
                     startActivity(intent);
-                } else {
-                    ToastUtil.toast(context, "无权限");
-                }
+//                } else {
+//                    ToastUtil.toast(context, "无权限");
+//                }
             }
         });
     }

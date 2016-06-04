@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -38,8 +37,6 @@ public class VisitQueryListDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_base_list);
 
         context = VisitQueryListDetailActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         listView = (ListView) findViewById(R.id.list_view);
 
@@ -55,6 +52,7 @@ public class VisitQueryListDetailActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("idate", Escape.escape(date));
         parameters_userInfo.put("username", Escape.escape(name));
 

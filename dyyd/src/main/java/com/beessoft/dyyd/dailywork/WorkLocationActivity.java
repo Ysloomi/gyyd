@@ -20,7 +20,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -36,7 +35,7 @@ import java.util.Calendar;
 
 public class WorkLocationActivity extends BaseActivity {
 
-	private String mac, itype, itime;
+	private String itype, itime;
 	private Spinner departSpinner,groupSpinner, personSpinner;
 	private EditText dateEdit, timeEdit;
 	private Context context;
@@ -62,7 +61,6 @@ public class WorkLocationActivity extends BaseActivity {
 		setContentView(R.layout.activity_worklocation);
 		
 		context = WorkLocationActivity.this;
-		mac = GetInfo.getIMEI(context);
 
 		initView();
 
@@ -331,6 +329,8 @@ public class WorkLocationActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("type", "gj");
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -338,8 +338,7 @@ public class WorkLocationActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							flag = dataJson.getString("flag");
 							if ("0".equals(flag)) {
 								JSONArray arrayType = dataJson.getJSONArray("list");
@@ -389,6 +388,8 @@ public class WorkLocationActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("cdepperson", id);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -396,7 +397,7 @@ public class WorkLocationActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 //							Logger.e(dataJson.toString());
 							String code = dataJson.getString("code");
 //							String flag = dataJson.getString("flag");
@@ -429,6 +430,8 @@ public class WorkLocationActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("dep", Escape.escape(department));
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -436,7 +439,7 @@ public class WorkLocationActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");

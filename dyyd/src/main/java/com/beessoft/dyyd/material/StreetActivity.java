@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.material;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.Spinner;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -32,8 +29,7 @@ public class StreetActivity extends BaseActivity {
 	private String department, street, flag = "wait";
 	private String departCode;
 	private Spinner departSpinner, spinner2;
-	private Context context;
-	
+
 	private List<String> listDepCodes = new ArrayList<String>();
 	private String research ;
 	private String maxStreet ;
@@ -44,8 +40,6 @@ public class StreetActivity extends BaseActivity {
 		setContentView(R.layout.activity_street);
 		
 		context = StreetActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		research = getIntent().getStringExtra("research");
 		setTitle(research);
@@ -113,15 +107,17 @@ public class StreetActivity extends BaseActivity {
 		String httpUrl = User.mainurl + "app/getdep";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", "");
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if ("0".equals(code)) {
 								JSONArray array = dataJson.getJSONArray("list");
@@ -132,7 +128,6 @@ public class StreetActivity extends BaseActivity {
 									list.add(obj.getString("cdepname"));
 									listDepCodes.add(obj.getString("cdepcode"));
 								}
-					
 
 								// 声明一个ArrayAdapter用于存放简单数据
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -171,13 +166,16 @@ public class StreetActivity extends BaseActivity {
 				});
 	}
 
-	// 访问服务器http post
 	private void visitServer() {
+
 		String httpUrl = User.mainurl + "survey/AppGetstreet";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		
+
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("cdepcode", departCode);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -185,7 +183,7 @@ public class StreetActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");

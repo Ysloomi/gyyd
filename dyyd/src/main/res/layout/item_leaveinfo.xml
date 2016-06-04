@@ -6,29 +6,18 @@
 
     <TextView
         android:id="@+id/department"
-        style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp" />
+        style="@style/ListItemText" />
 
     <TextView
         android:id="@+id/person"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/department"
         android:layout_alignTop="@+id/department"
-        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/department" />
 
     <TextView
         android:id="@+id/offtime"
         style="@style/ListItemText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/department"
         android:layout_marginTop="10dp"
         android:layout_below="@+id/department" />
 

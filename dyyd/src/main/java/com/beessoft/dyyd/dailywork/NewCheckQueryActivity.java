@@ -16,7 +16,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.CheckQueryDetailActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -63,8 +62,9 @@ public class NewCheckQueryActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_newcheckquery);
+
 		context = NewCheckQueryActivity.this;
-		mac = GetInfo.getIMEI(context);
+
 		initView();
 
 		String now = DateUtil.YearMonth();
@@ -238,6 +238,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("type", "kq");
 
 //		Logger.e(httpUrl+"?"+parameters_userInfo);
@@ -298,6 +299,7 @@ public class NewCheckQueryActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("cdepperson", id);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -339,9 +341,8 @@ public class NewCheckQueryActivity extends BaseActivity {
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("dep", Escape.escape(department));
-
-		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.post(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {

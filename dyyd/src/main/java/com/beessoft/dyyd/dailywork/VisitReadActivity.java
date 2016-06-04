@@ -34,8 +34,6 @@ public class VisitReadActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = VisitReadActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 
@@ -52,7 +50,7 @@ public class VisitReadActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", id);
 
 		client_request.post(httpUrl, parameters_userInfo,

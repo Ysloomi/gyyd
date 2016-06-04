@@ -10,7 +10,6 @@ import android.widget.SimpleAdapter;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -39,8 +38,6 @@ public class SpecialActivity extends BaseActivity {
 		setContentView(R.layout.activity_base_list);
 
 		context = SpecialActivity.this;
-		mac = GetInfo.getIMEI(context);
-		username = GetInfo.getUserName(context);
 
 		listView = (ListView) findViewById(R.id.list_view);
 	}
@@ -163,6 +160,7 @@ public class SpecialActivity extends BaseActivity {
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		if (CURRENT_TYPE==0){
 			parameters_userInfo.put("type", "0");
 			url += "call/chkMain";

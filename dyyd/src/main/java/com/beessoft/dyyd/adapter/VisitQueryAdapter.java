@@ -53,7 +53,7 @@ public class VisitQueryAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.item_visitquerylist, null);
 			holder = new ViewHolder();
 			holder.mDate = (TextView) convertView.findViewById(R.id.date);
-			holder.mPerson = (TextView) convertView.findViewById(R.id.person);
+			holder.mPerson = (TextView) convertView.findViewById(R.id.name);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();

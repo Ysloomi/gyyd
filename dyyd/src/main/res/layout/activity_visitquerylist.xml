@@ -19,6 +19,6 @@
 
     </LinearLayout>
 
-    <include layout="@layout/baselist"/>
+    <include layout="@layout/basepulllist"/>
 
 </LinearLayout>

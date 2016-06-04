@@ -11,6 +11,7 @@ public class BaseActivity extends Activity {
 	public Context context;
 	public String mac;
 	public String username;
+	public String ifSf;
 
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,9 +34,11 @@ public class BaseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		context= this;
 		mac = GetInfo.getIMEI(context);
 		username= GetInfo.getUserName(context);
+		ifSf= GetInfo.getIfSf(context)?"0":"1";
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);// 使导航栏出现返回按钮
 	}

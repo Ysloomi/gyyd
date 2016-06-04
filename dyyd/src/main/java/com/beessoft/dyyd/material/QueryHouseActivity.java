@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.material;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.SimpleAdapter;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -35,7 +33,7 @@ public class QueryHouseActivity extends BaseActivity {
     public Cursor cursor;
     private ListView listView;
     private SimpleAdapter simAdapter ;
-    private Context context;
+
     private String department;
     private String departmentCode;
     private String house;
@@ -66,8 +64,10 @@ public class QueryHouseActivity extends BaseActivity {
 		
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		
-		parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("xq", Escape.escape(house));
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -75,7 +75,7 @@ public class QueryHouseActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("1")) {
 								ToastUtil.toast(context, "没有相关信息");

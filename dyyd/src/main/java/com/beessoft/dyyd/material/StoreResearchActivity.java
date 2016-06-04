@@ -2,8 +2,6 @@ package com.beessoft.dyyd.material;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -20,20 +18,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.BaseActivity;
+import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.PreferenceUtil;
+import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,9 +39,7 @@ import java.io.File;
 import java.util.Calendar;
 
 public class  StoreResearchActivity extends BaseActivity {
-	
-    private Context context;
-    
+
     private EditText belongEdit;
     private EditText numEdit;
     private EditText nameEdit;
@@ -112,9 +107,7 @@ public class  StoreResearchActivity extends BaseActivity {
     private String itype;
     private String id;
     private String max;
-    
-    private ProgressDialog progressDialog;
-    
+
 	// 照片
 	public static final int PHOTO_CODE = 5;
 	public static final int ALBUM_CODE = 4;
@@ -125,8 +118,6 @@ public class  StoreResearchActivity extends BaseActivity {
 	private File imageFile = null;
 	private Bitmap bitmap = null;
 	
-	private ImageLoader imageLoader;
-	private DisplayImageOptions options;
 	private String imageLink;
 	private ImageView photoImage;
 
@@ -220,8 +211,7 @@ public class  StoreResearchActivity extends BaseActivity {
 					}
 				}
 				if(a){
-					//				显示ProgressDialog
-					progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+					ProgressDialogUtil.showProgressDialog(context);
 					visitServer();
 				}else{
 					ToastUtil.toast(context, "门牌号不能大于街道门牌");
@@ -249,13 +239,14 @@ public class  StoreResearchActivity extends BaseActivity {
 				if (!Tools.isEmpty(imgPath)) {
 					PhotoHelper.openPictureDialog(context, imgPath);
 				} else if (!Tools.isEmpty(imageLink)) {
-					PhotoHelper.openPictureDialog(context, imageLink, imageLoader, options);
+					PhotoHelper.openPictureDialog(context, imageLink,
+							LocationApplication.imageLoader, LocationApplication.options);
 				}
 			}
 		});
         
         if(!Tools.isEmpty(id)){
-			progressDialog = ProgressDialog.show(context, "载入中...", "请等待...", true, true);
+			ProgressDialogUtil.showProgressDialog(context);
 			visitGet();
 		}
     }
@@ -353,8 +344,10 @@ public class  StoreResearchActivity extends BaseActivity {
 		String httpUrl = User.mainurl + "survey/AppSurveyShopQuery";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
-		
-		parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("sf", ifSf);
 		parameters_userInfo.put("id", id);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -362,7 +355,7 @@ public class  StoreResearchActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							String code = dataJson.getString("code");
 							if (code.equals("0")) {
 								JSONArray array = dataJson.getJSONArray("list");
@@ -397,19 +390,20 @@ public class  StoreResearchActivity extends BaseActivity {
 								ltnetEdit.setText(obj.getString("sffgltkd"));
 								dxnetEdit.setText(obj.getString("sffgdxkd"));
 								imageLink = User.mainurl + obj.getString("imgfile");
-								imageLoader.displayImage(imageLink, photoImage, options);
+								LocationApplication.imageLoader.displayImage(imageLink, photoImage,
+										LocationApplication.options);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						progressDialog.dismiss();
+						ProgressDialogUtil.closeProgressDialog();
 					}
 				});
 	}
@@ -419,8 +413,10 @@ public class  StoreResearchActivity extends BaseActivity {
 			
 			AsyncHttpClient client_request = new AsyncHttpClient();
 			RequestParams parameters_userInfo = new RequestParams();
-			
-			parameters_userInfo.put("mac", GetInfo.getIMEI(context));
+
+			parameters_userInfo.put("mac", mac);
+			parameters_userInfo.put("usercode", username);
+			parameters_userInfo.put("sf", ifSf);
 			parameters_userInfo.put("cdepcode", departmentCode);
 			parameters_userInfo.put("fgs", Escape.escape(company));
 			parameters_userInfo.put("gssk", Escape.escape(belong));
@@ -480,14 +476,14 @@ public class  StoreResearchActivity extends BaseActivity {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}finally {
-								progressDialog.dismiss();
+								ProgressDialogUtil.closeProgressDialog();
 							}
 						}
 
 						@Override
 						public void onFailure(Throwable error, String data) {
 							error.printStackTrace(System.out);
-							progressDialog.dismiss();
+							ProgressDialogUtil.closeProgressDialog();
 						}
 					});
 		}

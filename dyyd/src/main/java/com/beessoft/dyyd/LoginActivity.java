@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.baidu.location.LocationClient;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -147,7 +148,7 @@ public class LoginActivity extends Activity {
 		parameters_userInfo.put("sim", IMSI);
 		parameters_userInfo.put("version", User.getVersionCode(context)+"");
 
-//		Logger.e(httpUrl+"?"+parameters_userInfo);
+		Logger.e(httpUrl+"?"+parameters_userInfo);
 
 		client_request.get(httpUrl, parameters_userInfo,
 				new AsyncHttpResponseHandler() {
@@ -167,18 +168,23 @@ public class LoginActivity extends Activity {
 								int ifCheck = dataJson.getInt("kq");//0考，1不
 								if (0==ifCheck){
 									PreferenceUtil.write(context, "ifCheck", true);
+								}else {
+									PreferenceUtil.write(context, "ifCheck", false);
 								}
-								PreferenceUtil.write(context, "ifSf", true);
 								if (dataJson.has("sf")) {
 									int ifSf = dataJson.getInt("sf");//0什邡，1不是
 									if (0 == ifSf) {
 										PreferenceUtil.write(context, "ifSf", true);
+									}else {
+										PreferenceUtil.write(context, "ifSf", false);
 									}
 								}
 
 								int ifgps = dataJson.getInt("ifgps");//ifgps 0 允许室外签到 1不允许
 								if (0==ifgps){
 									PreferenceUtil.write(context, "ifgps", true);
+								}else {
+									PreferenceUtil.write(context, "ifgps", false);
 								}
 
 								int roleCode = dataJson.getInt("rolecode");//权限控制
