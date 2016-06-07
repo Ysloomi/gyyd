@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.beessoft.dyyd.utils.User;
+import com.igexin.sdk.PushManager;
 
 import java.util.TimerTask;
 
@@ -27,6 +28,8 @@ public class LoadingActivity extends Activity {
 			finish();
 			return;
 		}
+
+		PushManager.getInstance().initialize(this.getApplicationContext());
 
 		versionText = (TextView) findViewById(R.id.version_text);
 

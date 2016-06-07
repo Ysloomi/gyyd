@@ -11,6 +11,12 @@ android {
         targetSdkVersion 21
         versionCode 30
         versionName "3.0"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "EF69hfDZTf7mTJHQjd5yr6",
+                GETUI_APP_KEY : "ibkALzw1ovAeEjeua6LLh3",
+                GETUI_APP_SECRET : "pqUot6urGR9VO5pmVnxqg5",
+                PACKAGE_NAME : applicationId
+        ]
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -32,15 +38,15 @@ dependencies {
     compile files('libs/android-async-http-1.4.3.jar')
     compile files('libs/android-query-full.0.21.4-beta.jar')
     compile files('libs/httpmime-4.1.1.jar')
-    compile 'com.android.support:support-v4:23.1.0'
-    compile files('libs/Xg_sdk_v2.39_20150915_1121.jar')
-    compile files('libs/jg_filter_sdk_1.1.jar')
-    compile files('libs/wup-1.0.0-SNAPSHOT.jar')
     compile files('libs/mid-sdk-2.20.jar')
     compile files('libs/BaiduLBS_Android.jar')
     compile project(':library')
     compile 'com.bigkoo:pickerview:2.0.8'
     compile files('libs/universal-image-loader-1.9.4.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.getui:sdk:2.8.1.0'
+    compile 'com.getui:ext:2.0.3'
+    compile 'com.android.support:support-v4:+'
 }
 
 bugly {
