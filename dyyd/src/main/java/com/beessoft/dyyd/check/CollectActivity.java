@@ -530,11 +530,15 @@ public class CollectActivity extends BaseActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         ProgressDialogUtil.showProgressDialog(context);
                                         upServer();
+                                        if (GetInfo.getIfSf(context))
+                                            saveDy();
                                     }
                                 });
                         builder.show();
                     } else if ("-1".equals(code)) {
                         upServer();
+                        if (GetInfo.getIfSf(context))
+                            saveDy();
                     } else {
                         ToastUtil.toast(context, "无权限");
                     }
@@ -583,6 +587,52 @@ public class CollectActivity extends BaseActivity {
                         finish();
                     } else {
                         ToastUtil.toast(context, "请重新上传");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    ProgressDialogUtil.closeProgressDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable error, String data) {
+                error.printStackTrace(System.out);
+                ProgressDialogUtil.closeProgressDialog();
+            }
+        });
+    }
+
+
+
+    private void saveDy() {
+
+        String httpUrl = User.dyMainurl + "sf/save_jwcj";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("addr", Escape.escape(addr));
+        parameters_userInfo.put("jd", longitude);
+        parameters_userInfo.put("wd", latitude);
+        parameters_userInfo.put("image", uploadBuffer);
+        parameters_userInfo.put("type", "1");
+        parameters_userInfo.put("cdepperson", shopId);
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("fj", from);
+        parameters_userInfo.put("sf", ifSf);
+
+        client_request.post(httpUrl, parameters_userInfo, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    JSONObject dataJson = new JSONObject(response);
+                    String code = dataJson.getString("code");
+                    if ("0".equals(code)) {
+
+                    } else {
+                        ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

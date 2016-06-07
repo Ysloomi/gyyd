@@ -7,13 +7,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -64,26 +63,24 @@ public class ConfirmListActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String response) {
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							datas.clear();
-							if ("1".equals(dataJson.getString("code"))) {
-								Toast.makeText(ConfirmListActivity.this,
-										"没有相关信息", Toast.LENGTH_SHORT).show();
-							} else if ("0".equals(dataJson.getString("code"))) {
+							int code = dataJson.getInt("code");
+							 if (0==code) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
 									JSONObject obj = array.getJSONObject(j);
 									HashMap<String, Object> map = new HashMap<String, Object>();
 									map.put("id", obj.getString("id"));
 									map.put("date", obj.getString("iday"));
-									map.put("verifier",
-											"审批人:" + obj.getString("verifier"));
+									map.put("verifier", "审批人:" + obj.getString("verifier"));
 									datas.add(map);
 								}
+							}else {
+								 ToastUtil.toast(context,"没有相关信息");
 							}
 							simAdapter = new SimpleAdapter(
-									ConfirmListActivity.this,
+									context,
 									datas,// 数据源
 									R.layout.item_confirmlist,// 显示布局
 									new String[] { "date", "verifier"},
@@ -101,7 +98,7 @@ public class ConfirmListActivity extends BaseActivity {
 											.getItemAtPosition(position);
 									String idTarget = map.get("id");
 									Intent intent = new Intent(ConfirmListActivity.this,ConfirmActivity.class);
-									intent.putExtra("idTarget", idTarget);
+									intent.putExtra("id", idTarget);
 									startActivity(intent);
 								}
 							});

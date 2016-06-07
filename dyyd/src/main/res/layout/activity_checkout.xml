@@ -18,6 +18,17 @@
 
                 <TextView
                     style="@style/MyTitle"
+                    android:text="今日拜访" />
+
+                <TextView
+                    android:id="@+id/txt_visit"
+                    style="@style/MyText" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
                     android:layout_gravity="start"
                     android:text="今日总结" />
 
@@ -26,7 +37,7 @@
                     style="@style/MyText"
                     android:background="@drawable/bigtext_bg"
                     android:gravity="top"
-                    android:paddingLeft="2dp"/>
+                    android:paddingLeft="2dp" />
             </LinearLayout>
 
             <RelativeLayout style="@style/TextOutLayout">
@@ -43,9 +54,6 @@
                     android:background="@drawable/bigtext_bg"
                     android:gravity="top"
                     android:paddingLeft="2dp" />
-                <!--android:hint="书写的内容包含但不限于：
-                拟拜访的商家名称和拜访的原因（上门检查、上门培训、酬金沟通、
-                指标传达、帮扶整改），拟组织开展的促销活动，拟拜访的用户等。"-->
 
                 <ImageView
                     android:id="@+id/iv_preserve"
@@ -85,11 +93,11 @@
 
                 <TextView
                     style="@style/MyTitle"
-                    android:text="是否有效范围"/>
+                    android:text="是否有效范围" />
 
                 <TextView
-                    style="@style/MyText"
-                    android:id="@+id/txt_inside"/>
+                    android:id="@+id/txt_inside"
+                    style="@style/MyText" />
             </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">
@@ -99,22 +107,23 @@
                     android:text="出行方式" />
 
                 <TextView
-                    style="@style/MyText"
-                    android:id="@+id/type_text" />
+                    android:id="@+id/type_text"
+                    style="@style/MyText" />
             </LinearLayout>
 
 
-            <LinearLayout style="@style/TextOutLayout">
+            <LinearLayout
+                android:id="@+id/ll_mileage"
+                style="@style/TextOutLayout"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/MyTitle"
-                    android:text="里程说明"
-                    android:visibility="gone" />
+                    android:text="里程说明" />
 
                 <TextView
-                    style="@style/MyText"
                     android:id="@+id/distance_text"
-                    android:visibility="gone"/>
+                    style="@style/MyText" />
             </LinearLayout>
 
             <!--<TextView-->
@@ -145,8 +154,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        style="@style/RelativeBottom">
+    <RelativeLayout style="@style/RelativeBottom">
 
         <Button
             android:id="@+id/btn_confirm"

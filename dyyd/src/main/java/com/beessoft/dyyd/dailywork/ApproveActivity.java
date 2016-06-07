@@ -16,7 +16,9 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -27,8 +29,8 @@ import org.json.JSONObject;
 
 public class ApproveActivity extends BaseActivity {
 
-	private TextView textView1, textView2, textView3, textView4, textView5, textView6;
-	private EditText editText1;
+	private TextView nameTxt, outTimeTxt, yesterTxt, summaryTxt, planTxt, timeTxt;
+	private EditText adviseEdt;
 	private String  advise, id, time;
 
 	@Override
@@ -62,40 +64,40 @@ public class ApproveActivity extends BaseActivity {
 
 		context = ApproveActivity.this;
 
-		textView1 = (TextView) findViewById(R.id.approve_person);
-		textView2 = (TextView) findViewById(R.id.approve_outtime);
-		textView3 = (TextView) findViewById(R.id.approve_yester);
-		textView4 = (TextView) findViewById(R.id.approve_summary);
-		textView5 = (TextView) findViewById(R.id.approve_plan);
-		editText1 = (EditText) findViewById(R.id.approve_advise);
-		textView6 = (TextView) findViewById(R.id.approve_time);
+		nameTxt = (TextView) findViewById(R.id.approve_person);
+		outTimeTxt = (TextView) findViewById(R.id.approve_outtime);
+		yesterTxt = (TextView) findViewById(R.id.approve_yester);
+		summaryTxt = (TextView) findViewById(R.id.approve_summary);
+		planTxt = (TextView) findViewById(R.id.approve_plan);
+		adviseEdt = (EditText) findViewById(R.id.approve_advise);
+		timeTxt = (TextView) findViewById(R.id.approve_time);
 
 		id = getIntent().getStringExtra("id");
 
-		visitServer();
+		getData();
 
 		findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				advise = editText1.getText().toString();
-				time = textView6.getText().toString();
+				advise = adviseEdt.getText().toString();
+				time = timeTxt.getText().toString();
 				if (TextUtils.isEmpty(advise.trim())) {
-					Toast.makeText(ApproveActivity.this, "请先填写审批意见",
-							Toast.LENGTH_SHORT).show();
+					ToastUtil.toast(context,"请先填写审批意见");
 				} else {
 					if (TextUtils.isEmpty(time.trim())) {
 						ProgressDialogUtil.showProgressDialog(context);
-						visitServer_comfirm();
+						saveData();
+						if (GetInfo.getIfSf(context))
+							saveDy();
 					} else {
-						Toast.makeText(ApproveActivity.this, "已审批，请勿重复提交",
-								Toast.LENGTH_SHORT).show();
+						ToastUtil.toast(context,"已审批，请勿重复提交");
 					}
 				}
 			}
 		});
 	}
 
-	private void visitServer() {
-		String httpUrl = User.mainurl + "sf/fragment_check";
+	private void getData() {
+		String httpUrl = User.mainurl + "sf/check";
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		
@@ -115,17 +117,16 @@ public class ApproveActivity extends BaseActivity {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
-									textView1.setText(obj.getString("username"));
-									textView2.setText(obj.getString("cmakertime"));
-									textView3.setText(obj.getString("ytomplan"));
-									textView4.setText(obj.getString("todsummary"));
-									textView5.setText(obj.getString("tomplan"));
-									editText1.setText(obj.getString("veropinion"));
-									textView6.setText(obj.getString("checktime"));
+									nameTxt.setText(obj.getString("username"));
+									outTimeTxt.setText(obj.getString("cmakertime"));
+									yesterTxt.setText(obj.getString("ytomplan"));
+									summaryTxt.setText(obj.getString("todsummary"));
+									planTxt.setText(obj.getString("tomplan"));
+									adviseEdt.setText(obj.getString("veropinion"));
+									timeTxt.setText(obj.getString("checktime"));
 								}
 							} else {
-								Toast.makeText(ApproveActivity.this, "请重新上传",
-										Toast.LENGTH_SHORT).show();
+								ToastUtil.toast(context,"加载失败，请重试");
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -134,11 +135,15 @@ public class ApproveActivity extends BaseActivity {
 				});
 	}
 
-	private void visitServer_comfirm() {
+	private void saveData() {
+
 		String httpUrl = User.mainurl + "sf/check_save";
+
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
+
 		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", id);
 		parameters_userInfo.put("yj", Escape.escape(advise));
 		parameters_userInfo.put("sf", ifSf);
@@ -156,11 +161,51 @@ public class ApproveActivity extends BaseActivity {
 										"工作审批数据上传成功", Toast.LENGTH_SHORT)
 										.show();
 								String time = DateUtil.getDate();
-								textView5.setText(time);
+								planTxt.setText(time);
 								finish();
 							} else {
 								Toast.makeText(ApproveActivity.this, "请重新上传",
 										Toast.LENGTH_SHORT).show();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							ProgressDialogUtil.closeProgressDialog();
+						}
+					}
+
+					@Override
+					public void onFailure(Throwable error, String data) {
+						error.printStackTrace(System.out);
+						ProgressDialogUtil.closeProgressDialog();
+					}
+				});
+	}
+
+	private void saveDy() {
+
+		String httpUrl = User.dyMainurl + "sf/check_save";
+
+		AsyncHttpClient client_request = new AsyncHttpClient();
+		RequestParams parameters_userInfo = new RequestParams();
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("yj", Escape.escape(advise));
+		parameters_userInfo.put("sf", ifSf);
+
+		client_request.post(httpUrl, parameters_userInfo,
+				new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response) {
+						try {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
+
+							} else {
+								ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

@@ -25,6 +25,7 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
@@ -302,7 +303,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-    private void visitServer(String person,String aim,String location,String question) {
+    private void saveData(String person, String aim, String location, String question) {
 
         String httpUrl = User.mainurl + "sf/offvisit_save";
 
@@ -325,7 +326,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("questiontype", questionTypeCode);
         parameters_userInfo.put("sf", ifSf);
 
-
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -341,6 +341,58 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                                 ToastUtil.toast(context, "已提交，请勿重复提交");
                             } else {
                                 ToastUtil.toast(context, "请重新提交");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ProgressDialogUtil.closeProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        ProgressDialogUtil.closeProgressDialog();
+                    }
+                });
+    }
+
+    private void saveDy(String person, String aim, String location, String question) {
+
+        String httpUrl = User.dyMainurl + "sf/offvisit_save";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("jd", longitude);
+        parameters_userInfo.put("wd", latitude);
+        parameters_userInfo.put("addr", Escape.escape(location));
+        parameters_userInfo.put("cus", Escape.escape(customer));
+        parameters_userInfo.put("visitperson", Escape.escape(person));
+        parameters_userInfo.put("visitgoal", Escape.escape(aim));
+        parameters_userInfo.put("visitresult", Escape.escape(result));
+        parameters_userInfo.put("image", uploadBuffer);
+        parameters_userInfo.put("startid", startid);
+        parameters_userInfo.put("ccuscode", customerCode);
+        parameters_userInfo.put("question",  Escape.escape(question));
+        parameters_userInfo.put("questiontype", questionTypeCode);
+        parameters_userInfo.put("sf", ifSf);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+                            int code = dataJson.getInt("code");
+                            if (code == 0) {
+
+                            } else if (code == 1) {
+                                ToastUtil.toast(context, "已提交，请勿重复提交");
+                            } else {
+                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -476,11 +528,15 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                             ToastUtil.toast(context, "请选择问题类型");
                         }else {
                             ProgressDialogUtil.showProgressDialog(context);
-                            visitServer(person,aim,location,question);
+                            saveData(person,aim,location,question);
+                            if (GetInfo.getIfSf(context))
+                                saveData(person,aim,location,question);
                         }
                     }else{
                         ProgressDialogUtil.showProgressDialog(context);
-                        visitServer(person,aim,location,question);
+                        saveData(person,aim,location,question);
+                        if (GetInfo.getIfSf(context))
+                            saveData(person,aim,location,question);
                     }
                 }
                 break;

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.QueryMapActivity;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
@@ -70,7 +71,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 			approveResultLl.setVisibility(View.GONE);
 		}
 
-		visitServer();
+		getData();
 	}
 
 	public void initView() {
@@ -132,6 +133,8 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 						} else {
 							ProgressDialogUtil.showProgressDialog(context);
 							saveData();
+							if (GetInfo.getIfSf(context))
+								saveDy();
 							myDialog.dismiss();
 						}
 					}
@@ -148,7 +151,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 		myDialog.show();
 	}
 
-	private void visitServer() {
+	private void getData() {
 		String httpUrl = User.mainurl + "sf/startwork_check2";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
@@ -217,13 +220,10 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code==0) {
-								Toast.makeText(CheckApproveActivity.this,
-										"签到审批数据上传成功", Toast.LENGTH_SHORT)
-										.show();
+								ToastUtil.toast(context,"签到审批数据上传成功");
 								finish();
 							} else {
-								Toast.makeText(CheckApproveActivity.this,
-										"请重新上传", Toast.LENGTH_SHORT).show();
+								ToastUtil.toast(context,"请重新上传");
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -239,9 +239,51 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 					}
 				});
 	}
-	/**
-	 * 打开线程打开图片
-	 */
+
+
+	private void saveDy() {
+
+		String httpUrl = User.dyMainurl + "sf/startwork_checksave";
+
+		AsyncHttpClient client_request = new AsyncHttpClient();
+		RequestParams parameters_userInfo = new RequestParams();
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("btn", btn);
+		parameters_userInfo.put("unagree_reason", unagree_reason);
+		parameters_userInfo.put("sf", ifSf);
+
+		client_request.post(httpUrl, parameters_userInfo,
+				new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response) {
+						try {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code==0) {
+								ToastUtil.toast(context,"签到审批数据上传成功");
+								finish();
+							} else {
+								ToastUtil.toast(context,"请重新上传");
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							ProgressDialogUtil.closeProgressDialog();
+						}
+					}
+
+					@Override
+					public void onFailure(Throwable error, String data) {
+						error.printStackTrace(System.out);
+						ProgressDialogUtil.closeProgressDialog();
+					}
+				});
+	}
+
+
 	Runnable runnable = new Runnable() {
 		@Override
 		public void run() {// run()在新的线程中运行
@@ -285,6 +327,8 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 					btn = "0";//同意
 					ProgressDialogUtil.showProgressDialog(context);
 					saveData();
+					if (GetInfo.getIfSf(context))
+						saveDy();
 				} else {
 					Toast.makeText(CheckApproveActivity.this, "已审批，请勿重复提交",
 							Toast.LENGTH_SHORT).show();

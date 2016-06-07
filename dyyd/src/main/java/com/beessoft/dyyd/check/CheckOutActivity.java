@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
@@ -20,6 +23,7 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.CheckOutDatabaseHelper;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.AlarmUtils;
+import com.beessoft.dyyd.utils.Constant;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
@@ -41,6 +45,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
     private LocationClient mLocationClient;
     private TextView addrText, mileageText, typeText;
     private TextView insideText;
+    private TextView visitText;
     private EditText summaryEdit, planEdit;
     private String mac, yesterday, summary, plan, type;
     private String longtitude, latitude, addr;
@@ -70,25 +75,35 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         }
     };
 
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.out_actions, menu);
-//		return super.onCreateOptionsMenu(menu);
-//	}
-//
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case android.R.id.home:
-//			finish();
-//			return true;
-//		case R.id.action_yesterday:
-//			openYesterday();
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //条用基类的方法，以便调出系统菜单（如果有的话）
+        super.onCreateOptionsMenu(menu);
+        menu.add(0, Constant.YESTERDAY, 0, "上个工作日计划").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        //返回值为“true”,表示菜单可见，即显示菜单
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (GetInfo.getIfSf(context)) {
+            menu.setGroupVisible(0, true);
+        } else {
+            menu.setGroupVisible(0, false);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case Constant.YESTERDAY:
+                openYesterday();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,10 +111,8 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_checkout);
 
         context = CheckOutActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
-        initView();
 
+        initView();
 
         // 检查Gps是否打开
         Gps gps = new Gps(this);
@@ -125,6 +138,8 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 
     public void initView() {
 
+        visitText = (TextView) findViewById(R.id.txt_visit);
+
         addrText = (TextView) findViewById(R.id.location_text);
         mileageText = (TextView) findViewById(R.id.distance_text);
         typeText = (TextView) findViewById(R.id.type_text);
@@ -132,6 +147,14 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 
         summaryEdit = (EditText) findViewById(R.id.summary_text);
         planEdit = (EditText) findViewById(R.id.plan_text);
+
+        LinearLayout mileageLl = (LinearLayout) findViewById(R.id.ll_mileage);
+
+        if (GetInfo.getIfSf(context)) {
+            mileageLl.setVisibility(View.VISIBLE);
+            summaryEdit.setHint("书写的内容包含但不限于：拟拜访的商家名称和拜访的原因" +
+                    "（上门检查、上门培训、酬金沟通、指标传达、帮扶整改），拟组织开展的促销活动，拟拜访的用户等。");
+        }
 
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
@@ -144,9 +167,6 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.btn_confirm).setOnClickListener(this);
     }
 
-    /**
-     * 获取定位信息
-     */
     public void getAddrLocation() {
         mThread = new Thread(runnable);
         if (Gps.exist(CheckOutActivity.this, "distance.db")) {
@@ -210,7 +230,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
 
     private void openYesterday() {
 
-        final EditText inputServer = new EditText(this);
+        final TextView inputServer = new TextView(this);
         inputServer.setBackgroundResource(R.drawable.bigtext_bg);
         inputServer.setText(yesterday);
 
@@ -229,6 +249,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("jd", longtitude);
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
@@ -239,30 +260,37 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(response);
-                            String text1 = "";
+                            String visitInfo = "";
+
                             if (!"".equals(dataJson.getString("yday"))) {
-                                text1 = "[上级" + dataJson.getString("yday") + "号意见]"
+                                visitInfo = "[上级" + dataJson.getString("yday")
+                                        + "号意见]"
                                         + dataJson.getString("veropinion")
                                         + "\n";
                             }
                             String code = dataJson.getString("code");
-                            if ("0".equals(code)) {
-                                text1 = getVisit(dataJson, text1);
+                            if (code.equals("0")) {
+                                visitInfo = getVisit(dataJson, visitInfo);
                             } else if (code.equals("1")) {
                                 ToastUtil.toast(context, "没有当天拜访记录");
+                            } else if (code.equals("2")) {
+                                ToastUtil.toast(context, "当日未签到，不能签退");
+                            } else if (code.equals("3")) {
+                                ToastUtil.toast(context, "当日已签退，不能重复签退");
                             } else if (code.equals("4")) {
-                                text1 = getVisit(dataJson, text1);
+                                visitInfo = getVisit(dataJson, visitInfo);
                                 ToastUtil.toast(context, "签到待审批，不能签退");
-                            } else if ("5".equals(code)) {
+                            } else if ("5".equals(dataJson.getString("code"))) {
                                 ToastUtil.toast(context, "签到待审批，不能签退");
                             }
 
-                            summary = summaryEdit.getText().toString();
-                            if (TextUtils.isEmpty(summary.trim())) {
-                                summaryEdit.setText(text1);// 今日总结唯空的时候赋值给文本框
-                                int textLength = text1.length();
-                                summaryEdit.setSelection(textLength, textLength);//将光标移到最后
-                            }
+//                            summary = summaryEdit.getText().toString();
+//                            if (TextUtils.isEmpty(summary.trim())) {
+//                                summaryEdit.setText(text1);// 今日总结唯空的时候赋值给文本框
+//                                int textLength = text1.length();
+//                                summaryEdit.setSelection(textLength, textLength);//将光标移到最后
+//                            }
+                            visitText.setText(visitInfo);
 
                             distanceSum = dataJson.getString("kmsum");
                             distance = dataJson.getString("kmval");
@@ -308,11 +336,12 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                 });
     }
 
-    private void visitServer(String location) {
+    private void saveData(String location) {
         String httpUrl = User.mainurl + "sf/offwork_save";
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("todsummary", Escape.escape(summary));
         parameters_userInfo.put("tomplan", Escape.escape(plan));
         parameters_userInfo.put("addr", Escape.escape(location));
@@ -327,7 +356,6 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
-
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             String code = dataJson.getString("code");
@@ -373,6 +401,56 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                         error.printStackTrace(System.out);
                         ProgressDialogUtil.closeProgressDialog();
                     }
+
+                });
+    }
+
+
+    private void saveDy(String location) {
+        String httpUrl = User.dyMainurl + "sf/offwork_save";
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("todsummary", Escape.escape(summary));
+        parameters_userInfo.put("tomplan", Escape.escape(plan));
+        parameters_userInfo.put("addr", Escape.escape(location));
+        parameters_userInfo.put("jd", longtitude);
+        parameters_userInfo.put("wd", latitude);
+        parameters_userInfo.put("km", distance);
+        parameters_userInfo.put("kmsum", distanceSum);
+        parameters_userInfo.put("kmcar", distanceCar);
+        parameters_userInfo.put("sf", ifSf);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+                            String code = dataJson.getString("code");
+                            if (code.equals("0")) {
+
+                            } else if (code.equals("4")) {
+
+                            } else if (code.equals("5")) {
+
+                            } else {
+                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ProgressDialogUtil.closeProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        ProgressDialogUtil.closeProgressDialog();
+                    }
+
                 });
     }
 
@@ -416,8 +494,7 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
             case R.id.iv_preserve:
                 summary = summaryEdit.getText().toString();
                 plan = planEdit.getText().toString();
-                checkOutDb.execSQL("insert into checkout_table values(null,?,?)",
-                        new String[]{summary, plan});
+                checkOutDb.execSQL("insert into checkout_table values(null,?,?)", new String[]{summary, plan});
                 ToastUtil.toast(context, "保存成功");
                 break;
             case R.id.iv_refresh:
@@ -445,13 +522,17 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 ProgressDialogUtil.showProgressDialog(context);
-                                                visitServer(location);
+                                                saveData(location);
+                                                if (GetInfo.getIfSf(context))
+                                                    saveDy(location);
                                             }
                                         }).setNegativeButton("否", null);
                                 builder.show();
                             } else {
                                 ProgressDialogUtil.showProgressDialog(context);
-                                visitServer(location);
+                                saveData(location);
+                                if (GetInfo.getIfSf(context))
+                                    saveDy(location);
                             }
                         }
                     } else {
@@ -466,13 +547,17 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         ProgressDialogUtil.showProgressDialog(context);
-                                        visitServer(location);
+                                        saveData(location);
+                                        if (GetInfo.getIfSf(context))
+                                            saveDy(location);
                                     }
                                 }).setNegativeButton("否", null);
                         builder.show();
                     } else {
                         ProgressDialogUtil.showProgressDialog(context);
-                        visitServer(location);
+                        saveData(location);
+                        if (GetInfo.getIfSf(context))
+                            saveDy(location);
                     }
                 }
                 break;

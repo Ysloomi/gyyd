@@ -96,6 +96,8 @@
     <string name="activity_specail">专项执行</string>
     <string name="activity_specail_approve">专项审批</string>
 
+    <string name="dy_wrong_mes">德阳提交失败，请联系管理员</string>
+
 
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>

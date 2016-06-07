@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
@@ -31,14 +30,14 @@ public class ConfirmActivity extends BaseActivity {
 
 		initView();
 
-		id = getIntent().getStringExtra("idTarget");
+		id = getIntent().getStringExtra("id");
 
-		visitServer();
+		getData();
 
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				ProgressDialogUtil.showProgressDialog(context);
-				visitServer_comfirm();
+				saveData();
 			}
 		});
 	}
@@ -55,9 +54,9 @@ public class ConfirmActivity extends BaseActivity {
 		button = (Button) findViewById(R.id.confirm_confirm);
 	}
 
-	private void visitServer() {
+	private void getData() {
 
-		String httpUrl = User.mainurl + "sf/fragment_check";
+		String httpUrl = User.mainurl + "sf/check";
 
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
@@ -73,7 +72,8 @@ public class ConfirmActivity extends BaseActivity {
 					public void onSuccess(String response) {
 						try {
 							JSONObject dataJson = new JSONObject(response);
-							if ("0".equals(dataJson.getString("code"))) {
+							int code = dataJson.getInt("code");
+							if (0==code) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int i = 0; i < array.length(); i++) {
 									JSONObject obj = array.getJSONObject(0);
@@ -85,9 +85,8 @@ public class ConfirmActivity extends BaseActivity {
 									textView6.setText(obj.getString("veropinion"));
 									textView7.setText(obj.getString("checktime"));
 								}
-							} else if ("1".equals(dataJson.getString("code"))) {
-								Toast.makeText(ConfirmActivity.this, "没有相关信息",
-										Toast.LENGTH_SHORT).show();
+							} else {
+								ToastUtil.toast(context,"没有相关信息" );
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -96,7 +95,7 @@ public class ConfirmActivity extends BaseActivity {
 				});
 	}
 
-	private void visitServer_comfirm() {
+	private void saveData() {
 
 		String httpUrl = User.mainurl + "sf/check_confirmsave";
 
@@ -112,14 +111,11 @@ public class ConfirmActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-
 						try {
 							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code==0) {
-								Toast.makeText(ConfirmActivity.this,
-										"确认成功,有效里程"+dataJson.getString("mykm")+"公里已记录成功", Toast.LENGTH_SHORT)
-										.show();
+								ToastUtil.toast(context, "确认成功,有效里程"+dataJson.getString("mykm")+"公里已记录成功");
 								finish();
 							} else {
 								ToastUtil.toast(context,"请重试");

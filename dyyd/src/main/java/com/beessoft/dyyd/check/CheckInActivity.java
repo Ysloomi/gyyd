@@ -56,8 +56,9 @@ public class CheckInActivity extends BaseActivity {
 
     private LocationClient mLocationClient;
 
-    private String location, explain = "", iclass = "", type = "", longitude,
-            latitude, addr, journey = "";
+    private String location, explain = "", notInsideClass = "",  travelType = "";
+
+    private String type = "" ,longitude,latitude, addr;
 
     private boolean flag;
 
@@ -198,49 +199,17 @@ public class CheckInActivity extends BaseActivity {
                 if (flag) {
                     location = addrText.getText().toString();
                     explain = reasonEditText.getText().toString();
-                    iclass = notInsideAutoCompleteText.getText().toString();
-                    journey = typeAutoCompleteText.getText().toString();
-//                    if (!TextUtils.isEmpty(journey.trim())) {
-//                    if (GetInfo.getIfSf(context)) {
-//                        if (TextUtils.isEmpty(uploadBuffer)) {
-//                            ToastUtil.toast(context, "请先拍照，再提交");
-//                            return;
-//                        }
-//                        if (TextUtils.isEmpty(journey.trim())) {
-//                            ToastUtil.toast(context, "请选择出行方式");
-//                            return;
-//                        }
-//                        if ("Gps".equals(type) || "Wifi".equals(type)) {
-//                            ProgressDialogUtil.showProgressDialog(context);
-//                            if (code != 0) {
-//                                if (TextUtils.isEmpty(explain.trim())
-//                                        || TextUtils.isEmpty(iclass.trim())) {
-//                                    ToastUtil.toast(context, "请填写数据，再上传");
-//                                    ProgressDialogUtil.closeProgressDialog();
-//                                } else {
-//                                    ProgressDialogUtil.showProgressDialog(context);
-//                                    visitServer(location, iclass, explain, journey);
-//                                }
-//                            } else {
-//                                ProgressDialogUtil.showProgressDialog(context);
-//                                visitServer(location, iclass, explain, journey);
-//                            }
-//                        } else {
-//                            ToastUtil.toast(context, "无GPS或Wifi信号，请刷新定位");
-//                        }
-//                    } else {
-                        if (GetInfo.getIfGps(context)) {
-                            if ("Gps".equals(type)) {
-                                postData();
-                            } else {
-                                ToastUtil.toast(context, "无GPS信号，请刷新定位");
-                            }
-                        } else {
+                    notInsideClass = notInsideAutoCompleteText.getText().toString();
+                    travelType = typeAutoCompleteText.getText().toString();
+                    if (GetInfo.getIfGps(context)) {
+                        if ("Gps".equals(type)) {
                             postData();
+                        } else {
+                            ToastUtil.toast(context, "无GPS信号，请刷新定位");
                         }
-//                    } else {
-//                        ToastUtil.toast(context, "请选择出行方式");
-//                    }
+                    } else {
+                        postData();
+                    }
                 } else {
                     ToastUtil.toast(context, "请等待，有效范围判断");
                 }
@@ -263,19 +232,25 @@ public class CheckInActivity extends BaseActivity {
     }
 
     private void postData() {
-        if (code == 0) {//正常
-            if (GetInfo.getIfSf(context)){
-                if (TextUtils.isEmpty(uploadBuffer)){
-                    ToastUtil.toast(context, "请先拍照，再提交");
-                    return;
-                }
+        if (GetInfo.getIfSf(context)) {
+            if (TextUtils.isEmpty(uploadBuffer)) {
+                ToastUtil.toast(context, "请先拍照，再提交");
+                return;
             }
+            if (TextUtils.isEmpty(travelType.trim())) {
+                ToastUtil.toast(context, "请选择出行方式");
+                return;
+            }
+        }
+        if (code == 0) {//正常
             ProgressDialogUtil.showProgressDialog(context);
-            visitServer(location, iclass, explain, journey);
+            saveData(location, notInsideClass, explain, travelType);
+            if (GetInfo.getIfSf(context))
+                saveDy(location, notInsideClass, explain, travelType);
         } else if (code == 1) {//非有效范围
             if (!Tools.isEmpty(uploadBuffer)) {
                 if (TextUtils.isEmpty(explain.trim())
-                        || TextUtils.isEmpty(iclass.trim())) {
+                        || TextUtils.isEmpty(notInsideClass.trim())) {
                     ToastUtil.toast(context, "请填写数据，再上传");
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -284,7 +259,9 @@ public class CheckInActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     ProgressDialogUtil.showProgressDialog(context);
-                                    visitServer(location, iclass, explain, journey);
+                                    saveData(location, notInsideClass, explain, travelType);
+                                    if (GetInfo.getIfSf(context))
+                                        saveDy(location, notInsideClass, explain, travelType);
                                 }
                             }).setNegativeButton("否", null);
                     builder.show();
@@ -300,7 +277,9 @@ public class CheckInActivity extends BaseActivity {
                     ToastUtil.toast(context, "请填写数据，再上传");
                 } else {
                     ProgressDialogUtil.showProgressDialog(context);
-                    visitServer(location, iclass, explain, journey);
+                    saveData(location, notInsideClass, explain, travelType);
+                    if (GetInfo.getIfSf(context))
+                        saveDy(location, notInsideClass, explain, travelType);
                 }
             } else {
                 ToastUtil.toast(context, "请先拍照，再提交");
@@ -392,6 +371,7 @@ public class CheckInActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("jd", longitude);
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
@@ -453,7 +433,7 @@ public class CheckInActivity extends BaseActivity {
                             } else {
                                 ToastUtil.toast(context, "没有出行方式");
                             }
-                            if (GetInfo.getIfSf(context)){
+                            if (GetInfo.getIfSf(context)) {
                                 String confirmDay = dataJson.getString("conday");
                                 if (!"0".equals(confirmDay)) {
                                     ToastUtil.toast(context, confirmDay + "日未确认日志，有效里程"
@@ -485,7 +465,7 @@ public class CheckInActivity extends BaseActivity {
                 });
     }
 
-    private void visitServer(String location, String iclass, String explain, String journey) {
+    private void saveData(String location, String iclass, String explain, String journey) {
 
         String httpUrl = User.mainurl + "sf/startwork_save";
 
@@ -493,11 +473,12 @@ public class CheckInActivity extends BaseActivity {
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("addr", Escape.escape(location));
         parameters_userInfo.put("jd", longitude);
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("image", uploadBuffer);
-        parameters_userInfo.put("iclass", Escape.escape(iclass));
+        parameters_userInfo.put("notInsideClass", Escape.escape(iclass));
         parameters_userInfo.put("cmemo", Escape.escape(explain));
         parameters_userInfo.put("type", Escape.escape(journey));
         parameters_userInfo.put("sf", ifSf);
@@ -553,6 +534,52 @@ public class CheckInActivity extends BaseActivity {
                 });
     }
 
+
+    private void saveDy(String location, String iclass, String explain, String journey) {
+
+        String httpUrl = User.dyMainurl + "sf/startwork_save";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("addr", Escape.escape(location));
+        parameters_userInfo.put("jd", longitude);
+        parameters_userInfo.put("wd", latitude);
+        parameters_userInfo.put("image", uploadBuffer);
+        parameters_userInfo.put("notInsideClass", Escape.escape(iclass));
+        parameters_userInfo.put("cmemo", Escape.escape(explain));
+        parameters_userInfo.put("type", Escape.escape(journey));
+        parameters_userInfo.put("sf", ifSf);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+                            String code = dataJson.getString("code");
+                            if (code.equals("0")) {
+
+                            } else {
+                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            ProgressDialogUtil.closeProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String data) {
+                        error.printStackTrace(System.out);
+                        ProgressDialogUtil.closeProgressDialog();
+                    }
+                });
+    }
 
     public void visitServer_getaddr() {
         String httpUrl = "http://api.map.baidu.com/geocoder/v2/";

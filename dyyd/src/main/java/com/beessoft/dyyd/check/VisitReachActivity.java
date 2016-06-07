@@ -25,6 +25,7 @@ import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
+import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -255,13 +256,17 @@ public class VisitReachActivity extends BaseActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							ProgressDialogUtil.showProgressDialog(context);
-							visitServer(customerType, customer, person, aim, location);
+							saveData(customerType, customer, person, aim, location);
+							if (GetInfo.getIfSf(context))
+								saveDy(customerType, customer, person, aim, location);
 						}
 					}).setNegativeButton("否", null);
 			builder.show();
 		} else {
 			ProgressDialogUtil.showProgressDialog(context);
-			visitServer(customerType, customer, person, aim, location);
+			saveData(customerType, customer, person, aim, location);
+			if (GetInfo.getIfSf(context))
+				saveDy(customerType, customer, person, aim, location);
 		}
 	}
 
@@ -394,7 +399,7 @@ public class VisitReachActivity extends BaseActivity {
 				});
 	}
 
-	private void visitServer(String customerType, String customer, String person, String aim, String location) {
+	private void saveData(String customerType, String customer, String person, String aim, String location) {
 
 		String httpUrl = User.mainurl + "sf/startvisit_save";
 		
@@ -434,6 +439,55 @@ public class VisitReachActivity extends BaseActivity {
 								ToastUtil.toast(context, "渠道类客户不存在，不能保存，请检查");
 							} else {
 								ToastUtil.toast(context, "请重新提交");
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							ProgressDialogUtil.closeProgressDialog();
+						}
+					}
+
+					@Override
+					public void onFailure(Throwable error, String data) {
+						error.printStackTrace(System.out);
+						ProgressDialogUtil.closeProgressDialog();
+					}
+				});
+	}
+
+
+	private void saveDy(String customerType, String customer, String person, String aim, String location) {
+
+		String httpUrl = User.mainurl + "sf/startvisit_save";
+
+		AsyncHttpClient client_request = new AsyncHttpClient();
+		RequestParams parameters_userInfo = new RequestParams();
+
+		parameters_userInfo.put("mac", mac);
+		parameters_userInfo.put("usercode", username);
+		parameters_userInfo.put("cus", Escape.escape(customer));
+		parameters_userInfo.put("visitperson", Escape.escape(person));
+		parameters_userInfo.put("visitgoal", Escape.escape(aim));
+		parameters_userInfo.put("addr", Escape.escape(location));
+		parameters_userInfo.put("jd", longtitude);
+		parameters_userInfo.put("wd", latitude);
+		parameters_userInfo.put("ccuscode", customerCode);
+		parameters_userInfo.put("type", Escape.escape(customerType));
+		parameters_userInfo.put("checkresult",Escape.escape(examineResultString));
+		parameters_userInfo.put("leavetype",Escape.escape(leavetype));
+		parameters_userInfo.put("sf", ifSf);
+
+		client_request.post(httpUrl, parameters_userInfo,
+				new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response) {
+						try {
+							JSONObject dataJson = new JSONObject(response);
+							int code = dataJson.getInt("code");
+							if (code == 0) {
+
+							}  else {
+								ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
