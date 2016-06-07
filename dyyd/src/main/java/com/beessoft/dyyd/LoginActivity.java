@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 
 		context=LoginActivity.this;
-		
+
 		versionTxt = (TextView) findViewById(R.id.version_text);
 		savePassword = (CheckBox) findViewById(R.id.remember_password);
 		nameEdt = (EditText) findViewById(R.id.editText1);
