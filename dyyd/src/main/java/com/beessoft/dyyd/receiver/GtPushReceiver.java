@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.beessoft.dyyd.dailywork.ApproveListActivity;
+import com.beessoft.dyyd.dailywork.AskLeaveApproveListActivity;
 import com.beessoft.dyyd.dailywork.CheckApproveListActivity;
 import com.beessoft.dyyd.dailywork.ConfirmListActivity;
+import com.beessoft.dyyd.utils.Logger;
 import com.igexin.sdk.PushConsts;
 
 import org.json.JSONException;
@@ -40,7 +42,7 @@ public class GtPushReceiver extends BroadcastReceiver {
 
                 if (payload != null) {
                     String data = new String(payload);
-//                    Logger.e("receiver payload : " + data);
+                    Logger.e("receiver payload : " + data);
                     try {
                         JSONObject object = new JSONObject(data);
                         String info = object.getString("data");
@@ -57,6 +59,10 @@ public class GtPushReceiver extends BroadcastReceiver {
 //                            content="下属提交日志请审批";
                         } else if ("2".equals(info)) {//日志确认
                             intent1.setClass(context.getApplicationContext(), ConfirmListActivity.class);
+//                            title="日志确认";
+//                            content="日志已审批请确认";
+                        }else if ("3".equals(info)) {//日志确认
+                            intent1.setClass(context.getApplicationContext(), AskLeaveApproveListActivity.class);
 //                            title="日志确认";
 //                            content="日志已审批请确认";
                         }

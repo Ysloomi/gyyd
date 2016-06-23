@@ -227,8 +227,8 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
             case R.id.askleave_button:
                 itype = "askleave";
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode4"))) {
-                    Intent intent = new Intent(context, AskLeaveActivity.class);
-                    startActivity(intent);
+                    Intent intent1 = new Intent(context, AskLeaveActivity.class);
+                    startActivity(intent1);
                 } else {
                     ToastUtil.toast(context, "无权限");
                 }

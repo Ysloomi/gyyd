@@ -53,15 +53,11 @@ public class MyWorkActivity extends BaseActivity {
 						.getItemAtPosition(position);
 				String name = map.get("name");
 				Intent intent = new Intent();
-//				if ("渠道拜访".equals(name)) {
-//					intent.setClass(context, TodoListActivity.class);
-//					startActivity(intent);
-//				} else if ("政企拜访".equals(name)) {
-//					intent.setClass(context, TodoActivity.class);
-//					intent.putExtra("from","unit");
-//					startActivity(intent);
-//				}
-				 if ("拜访".equals(name)) {
+				if ("渠道拜访".equals(name)) {
+					intent.setClass(context, TodoListActivity.class);
+					intent.putExtra("from","shop");
+					startActivity(intent);
+				} else if ("政企拜访".equals(name)) {
 					intent.setClass(context, TodoActivity.class);
 					intent.putExtra("from","unit");
 					startActivity(intent);
@@ -86,7 +82,7 @@ public class MyWorkActivity extends BaseActivity {
 					intent.setClass(context, SpecialActivity.class);
 					startActivity(intent);
 				} else if ("专项审批".equals(name)) {
-					intent.setClass(MyWorkActivity.this,CheckApproveListActivity.class);
+					intent.setClass(MyWorkActivity.this,SpecialApproveActivity.class);
 					intent.putExtra("from","special");
 					startActivity(intent);
 				}

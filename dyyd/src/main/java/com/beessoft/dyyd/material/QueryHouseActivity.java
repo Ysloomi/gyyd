@@ -1,7 +1,6 @@
 package com.beessoft.dyyd.material;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +29,7 @@ import java.util.List;
 public class QueryHouseActivity extends BaseActivity {
 	
     public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
-    public Cursor cursor;
+
     private ListView listView;
     private SimpleAdapter simAdapter ;
 

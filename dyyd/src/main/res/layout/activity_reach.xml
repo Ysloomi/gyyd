@@ -30,7 +30,7 @@
                 android:text="拜访客户" />
 
 
-            <EditText
+            <Spinner
                 android:id="@+id/visit_customer"
                 style="@style/MyText" />
 
@@ -38,14 +38,16 @@
             <TextView
                 android:id="@+id/txt_get_customer"
                 style="@style/TapText"
-                android:text="筛选" />
+                android:text="筛选"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/inside_ll"
-            style="@style/TextOutLayout">
+            style="@style/TextOutLayout"
+            android:visibility="gone">
 
             <TextView
                 style="@style/MyTitle"
@@ -56,6 +58,12 @@
                 android:id="@+id/inside_tv"
                 style="@style/MyText"
                 android:hint="选择客户后判定" />
+
+            <TextView
+                android:id="@+id/txt_map"
+                style="@style/TapText"
+                android:text="地图" />
+
         </LinearLayout>
 
         <LinearLayout style="@style/TextOutLayout">

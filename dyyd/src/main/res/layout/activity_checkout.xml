@@ -55,18 +55,16 @@
                     android:gravity="top"
                     android:paddingLeft="2dp" />
 
-                <ImageView
-                    android:id="@+id/iv_preserve"
-                    android:layout_width="60dp"
-                    android:layout_height="40dp"
+                <TextView
+                    android:id="@+id/txt_preserve"
+                    style="@style/TapText"
                     android:layout_alignBottom="@+id/plan_text"
                     android:layout_alignLeft="@+id/title1"
-                    android:scaleType="matrix"
-                    android:src="@drawable/preserve_button" />
+                    android:text="保存" />
 
             </RelativeLayout>
 
-            <RelativeLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
                     android:id="@+id/textView5"
@@ -78,16 +76,12 @@
                     style="@style/MyText"
                     android:layout_toRightOf="@+id/textView5" />
 
-                <ImageView
-                    android:id="@+id/iv_refresh"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/location_text"
-                    android:scaleType="matrix"
-                    android:src="@drawable/refresh_button" />
+                <TextView
+                    android:id="@+id/txt_refresh"
+                    style="@style/TapText"
+                    android:text="刷新"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">
 
@@ -98,6 +92,11 @@
                 <TextView
                     android:id="@+id/txt_inside"
                     style="@style/MyText" />
+
+                <TextView
+                    android:id="@+id/txt_map"
+                    style="@style/TapText"
+                    android:text="地图" />
             </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">

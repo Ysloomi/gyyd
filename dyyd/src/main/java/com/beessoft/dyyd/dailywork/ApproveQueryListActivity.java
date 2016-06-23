@@ -38,7 +38,6 @@ public class ApproveQueryListActivity extends BaseActivity {
 		context = ApproveQueryListActivity.this;
 
 		listView = (ListView) findViewById(R.id.list_view);
-
 	}
 
 	@Override

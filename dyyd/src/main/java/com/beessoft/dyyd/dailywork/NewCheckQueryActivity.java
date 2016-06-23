@@ -16,7 +16,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.CheckQueryDetailActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
 import com.beessoft.dyyd.utils.User;
@@ -43,7 +42,6 @@ public class NewCheckQueryActivity extends BaseActivity {
 	private Button subCheckButton;
 
 	private Context context;
-	private String mac;
 
 	private ArrayList<String> departList = new ArrayList<String>();
 	private ArrayList<String> departIds = new ArrayList<String>();

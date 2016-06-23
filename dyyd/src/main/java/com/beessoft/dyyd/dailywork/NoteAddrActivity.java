@@ -13,9 +13,9 @@ import android.widget.ListView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.NoteAddrAdapter;
+import com.beessoft.dyyd.adapter.NoteAddrDepartAdapter;
 import com.beessoft.dyyd.adapter.NoteAddrTypeAdapter;
 import com.beessoft.dyyd.bean.NoteAddr;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -34,14 +34,20 @@ import java.util.List;
 public class NoteAddrActivity extends BaseActivity
         implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-//    private Spinner typeSp;
+    //    private Spinner typeSp;
     private EditText keywordEdt;
 
 //    private PullToRefreshListView mPullRefreshListView;
 
     private ListView mListView;
     private List<NoteAddr> noteAddrs = new ArrayList<>();
+    private List<NoteAddr> noteAddrsDepart = new ArrayList<>();
     private NoteAddrAdapter noteAddrAdapter;
+    private NoteAddrDepartAdapter noteAddrDepartAdapter;
+
+    private ListView departList;
+//    private List<NoteAddr> noteAddrs = new ArrayList<>();
+//    private NoteAddrAdapter noteAddrAdapter;
 
     private ListView typeList;
     private NoteAddrTypeAdapter addrTypeAdapter;
@@ -51,7 +57,9 @@ public class NoteAddrActivity extends BaseActivity
     private String type = "0";
     private String addr = "";
     private String addrCode = "";
+
     private boolean isSame = false;
+    private String mId;
 
 
     @Override
@@ -68,14 +76,14 @@ public class NoteAddrActivity extends BaseActivity
 //                String all = NoteAddrDBManager.getInstance().getCheckName("1");
                 String addr = "";
                 String addrCode = "";
-                for (int j = 0;j<noteAddrs.size();j++){
+                for (int j = 0; j < noteAddrs.size(); j++) {
                     NoteAddr noteAddr = noteAddrs.get(j);
-                    if ("1".equals(noteAddr.getIscheck())){
-                        addr += noteAddr.getName()+",";
-                        addrCode += noteAddr.getCode()+",";
+                    if ("1".equals(noteAddr.getIscheck())) {
+                        addr += noteAddr.getName() + ",";
+                        addrCode += noteAddr.getCode() + ",";
                     }
                 }
-                if (!Tools.isEmpty(addr)&&!Tools.isEmpty(addrCode)){
+                if (!Tools.isEmpty(addr) && !Tools.isEmpty(addrCode)) {
 //                    String[] a = all.split(",");
                     Intent intent = new Intent();
                     intent.putExtra("addr", addr);
@@ -83,10 +91,10 @@ public class NoteAddrActivity extends BaseActivity
 //                    Bundle b = new Bundle();
 //                    b.putParcelableArrayList("note", noteAddrs);
 //                    intent.putExtra("bundle", b);
-                    setResult(RESULT_OK,intent);
+                    setResult(RESULT_OK, intent);
                     finish();
-                }else {
-                    ToastUtil.toast(context,"请至少选择一个地点");
+                } else {
+                    ToastUtil.toast(context, "请至少选择一个地点");
                 }
                 return true;
         }
@@ -99,11 +107,10 @@ public class NoteAddrActivity extends BaseActivity
         setContentView(R.layout.activity_note_addr);
 
         context = NoteAddrActivity.this;
-        mac = GetInfo.getIMEI(context);
-        username = GetInfo.getUserName(context);
 
         addr = getIntent().getStringExtra("addr");
         addrCode = getIntent().getStringExtra("addrCode");
+        mId = "1";
 
         if (!Tools.isEmpty(addr)) {
             String[] a = addr.split(",");
@@ -179,30 +186,35 @@ public class NoteAddrActivity extends BaseActivity
     }
 
 
-
     private void initView() {
 //        mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_list);
+
         typeList = (ListView) findViewById(R.id.type_list);
+        departList = (ListView) findViewById(R.id.list_detail);
         mListView = (ListView) findViewById(R.id.list_view);
-//        typeSp = (Spinner) findViewById(R.id.spn_type);
+
         keywordEdt = (EditText) findViewById(R.id.edt_search);
 
         typeList.setOnItemClickListener(this);
         mListView.setOnItemClickListener(this);
+        departList.setOnItemClickListener(this);
 //        typeSp.setOnItemSelectedListener(this);
         findViewById(R.id.txt_search).setOnClickListener(this);
     }
 
     private void initData() {
 
-        noteAddrAdapter = new NoteAddrAdapter(context, noteAddrs,true);
+        noteAddrDepartAdapter = new NoteAddrDepartAdapter(context, noteAddrsDepart, false);
+        departList.setAdapter(noteAddrDepartAdapter);
+
+        noteAddrAdapter = new NoteAddrAdapter(context, noteAddrs, true);
         mListView.setAdapter(noteAddrAdapter);
 
         List<String> lists = new ArrayList<>();
         lists.add("政企单位");
         lists.add("渠道商家");
         lists.add("公司部门");
-        addrTypeAdapter = new NoteAddrTypeAdapter(context,lists);
+        addrTypeAdapter = new NoteAddrTypeAdapter(context, lists);
         typeList.setAdapter(addrTypeAdapter);
     }
 
@@ -211,13 +223,14 @@ public class NoteAddrActivity extends BaseActivity
         currentPage = 1;
 
         String httpUrl = User.mainurl + "notePad/TreeServlet";
+
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("sf", ifSf);
-        parameters_userInfo.put("page", currentPage+"");
+        parameters_userInfo.put("page", currentPage + "");
         parameters_userInfo.put("type", type);
 //        parameters_userInfo.put("pid", Escape.escape(keyword));
 //        try {
@@ -226,6 +239,7 @@ public class NoteAddrActivity extends BaseActivity
 //            e.printStackTrace(System.out);
 //        }
         parameters_userInfo.put("pid", keyword);
+        parameters_userInfo.put("id", mId);
 
 //        Logger.e(httpUrl+"?"+parameters_userInfo);
 
@@ -240,44 +254,75 @@ public class NoteAddrActivity extends BaseActivity
 //                            NoteAddrDBManager.getInstance().delete("0");
 //                            noteAddrs.clear();
 //                            noteAddrs.addAll(NoteAddrDBManager.getInstance().getCheck("1"));
-                            List<NoteAddr> mDatas = new ArrayList<>();
-                            for (int j = 0;j<noteAddrs.size();j++){
-                                NoteAddr noteAddr = noteAddrs.get(j);
-                                if ("1".equals(noteAddr.getIscheck())){
-                                    mDatas.add(noteAddr);
-                                }
-                            }
-                            noteAddrs.clear();
-//                            noteAddrs.addAll(mDatas);
-                            if (code == 0) {
-//                                List<NoteAddr> mDatas = getFinds(dataJson);
+                            if ("2".equals(type) && "1".equals(mId)) {
+                                noteAddrsDepart.clear();
                                 JSONArray array = dataJson.getJSONArray("list");
+                                List<NoteAddr> mDatas = new ArrayList<>();
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject obj = array.getJSONObject(i);
                                     NoteAddr noteAddr = new NoteAddr();
                                     String codeInside = obj.getString("id");
                                     String name = obj.getString("name");
-                                    isSame =false;
-                                    for (int j = 0; j < mDatas.size(); j++) {
-                                        NoteAddr noteAddrInside = mDatas.get(j);
-                                        if (codeInside.equals(noteAddrInside.getCode()) &&
-                                                name.equals(noteAddrInside.getName())) {
-                                            isSame =true;
-                                            break;
-                                        }
-                                    }
-                                    if (!isSame){
-                                        noteAddr.setCode(codeInside);
-                                        noteAddr.setName(name);
-                                        noteAddr.setIscheck("0");
-                                        mDatas.add(noteAddr);
-                                    }
+                                    noteAddr.setCode(codeInside);
+                                    noteAddr.setName(name);
+                                    noteAddr.setIscheck("0");
+                                    mDatas.add(noteAddr);
 //                                    NoteAddrDBManager.getInstance().insert(noteAddr);
                                 }
+                                noteAddrsDepart.addAll(mDatas);
+                                noteAddrDepartAdapter.setDatas(mDatas);
+                                noteAddrDepartAdapter.notifyDataSetChanged();
 
-                                noteAddrs.addAll(mDatas);
-                                noteAddrAdapter.setDatas(mDatas);
+                                List<NoteAddr> mDatas1 = new ArrayList<>();
+                                for (int j = 0; j < noteAddrs.size(); j++) {
+                                    NoteAddr noteAddr = noteAddrs.get(j);
+                                    if ("1".equals(noteAddr.getIscheck())) {
+                                        mDatas1.add(noteAddr);
+                                    }
+                                }
+                                noteAddrs.clear();
+                                noteAddrs.addAll(mDatas1);
+                                noteAddrAdapter.setDatas(mDatas1);
                                 noteAddrAdapter.notifyDataSetChanged();
+                            } else {
+                                List<NoteAddr> mDatas = new ArrayList<>();
+                                for (int j = 0; j < noteAddrs.size(); j++) {
+                                    NoteAddr noteAddr = noteAddrs.get(j);
+                                    if ("1".equals(noteAddr.getIscheck())) {
+                                        mDatas.add(noteAddr);
+                                    }
+                                }
+                                noteAddrs.clear();
+//                            noteAddrs.addAll(mDatas);
+                                if (code == 0) {
+//                                List<NoteAddr> mDatas = getFinds(dataJson);
+                                    JSONArray array = dataJson.getJSONArray("list");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject obj = array.getJSONObject(i);
+                                        NoteAddr noteAddr = new NoteAddr();
+                                        String codeInside = obj.getString("id");
+                                        String name = obj.getString("name");
+                                        isSame = false;
+                                        for (int j = 0; j < mDatas.size(); j++) {
+                                            NoteAddr noteAddrInside = mDatas.get(j);
+                                            if (codeInside.equals(noteAddrInside.getCode()) &&
+                                                    name.equals(noteAddrInside.getName())) {
+                                                isSame = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!isSame) {
+                                            noteAddr.setCode(codeInside);
+                                            noteAddr.setName(name);
+                                            noteAddr.setIscheck("0");
+                                            mDatas.add(noteAddr);
+                                        }
+//                                    NoteAddrDBManager.getInstance().insert(noteAddr);
+                                    }
+                                    noteAddrs.addAll(mDatas);
+                                    noteAddrAdapter.setDatas(mDatas);
+                                    noteAddrAdapter.notifyDataSetChanged();
+                                }
                             }
 //                            ToastUtil.toast(context, msg);
                         } catch (JSONException e) {
@@ -287,6 +332,7 @@ public class NoteAddrActivity extends BaseActivity
 //                            mPullRefreshListView.onRefreshComplete();
                         }
                     }
+
                     @Override
                     public void onFailure(Throwable error, String data) {
                         ToastUtil.toast(context, "网络错误，请重试");
@@ -354,22 +400,12 @@ public class NoteAddrActivity extends BaseActivity
 //    }
 
 
-//    @Override
-//    public void changeCheck(int position, boolean isChecked) {
-//        NoteAddr noteAddr = noteAddrs.get(position);
-//        if (isChecked) {
-//            noteAddr.setIscheck("1");
-//        } else {
-//            noteAddr.setIscheck("0");
-//        }
-//        noteAddrAdapter.notifyDataSetChanged();
-//    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txt_search:
                 keyword = keywordEdt.getText().toString();
+                mId= "1";
                 visitRefresh();
                 break;
         }
@@ -394,7 +430,11 @@ public class NoteAddrActivity extends BaseActivity
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
+        switch (parent.getId()) {
+            case R.id.list_detail:
+                mId = noteAddrsDepart.get(position).getCode();
+                visitRefresh();
+                break;
             case R.id.list_view:
                 NoteAddr noteAddr = noteAddrs.get(position);
                 if ("0".equals(noteAddr.getIscheck())) {
@@ -408,9 +448,15 @@ public class NoteAddrActivity extends BaseActivity
             case R.id.type_list:
                 addrTypeAdapter.setSelectItem(position);
                 addrTypeAdapter.notifyDataSetChanged();
-                type = position+"";
+                type = position + "";
+                mId = "1";//点击类型，则id设为1
                 keyword = "";
                 keywordEdt.setText("");
+                if (position == 2) {
+                    departList.setVisibility(View.VISIBLE);
+                } else {
+                    departList.setVisibility(View.GONE);
+                }
                 visitRefresh();
                 break;
         }

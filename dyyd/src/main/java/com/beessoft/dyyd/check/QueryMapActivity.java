@@ -41,8 +41,7 @@ public class QueryMapActivity extends BaseActivity {
 		LatLng point = new LatLng(Float.valueOf(wd),Float.valueOf(jd));
 //		LatLng point = new LatLng(31.133648, 104.173363);
 		//构建Marker图标  
-		BitmapDescriptor bitmap = BitmapDescriptorFactory
-				.fromResource(R.drawable.icon_marka);
+		BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_marka);
 		//构建MarkerOption，用于在地图上添加Marker  
 		OverlayOptions option = new MarkerOptions()
 				.position(point)
@@ -63,20 +62,21 @@ public class QueryMapActivity extends BaseActivity {
 
 	@Override
 	protected void onPause() {
-		mMapView.onPause();
 		super.onPause();
+		mMapView.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		mMapView.onResume();
 		super.onResume();
+		mMapView.onResume();
 	}
 
 	@Override
 	protected void onDestroy() {
-		mMapView.onDestroy();
+
 		super.onDestroy();
+		mMapView.onDestroy();
 	}
 }
 

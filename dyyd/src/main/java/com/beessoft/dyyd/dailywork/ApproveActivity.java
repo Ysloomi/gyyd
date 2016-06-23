@@ -16,7 +16,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.check.MapActivity;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -86,8 +85,8 @@ public class ApproveActivity extends BaseActivity {
 					if (TextUtils.isEmpty(time.trim())) {
 						ProgressDialogUtil.showProgressDialog(context);
 						saveData();
-						if (GetInfo.getIfSf(context))
-							saveDy();
+//						if (GetInfo.getIfSf(context))
+//							saveDy();
 					} else {
 						ToastUtil.toast(context,"已审批，请勿重复提交");
 					}
@@ -182,44 +181,44 @@ public class ApproveActivity extends BaseActivity {
 				});
 	}
 
-	private void saveDy() {
-
-		String httpUrl = User.dyMainurl + "sf/check_save";
-
-		AsyncHttpClient client_request = new AsyncHttpClient();
-		RequestParams parameters_userInfo = new RequestParams();
-
-		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("id", id);
-		parameters_userInfo.put("yj", Escape.escape(advise));
-		parameters_userInfo.put("sf", ifSf);
-
-		client_request.post(httpUrl, parameters_userInfo,
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onSuccess(String response) {
-						try {
-							JSONObject dataJson = new JSONObject(response);
-							int code = dataJson.getInt("code");
-							if (code==0) {
-
-							} else {
-								ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-							ProgressDialogUtil.closeProgressDialog();
-						}
-					}
-
-					@Override
-					public void onFailure(Throwable error, String data) {
-						error.printStackTrace(System.out);
-						ProgressDialogUtil.closeProgressDialog();
-					}
-				});
-	}
+//	private void saveDy() {
+//
+//		String httpUrl = User.dyMainurl + "sf/check_save";
+//
+//		AsyncHttpClient client_request = new AsyncHttpClient();
+//		RequestParams parameters_userInfo = new RequestParams();
+//
+//		parameters_userInfo.put("mac", mac);
+//		parameters_userInfo.put("usercode", username);
+//		parameters_userInfo.put("id", id);
+//		parameters_userInfo.put("yj", Escape.escape(advise));
+//		parameters_userInfo.put("sf", ifSf);
+//
+//		client_request.post(httpUrl, parameters_userInfo,
+//				new AsyncHttpResponseHandler() {
+//					@Override
+//					public void onSuccess(String response) {
+//						try {
+//							JSONObject dataJson = new JSONObject(response);
+//							int code = dataJson.getInt("code");
+//							if (code==0) {
+//
+//							} else {
+//								ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
+//							}
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						} finally {
+//							ProgressDialogUtil.closeProgressDialog();
+//						}
+//					}
+//
+//					@Override
+//					public void onFailure(Throwable error, String data) {
+//						error.printStackTrace(System.out);
+//						ProgressDialogUtil.closeProgressDialog();
+//					}
+//				});
+//	}
 
 }

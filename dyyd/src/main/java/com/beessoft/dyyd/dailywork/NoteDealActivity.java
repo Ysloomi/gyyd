@@ -26,10 +26,9 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.bean.Note;
+import com.beessoft.dyyd.check.QueryMapListActivity;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -44,6 +43,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class NoteDealActivity extends BaseActivity implements View.OnClickListener {
 
@@ -88,7 +91,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private ImageView photoImage;
     private String imgPath = "";
 
-    private String longtitude, latitude, location,type;
+    private String longitude, latitude, location,type;
     private Thread mThread;
     private LocationClient mLocationClient;
     private static final int MSG_SUCCESS = 0;// 获取定位成功的标识
@@ -97,6 +100,8 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
     private boolean ifLocation = false;
 
     private String leavetype="";
+
+    List<HashMap<String,String>> pins = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +163,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         photoImage.setOnClickListener(this);
         findViewById(R.id.txt_take_photo).setOnClickListener(this);
         findViewById(R.id.txt_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_map).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
     }
 
@@ -245,6 +251,22 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.txt_refresh:
                 getAddrLocation();
+                break;
+            case R.id.txt_map:
+                if ("未采集".equals(leavetype)){
+                    ToastUtil.toast(context,"未采集不可查地图");
+                    return;
+                }
+                if (pins.size() > 0){
+                    Intent intent = new Intent();
+                    intent.setClass(context,QueryMapListActivity.class);
+                    intent.putExtra("pin",(Serializable) pins);
+                    intent.putExtra("jd",longitude);
+                    intent.putExtra("wd",latitude);
+                    startActivity(intent);
+                }else {
+                    ToastUtil.toast(context,"等待位置判断再查看");
+                }
                 break;
             case R.id.btn_submit:
                 final String quesioton = questionEdt.getText().toString();
@@ -373,7 +395,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("rdcode", note.getRdCode());
             parameters_userInfo.put("ccuscode", addrCode);
             parameters_userInfo.put("lat", latitude);
-            parameters_userInfo.put("lng", longtitude);
+            parameters_userInfo.put("lng", longitude);
             parameters_userInfo.put("addr", addr);
             parameters_userInfo.put("image", uploadBuffer);
             parameters_userInfo.put("inside", leavetype);
@@ -387,7 +409,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("problem",quesioton);
             parameters_userInfo.put("opinion", advise);
             parameters_userInfo.put("lat", latitude);
-            parameters_userInfo.put("lng", longtitude);
+            parameters_userInfo.put("lng", longitude);
             parameters_userInfo.put("addr", addr);
             parameters_userInfo.put("image", uploadBuffer);
             parameters_userInfo.put("inside", leavetype);
@@ -510,10 +532,10 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         if (Gps.exist(context, "distance.db")) {
             locationTxt.setText("正在定位...");
             distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
-            longtitude = Gps.getJd(distanceHelper);
+            longitude = Gps.getJd(distanceHelper);
             latitude = Gps.getWd(distanceHelper);
             type = Gps.getType(distanceHelper);
-            visitServer_getaddr(longtitude, latitude);
+            visitServer_getaddr(longitude, latitude);
             mThread.start();// 线程启动
             distanceHelper.close();
         } else {
@@ -545,11 +567,11 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             if (!Gps.exist(context, "distance.db")) {
                 LocationApplication myApp = (LocationApplication) getApplication();
                 location = myApp.getAddr();
-                longtitude = myApp.getJd();
+                longitude = myApp.getJd();
                 latitude = myApp.getWd();
                 type = myApp.getType();
                 if (Tools.isEmpty(location)) {
-                    visitServer_getaddr(longtitude, latitude);
+                    visitServer_getaddr(longitude, latitude);
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
@@ -605,7 +627,7 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("type", "fw");
 
-        Logger.e(httpUrl+"?"+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -621,14 +643,28 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
                                     String lat = dataJson.getString("lat");
                                     String lng = dataJson.getString("lng");
                                     int scope = dataJson.getInt("fw");
+
+                                //签到点位置获取
+//                            if (dataJson.getString("typecode").equals("0")) {
+//                                JSONArray arrayJwd = dataJson.getJSONArray("jwdlist");
+//                                for (int j = 0; j < arrayJwd.length(); j++) {
+//                                    JSONObject obj = arrayJwd.getJSONObject(j);
+                                    HashMap<String,String> map = new HashMap<>();
+                                    map.put("latitude",lat);
+                                    map.put("longitude",lng);
+                                    map.put("fw",scope+"");
+                                    pins.add(map);
+//                                }
+//                            }
                                     if (Tools.isEmpty(lat)||"0".equals(lat)){
                                         leavetype = "未采集";
                                         ifInsideTxt.setText(leavetype);
                                     }else{
                                         if (!Tools.isEmpty(latitude)){
-                                            LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longtitude));
+                                            LatLng p1 = new LatLng(Double.valueOf(latitude),Double.valueOf(longitude));
                                             LatLng p2 = new LatLng(Double.valueOf(lat),Double.valueOf(lng));
-                                            double distance = DistanceUtil. getDistance(p1, p2);
+                                            double distance = Math.ceil(DistanceUtil. getDistance(p1, p2));
+                                            distance = Math.ceil(distance);
                                             leavetype = distance < scope ? "是" : "否" ;
                                             ifInsideTxt.setText(leavetype);
                                             if ("否".equals(leavetype)&&"reach".equals(from)){

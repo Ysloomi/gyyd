@@ -58,6 +58,7 @@ public class UpdateManager {
 	private Thread mThread;
 
 	private int serviceCode;
+	private String updateInfo;
 
 	private Boolean i = false;
 
@@ -83,8 +84,8 @@ public class UpdateManager {
 			int versionCode = User.getVersionCode(mContext);
 			if (msg.what > versionCode) {
 				// 显示提示对话框
-				showDownloadDialog();
-//				showNoticeDialog();
+//				showDownloadDialog();
+				showNoticeDialog();
 			} else {
 				if (i) {
 					Toast.makeText(mContext, R.string.check_new_version_latest,
@@ -122,7 +123,7 @@ public class UpdateManager {
 		// 构造对话框
 		AlertDialog.Builder builder = new Builder(mContext);
 		builder.setTitle(R.string.check_new_version_title);
-		builder.setMessage(R.string.check_new_version);
+		builder.setMessage(updateInfo);
 		// 更新
 		builder.setPositiveButton(R.string.app_upgrade_confirm,
 				new OnClickListener() {
@@ -135,14 +136,14 @@ public class UpdateManager {
 					}
 				});
 		// 稍后更新
-		builder.setNegativeButton(R.string.app_upgrade_later,
-				new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+//		builder.setNegativeButton(R.string.app_upgrade_later,
+//				new OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						dialog.dismiss();
+//					}
+//				});
 		Dialog noticeDialog = builder.create();
 		noticeDialog.show();
 	}
@@ -236,6 +237,7 @@ public class UpdateManager {
 			}
 			if (null != mHashMap) {
 				serviceCode = Integer.valueOf(mHashMap.get("version"));
+				updateInfo = mHashMap.get("info");
 				maHandler.obtainMessage(serviceCode).sendToTarget();
 			}
 		}

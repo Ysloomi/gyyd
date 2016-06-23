@@ -124,6 +124,11 @@
                 style="@style/NoteText"
                 android:background="@drawable/textshape_grey" />
 
+            <TextView
+                android:id="@+id/txt_map"
+                style="@style/TapText"
+                android:text="地图" />
+
         </LinearLayout>
 
         <LinearLayout

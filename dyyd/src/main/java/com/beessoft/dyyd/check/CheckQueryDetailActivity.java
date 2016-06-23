@@ -1,7 +1,6 @@
 package com.beessoft.dyyd.check;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.dailywork.CheckApproveActivity;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.Tools;
@@ -36,7 +34,7 @@ import java.util.List;
  */
 public class CheckQueryDetailActivity extends BaseActivity {
 
-	private String mac, year, month, btn = "0", idGet, idate, state, flag = "";
+	private String year, month, btn = "0", idGet, idate, state, flag = "";
 	private Date dateMonth;
 	private CalendarView calendar;
 	private TextView textView;
@@ -45,7 +43,6 @@ public class CheckQueryDetailActivity extends BaseActivity {
 	List<Calendar> calendars = new ArrayList<Calendar>();;
 	HashMap<String, String> map = new HashMap<String, String>();
 
-	private Context context;
 	private String person;
 
 	@Override

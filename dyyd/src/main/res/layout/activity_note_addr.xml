@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:baselineAligned="false"
     tools:context="com.beessoft.dyyd.dailywork.NoteAddrActivity">
 
     <ListView
@@ -18,7 +19,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:orientation="vertical">
 
         <LinearLayout style="@style/TextOutLayout">
@@ -39,17 +40,31 @@
                 android:padding="5dp"
                 android:text="筛选" />
 
-
         </LinearLayout>
 
-        <com.beessoft.dyyd.view.MyListView
-            android:id="@+id/list_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:divider="@null"
-            android:listSelector="@drawable/search_more_morelistselect" />
+            android:layout_weight="1">
+
+            <ListView
+                android:id="@+id/list_detail"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/graywhite"
+                android:listSelector="@drawable/search_more_morelistselect"
+                android:visibility="gone" />
+
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:listSelector="@drawable/search_more_morelistselect" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

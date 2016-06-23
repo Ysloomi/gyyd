@@ -84,7 +84,6 @@ public class NoteAddrTypeAdapter extends BaseAdapter {
 
 	private static class Holder {
 		LinearLayout layout;
-//		ImageView img;
 		TextView txt;
 	}
 }

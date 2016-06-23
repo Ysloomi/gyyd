@@ -30,7 +30,6 @@ import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.Constant;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
@@ -49,7 +48,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CollectActivity extends BaseActivity {
+public class CollectActivity extends BaseActivity
+        implements OnClickListener {
 
     private LinearLayout companyLl;
     private LinearLayout departLl;
@@ -153,13 +153,14 @@ public class CollectActivity extends BaseActivity {
         shopSpn.setOnItemSelectedListener(itemSelectedListener);
 
         photoImage = (ImageView) findViewById(R.id.photo_image);
-        photoImage.setOnClickListener(clickListener);
+        photoImage.setOnClickListener(this);
 
 
-        findViewById(R.id.txt_refresh).setOnClickListener(clickListener);
-        findViewById(R.id.txt_take_photo).setOnClickListener(clickListener);
-        findViewById(R.id.txt_get_customer).setOnClickListener(clickListener);
-        findViewById(R.id.btn_submit).setOnClickListener(clickListener);
+        findViewById(R.id.txt_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_map).setOnClickListener(this);
+        findViewById(R.id.txt_take_photo).setOnClickListener(this);
+        findViewById(R.id.txt_get_customer).setOnClickListener(this);
+        findViewById(R.id.btn_submit).setOnClickListener(this);
 
 
         typeList.add("请选择");
@@ -169,56 +170,6 @@ public class CollectActivity extends BaseActivity {
         reloadSpinner(typeSpn, typeList);
     }
 
-    OnClickListener clickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.txt_get_customer:
-                    if (TextUtils.isEmpty(customerType) || customerType.equals("请选择")) {
-                        ToastUtil.toast(context, "请选择客户类别");
-                    } else {
-                        String customer = unitEdt.getText().toString();
-                        Intent intent = new Intent();
-                        intent.setClass(context, CustomerActivity.class);
-                        intent.putExtra("name", customer);
-                        intent.putExtra("type", "1");
-                        startActivityForResult(intent, Constant.GET_CUSTOMER);
-                    }
-                    break;
-                case R.id.txt_refresh:
-                    getAddrLocation();
-                    break;
-                case R.id.txt_take_photo:
-                    if (Tools.isSDCardExit()) {
-                        takePhoto();
-                    } else {
-                        ToastUtil.toast(context, "内存卡不存在不能拍照");
-                    }
-                    break;
-                case R.id.btn_submit:
-                    addr = addrText.getText().toString();
-                    if (TextUtils.isEmpty(uploadBuffer)) {
-                        ToastUtil.toast(context, "请先照相再上传");
-                    } else if (Tools.isEmpty(shopId)) {
-                        ToastUtil.toast(context, "请选择");
-                    } else if ("Gps".equals(type) || "Wifi".equals(type)) {
-                        ProgressDialogUtil.showProgressDialog(context);
-                        visitServer();
-                    } else {
-                        ToastUtil.toast(context, "请刷新位置信息到Gps或Wifi再提交");
-                    }
-                    break;
-                case R.id.photo_image:
-                    String imagePath = Tools.getSDPath() + "/dyyd/photo.jpg";
-                    if (!Tools.isEmpty(imagePath)) {
-                        PhotoHelper.openPictureDialog(CollectActivity.this, imagePath);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
         @Override
@@ -530,15 +481,15 @@ public class CollectActivity extends BaseActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         ProgressDialogUtil.showProgressDialog(context);
                                         upServer();
-                                        if (GetInfo.getIfSf(context))
-                                            saveDy();
+//                                        if (GetInfo.getIfSf(context))
+//                                            saveDy();
                                     }
                                 });
                         builder.show();
                     } else if ("-1".equals(code)) {
                         upServer();
-                        if (GetInfo.getIfSf(context))
-                            saveDy();
+//                        if (GetInfo.getIfSf(context))
+//                            saveDy();
                     } else {
                         ToastUtil.toast(context, "无权限");
                     }
@@ -604,50 +555,49 @@ public class CollectActivity extends BaseActivity {
     }
 
 
-
-    private void saveDy() {
-
-        String httpUrl = User.dyMainurl + "sf/save_jwcj";
-
-        AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-
-        parameters_userInfo.put("addr", Escape.escape(addr));
-        parameters_userInfo.put("jd", longitude);
-        parameters_userInfo.put("wd", latitude);
-        parameters_userInfo.put("image", uploadBuffer);
-        parameters_userInfo.put("type", "1");
-        parameters_userInfo.put("cdepperson", shopId);
-        parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("fj", from);
-        parameters_userInfo.put("sf", ifSf);
-
-        client_request.post(httpUrl, parameters_userInfo, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                try {
-                    JSONObject dataJson = new JSONObject(response);
-                    String code = dataJson.getString("code");
-                    if ("0".equals(code)) {
-
-                    } else {
-                        ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    ProgressDialogUtil.closeProgressDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable error, String data) {
-                error.printStackTrace(System.out);
-                ProgressDialogUtil.closeProgressDialog();
-            }
-        });
-    }
+//    private void saveDy() {
+//
+//        String httpUrl = User.dyMainurl + "sf/save_jwcj";
+//
+//        AsyncHttpClient client_request = new AsyncHttpClient();
+//        RequestParams parameters_userInfo = new RequestParams();
+//
+//        parameters_userInfo.put("addr", Escape.escape(addr));
+//        parameters_userInfo.put("jd", longitude);
+//        parameters_userInfo.put("wd", latitude);
+//        parameters_userInfo.put("image", uploadBuffer);
+//        parameters_userInfo.put("type", "1");
+//        parameters_userInfo.put("cdepperson", shopId);
+//        parameters_userInfo.put("mac", mac);
+//        parameters_userInfo.put("usercode", username);
+//        parameters_userInfo.put("fj", from);
+//        parameters_userInfo.put("sf", ifSf);
+//
+//        client_request.post(httpUrl, parameters_userInfo, new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(String response) {
+//                try {
+//                    JSONObject dataJson = new JSONObject(response);
+//                    String code = dataJson.getString("code");
+//                    if ("0".equals(code)) {
+//
+//                    } else {
+//                        ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    ProgressDialogUtil.closeProgressDialog();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable error, String data) {
+//                error.printStackTrace(System.out);
+//                ProgressDialogUtil.closeProgressDialog();
+//            }
+//        });
+//    }
 
     public void getaddr(String longitude, String latitude) {
         String httpUrl = "http://api.map.baidu.com/geocoder/v2/";
@@ -695,5 +645,66 @@ public class CollectActivity extends BaseActivity {
         }
 //		outState.putSerializable("targetId", conversationinfo.getTargetId());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.txt_get_customer:
+                if (TextUtils.isEmpty(customerType) || customerType.equals("请选择")) {
+                    ToastUtil.toast(context, "请选择客户类别");
+                } else {
+                    String customer = unitEdt.getText().toString();
+                    Intent intent = new Intent();
+                    intent.setClass(context, CustomerActivity.class);
+                    intent.putExtra("name", customer);
+                    intent.putExtra("type", "1");
+                    startActivityForResult(intent, Constant.GET_CUSTOMER);
+                }
+                break;
+            case R.id.txt_refresh:
+                getAddrLocation();
+                break;
+            case R.id.txt_map:
+                if (!TextUtils.isEmpty(latitude)) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, QueryMapActivity.class);
+                    intent.putExtra("jd", longitude);
+                    intent.putExtra("wd", latitude);
+                    intent.putExtra("username", username);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "请等待位置加载");
+                }
+                break;
+            case R.id.txt_take_photo:
+                if (Tools.isSDCardExit()) {
+                    takePhoto();
+                } else {
+                    ToastUtil.toast(context, "内存卡不存在不能拍照");
+                }
+                break;
+            case R.id.btn_submit:
+                addr = addrText.getText().toString();
+                if (TextUtils.isEmpty(uploadBuffer)) {
+                    ToastUtil.toast(context, "请先照相再上传");
+                } else if (Tools.isEmpty(shopId)) {
+                    ToastUtil.toast(context, "请选择");
+                } else if ("Gps".equals(type) || "Wifi".equals(type)) {
+                    ProgressDialogUtil.showProgressDialog(context);
+                    visitServer();
+                } else {
+                    ToastUtil.toast(context, "请刷新位置信息到Gps或Wifi再提交");
+                }
+                break;
+            case R.id.photo_image:
+                String imagePath = Tools.getSDPath() + "/dyyd/photo.jpg";
+                if (!Tools.isEmpty(imagePath)) {
+                    PhotoHelper.openPictureDialog(CollectActivity.this, imagePath);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

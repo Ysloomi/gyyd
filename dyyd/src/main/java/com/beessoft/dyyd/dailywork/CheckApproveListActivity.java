@@ -2,6 +2,7 @@ package com.beessoft.dyyd.dailywork;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -9,6 +10,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
+import com.beessoft.dyyd.MainActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
@@ -28,13 +30,41 @@ public class CheckApproveListActivity extends BaseActivity {
 	private ListView listView;
 	private SimpleAdapter simAdapter;
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
+	private boolean isNotice;
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (isNotice) {
+//					Intent[] intents = new Intent[2];
+//					intents[0] = new Intent(context,MainActivity.class);
+//					intents[1] = new Intent(context,MyWorkActivity.class);
+					//					startActivities(intents);
+					Intent intent = new Intent();
+					intent.setClass(context,MainActivity.class);
+					startActivity(intent);
+				}else{
+					finish();
+				}
+
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_list);
 		context = CheckApproveListActivity.this;
 
+		isNotice = getIntent().getBooleanExtra("notice",false);
 		listView = (ListView) findViewById(R.id.list_view);
 	}
 
@@ -119,5 +149,16 @@ public class CheckApproveListActivity extends BaseActivity {
 					}
 				});
 
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (isNotice) {
+			Intent intent = new Intent();
+			intent.setClass(context,MainActivity.class);
+			startActivity(intent);
+		}else{
+			super.onBackPressed();
+		}
 	}
 }

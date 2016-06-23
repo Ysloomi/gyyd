@@ -32,7 +32,6 @@ public class ApproveListActivity extends BaseActivity {
 	private ListView listView;
 	private SimpleAdapter simAdapter;
 
-
 	private boolean isNotice;
 
 	@Override

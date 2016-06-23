@@ -39,7 +39,7 @@ import java.util.List;
 
 public class NoticeListActivity extends BaseActivity {
 
-    private String state,username;
+    private String state;
 
     private List<HashMap<String, String>> datas = new ArrayList<HashMap<String, String>>();
 

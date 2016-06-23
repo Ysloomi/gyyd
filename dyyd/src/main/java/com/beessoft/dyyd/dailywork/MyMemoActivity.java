@@ -17,7 +17,6 @@ import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,7 +30,7 @@ import java.util.Calendar;
 
 public class MyMemoActivity extends BaseActivity {
 
-	private String idate, itime, memo, state, idTarget, result, pass, btn;
+	private String idate, itime, memo, state, idTarget, result, btn;
 	private Button button1, button2, button3;
 	private EditText editText1, editText2, editText3, editText4;
 
@@ -46,7 +45,6 @@ public class MyMemoActivity extends BaseActivity {
 		context = MyMemoActivity.this;
 
 		idTarget = getIntent().getStringExtra("id");
-		pass = GetInfo.getPass(this);
 
 		initView();
 
@@ -193,7 +191,7 @@ public class MyMemoActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", idTarget);
 		// parameters_userInfo.put("state", state);
 
@@ -239,7 +237,7 @@ public class MyMemoActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("date", idate);
 		parameters_userInfo.put("time", itime);
 		parameters_userInfo.put("item", Escape.escape(memo));
@@ -248,10 +246,8 @@ public class MyMemoActivity extends BaseActivity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						// System.out.println("response" + response);
 						try {
-							JSONObject dataJson = new JSONObject(Escape
-									.unescape(response));
+							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
 								Toast.makeText(MyMemoActivity.this,
 										"备忘录数据添加成功", Toast.LENGTH_SHORT).show();
@@ -301,7 +297,7 @@ public class MyMemoActivity extends BaseActivity {
 		AsyncHttpClient client_request = new AsyncHttpClient();
 		RequestParams parameters_userInfo = new RequestParams();
 		parameters_userInfo.put("mac", mac);
-		parameters_userInfo.put("pass", pass);
+		parameters_userInfo.put("usercode", username);
 		parameters_userInfo.put("id", idTarget);
 		parameters_userInfo.put("date", idate);
 		parameters_userInfo.put("time", itime);

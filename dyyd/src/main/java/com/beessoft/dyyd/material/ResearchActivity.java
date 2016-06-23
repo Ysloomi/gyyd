@@ -1,6 +1,5 @@
 package com.beessoft.dyyd.material;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.beessoft.dyyd.R;
 public class ResearchActivity extends BaseActivity {
 	
     private ListView listView;
-    private Context context;
    
 	@Override
     public void onCreate(Bundle savedInstanceState) {

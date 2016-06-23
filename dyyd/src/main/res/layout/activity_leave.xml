@@ -146,6 +146,26 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="有效范围" />
+
+
+                <TextView
+                    android:id="@+id/inside_tv"
+                    style="@style/MyText" />
+
+                <TextView
+                    android:id="@+id/txt_map"
+                    style="@style/TapText"
+                    android:text="地图" />
+
+            </LinearLayout>
+
             <LinearLayout style="@style/TextOutLayout">
 
                 <TextView

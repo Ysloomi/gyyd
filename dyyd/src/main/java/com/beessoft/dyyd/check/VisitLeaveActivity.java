@@ -19,14 +19,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.PreferenceUtil;
@@ -42,7 +44,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VisitLeaveActivity extends BaseActivity implements View.OnClickListener {
@@ -53,12 +57,13 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     private LinearLayout questionLl;
 
     private TextView customerText, personText, aimText, addrText, reachTimeTxt, reachLocationText;
+    private TextView insideText;
 
-    private Spinner typeSpn ;
+    private Spinner typeSpn;
     private EditText resultEdit;
     private EditText questionEdit;
 
-    private String customer,result, type;
+    private String customer, result, type;
     private String customerType;
     private String questionType;
     private String questionTypeCode;
@@ -66,7 +71,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     private String longitude, latitude, addr;
     private String startid;
 
-    private List<String> questionCodes  = new ArrayList<>();
+    private List<String> questionCodes = new ArrayList<>();
 
     public static final int PHOTO_CODE = 5;
     // 创建Bitmap对象
@@ -84,12 +89,17 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
     private boolean ifLocation = false;
 
+    List<HashMap<String, String>> pins = new ArrayList<>();
+    String leavetype = "";
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {// 此方法在ui线程运行
             switch (msg.what) {
                 case MSG_SUCCESS:
                     addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
+                    // 获取已拜访客户信息
+                    getInfo();
                     break;
                 case MSG_FAILURE:
                     addrText.setText("请重新定位");
@@ -114,8 +124,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             Gps.GPS_do(mLocationClient, 8000);
         }
         getAddrLocation();
-        // 获取已拜访客户信息
-        getInfo();
 
         reachTimeTxt.setText("到达时间:" + PreferenceUtil.readString(context, "reachTime"));
 
@@ -140,6 +148,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         addrText = (TextView) findViewById(R.id.location_text);
         reachTimeTxt = (TextView) findViewById(R.id.reachtime_text);
         reachLocationText = (TextView) findViewById(R.id.reachlocation_text);
+        insideText = (TextView) findViewById(R.id.inside_tv);
 
         resultEdit = (EditText) findViewById(R.id.visitleave_result);
         questionEdit = (EditText) findViewById(R.id.edt_question);
@@ -150,6 +159,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.txt_preserve).setOnClickListener(this);
         findViewById(R.id.txt_take_photo).setOnClickListener(this);
         findViewById(R.id.txt_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_map).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
     }
 
@@ -231,7 +241,11 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("jd", longitude);
+        parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
+
+        Logger.e(httpUrl + "?" + parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -240,7 +254,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
-                            questionCodes.clear();;
+                            questionCodes.clear();
+                            ;
                             if (code == 0) {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 JSONObject obj = array.getJSONObject(0);
@@ -251,12 +266,12 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                                 reachLocationText.setText(obj.getString("siadd"));
                                 customerCode = obj.getString("ccuscode");
                                 customerType = obj.getString("custype");
-                                if ("政企单位".equals(customerType)){
+                                if ("政企单位".equals(customerType)) {
                                     typeLl.setVisibility(View.VISIBLE);
                                     questionLl.setVisibility(View.VISIBLE);
                                 }
                                 JSONArray arrayQuestin = dataJson.getJSONArray("qtlist");
-                                List<String> listQuestin  = new ArrayList<>();
+                                List<String> listQuestin = new ArrayList<>();
                                 listQuestin.add("填写问题，请选择类型");
                                 questionCodes.add("100");
                                 for (int j = 0; j < arrayQuestin.length(); j++) {
@@ -273,10 +288,10 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view,
                                                                int position, long id) {
-                                        if (position>0){
+                                        if (position > 0) {
                                             questionType = parent.getItemAtPosition(position).toString();
                                             questionTypeCode = questionCodes.get(position);
-                                        }else{
+                                        } else {
                                             questionType = "";
                                             questionTypeCode = "";
                                         }
@@ -289,6 +304,32 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                                         // 在官方的文档上说明，为back的时候触发，但是无效，可能需要特定的场景
                                     }
                                 });
+                                pins.clear();
+                                //签到点位置获取
+//                            if (dataJson.getString("typecode").equals("0")) {
+                                String lat ="";
+                                String lng  ="";
+                                int scope = 0 ;
+                                JSONArray arrayJwd = dataJson.getJSONArray("jwdjson");
+                                for (int j = 0; j < arrayJwd.length(); j++) {
+                                    JSONObject obj1 = arrayJwd.getJSONObject(j);
+                                    HashMap<String,String> map = new HashMap<>();
+                                    lat = obj1.getString("lat");
+                                    lng = obj1.getString("lng");
+                                    scope = obj1.getInt("fw");
+                                    map.put("latitude",lat);
+                                    map.put("longitude",lng);
+                                    map.put("fw",scope+"");
+                                    pins.add(map);
+                                }
+                                LatLng p1 = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+                                LatLng p2 = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
+                                double distance = Math.ceil(DistanceUtil.getDistance(p1, p2));
+                                distance = Math.ceil(distance);
+                                leavetype = distance < scope ? "是" : "否";
+                                insideText.setText(leavetype);
+
+//                            }
 //								//将光标移到最后
 //								String text1= obj.getString("checkresult");
 //								resultEdit.setText(text1 + "\n");
@@ -322,9 +363,10 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("image", uploadBuffer);
         parameters_userInfo.put("startid", startid);
         parameters_userInfo.put("ccuscode", customerCode);
-        parameters_userInfo.put("question",  Escape.escape(question));
+        parameters_userInfo.put("question", Escape.escape(question));
         parameters_userInfo.put("questiontype", questionTypeCode);
         parameters_userInfo.put("sf", ifSf);
+        parameters_userInfo.put("inside", Escape.escape(leavetype));
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -335,7 +377,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                             int code = dataJson.getInt("code");
                             if (code == 0) {
                                 PreferenceUtil.write(context, "result", "");
-                                ToastUtil.toast(context,"离开现场数据上报成功");
+                                ToastUtil.toast(context, "离开现场数据上报成功");
                                 finish();
                             } else if (code == 1) {
                                 ToastUtil.toast(context, "已提交，请勿重复提交");
@@ -357,57 +399,57 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-    private void saveDy(String person, String aim, String location, String question) {
-
-        String httpUrl = User.dyMainurl + "sf/offvisit_save";
-
-        AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-
-        parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("jd", longitude);
-        parameters_userInfo.put("wd", latitude);
-        parameters_userInfo.put("addr", Escape.escape(location));
-        parameters_userInfo.put("cus", Escape.escape(customer));
-        parameters_userInfo.put("visitperson", Escape.escape(person));
-        parameters_userInfo.put("visitgoal", Escape.escape(aim));
-        parameters_userInfo.put("visitresult", Escape.escape(result));
-        parameters_userInfo.put("image", uploadBuffer);
-        parameters_userInfo.put("startid", startid);
-        parameters_userInfo.put("ccuscode", customerCode);
-        parameters_userInfo.put("question",  Escape.escape(question));
-        parameters_userInfo.put("questiontype", questionTypeCode);
-        parameters_userInfo.put("sf", ifSf);
-
-        client_request.post(httpUrl, parameters_userInfo,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String response) {
-                        try {
-                            JSONObject dataJson = new JSONObject(response);
-                            int code = dataJson.getInt("code");
-                            if (code == 0) {
-
-                            } else if (code == 1) {
-                                ToastUtil.toast(context, "已提交，请勿重复提交");
-                            } else {
-                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            ProgressDialogUtil.closeProgressDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error, String data) {
-                        error.printStackTrace(System.out);
-                        ProgressDialogUtil.closeProgressDialog();
-                    }
-                });
-    }
+//    private void saveDy(String person, String aim, String location, String question) {
+//
+//        String httpUrl = User.dyMainurl + "sf/offvisit_save";
+//
+//        AsyncHttpClient client_request = new AsyncHttpClient();
+//        RequestParams parameters_userInfo = new RequestParams();
+//
+//        parameters_userInfo.put("mac", mac);
+//        parameters_userInfo.put("usercode", username);
+//        parameters_userInfo.put("jd", longitude);
+//        parameters_userInfo.put("wd", latitude);
+//        parameters_userInfo.put("addr", Escape.escape(location));
+//        parameters_userInfo.put("cus", Escape.escape(customer));
+//        parameters_userInfo.put("visitperson", Escape.escape(person));
+//        parameters_userInfo.put("visitgoal", Escape.escape(aim));
+//        parameters_userInfo.put("visitresult", Escape.escape(result));
+//        parameters_userInfo.put("image", uploadBuffer);
+//        parameters_userInfo.put("startid", startid);
+//        parameters_userInfo.put("ccuscode", customerCode);
+//        parameters_userInfo.put("question",  Escape.escape(question));
+//        parameters_userInfo.put("questiontype", questionTypeCode);
+//        parameters_userInfo.put("sf", ifSf);
+//
+//        client_request.post(httpUrl, parameters_userInfo,
+//                new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(String response) {
+//                        try {
+//                            JSONObject dataJson = new JSONObject(response);
+//                            int code = dataJson.getInt("code");
+//                            if (code == 0) {
+//
+//                            } else if (code == 1) {
+//                                ToastUtil.toast(context, "已提交，请勿重复提交");
+//                            } else {
+//                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            ProgressDialogUtil.closeProgressDialog();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable error, String data) {
+//                        error.printStackTrace(System.out);
+//                        ProgressDialogUtil.closeProgressDialog();
+//                    }
+//                });
+//    }
 
     public void takePhoto() {
         imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
@@ -433,7 +475,7 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 case PHOTO_CODE:
                     if (!Tools.isEmpty(imgPath)) {
                         File imageFile = new File(imgPath);
-                        bitmap = PhotoUtil.imageEncode(imageFile,true);
+                        bitmap = PhotoUtil.imageEncode(imageFile, true);
                         photoImage.setImageBitmap(bitmap);
                         uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
                         imgPath = "";
@@ -476,12 +518,9 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-//		Log.i(TAG, "onSaveInstanceState,conversation="+conversationinfo.hashCode());
-//		outState.putSerializable("conversation", conversationinfo);
         if (!TextUtils.isEmpty(imgPath)) {
             outState.putString("imgPath", imgPath);
         }
-//		outState.putSerializable("targetId", conversationinfo.getTargetId());
         super.onSaveInstanceState(outState);
     }
 
@@ -509,6 +548,18 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
             case R.id.txt_refresh:
                 getAddrLocation();
                 break;
+            case R.id.txt_map:
+                if (pins.size() > 0) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, QueryMapListActivity.class);
+                    intent.putExtra("pin", (Serializable) pins);
+                    intent.putExtra("jd", longitude);
+                    intent.putExtra("wd", latitude);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "等待位置判断再查看");
+                }
+                break;
             case R.id.btn_submit:
                 customer = customerText.getText().toString();
                 String person = personText.getText().toString();
@@ -524,19 +575,19 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                     ToastUtil.toast(context, "请等待位置刷新");
                 } else {
                     if (!TextUtils.isEmpty(question.trim())) {
-                        if (TextUtils.isEmpty(questionType)){
+                        if (TextUtils.isEmpty(questionType)) {
                             ToastUtil.toast(context, "请选择问题类型");
-                        }else {
+                        } else {
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(person,aim,location,question);
-                            if (GetInfo.getIfSf(context))
-                                saveData(person,aim,location,question);
+                            saveData(person, aim, location, question);
+//                            if (GetInfo.getIfSf(context))
+//                                saveData(person,aim,location,question);
                         }
-                    }else{
+                    } else {
                         ProgressDialogUtil.showProgressDialog(context);
-                        saveData(person,aim,location,question);
-                        if (GetInfo.getIfSf(context))
-                            saveData(person,aim,location,question);
+                        saveData(person, aim, location, question);
+//                        if (GetInfo.getIfSf(context))
+//                            saveData(person,aim,location,question);
                     }
                 }
                 break;

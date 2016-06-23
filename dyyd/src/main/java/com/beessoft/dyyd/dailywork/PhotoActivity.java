@@ -30,7 +30,6 @@ import com.beessoft.dyyd.LocationApplication;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
@@ -158,8 +157,8 @@ public class PhotoActivity extends BaseActivity {
                 } else {
                     ProgressDialogUtil.showProgressDialog(context);
                     saveData(location, imageType, contextLoca);
-                    if (GetInfo.getIfSf(context))
-                        saveDy(location, imageType, contextLoca);
+//                    if (GetInfo.getIfSf(context))
+//                        saveDy(location, imageType, contextLoca);
                 }
             }
         });
@@ -419,51 +418,51 @@ public class PhotoActivity extends BaseActivity {
                 });
     }
 
-
-    private void saveDy(String addr, String imageType, String contextLoca) {
-
-        String httpUrl = User.dyMainurl + "app/save_image";
-
-        AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-
-        parameters_userInfo.put("cmaker", mac);
-        parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("sf", ifSf);
-        parameters_userInfo.put("addr", Escape.escape(addr));
-        parameters_userInfo.put("jd", longtitude);
-        parameters_userInfo.put("wd", latitude);
-        parameters_userInfo.put("image", uploadBuffer);
-        parameters_userInfo.put("imgtype", Escape.escape(imageType));
-        parameters_userInfo.put("context", Escape.escape(contextLoca));
-
-        client_request.post(httpUrl, parameters_userInfo,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String response) {
-
-                        try {
-                            JSONObject dataJson = new JSONObject(response);
-                            int code = dataJson.getInt("code");
-                            if (code == 0) {
-
-                            } else {
-                                ToastUtil.toast(context, getString(R.string.dy_wrong_mes));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            ProgressDialogUtil.closeProgressDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error, String data) {
-                        error.printStackTrace(System.out);
-                        ProgressDialogUtil.closeProgressDialog();
-                    }
-                });
-    }
+//
+//    private void saveDy(String addr, String imageType, String contextLoca) {
+//
+//        String httpUrl = User.dyMainurl + "app/save_image";
+//
+//        AsyncHttpClient client_request = new AsyncHttpClient();
+//        RequestParams parameters_userInfo = new RequestParams();
+//
+//        parameters_userInfo.put("cmaker", mac);
+//        parameters_userInfo.put("usercode", username);
+//        parameters_userInfo.put("sf", ifSf);
+//        parameters_userInfo.put("addr", Escape.escape(addr));
+//        parameters_userInfo.put("jd", longtitude);
+//        parameters_userInfo.put("wd", latitude);
+//        parameters_userInfo.put("image", uploadBuffer);
+//        parameters_userInfo.put("imgtype", Escape.escape(imageType));
+//        parameters_userInfo.put("context", Escape.escape(contextLoca));
+//
+//        client_request.post(httpUrl, parameters_userInfo,
+//                new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(String response) {
+//
+//                        try {
+//                            JSONObject dataJson = new JSONObject(response);
+//                            int code = dataJson.getInt("code");
+//                            if (code == 0) {
+//
+//                            } else {
+//                                ToastUtil.toast(context, getString(R.string.dy_wrong_mes));
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            ProgressDialogUtil.closeProgressDialog();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable error, String data) {
+//                        error.printStackTrace(System.out);
+//                        ProgressDialogUtil.closeProgressDialog();
+//                    }
+//                });
+//    }
 
     public void visitServer_getaddr(String longitude, String latitude) {
 

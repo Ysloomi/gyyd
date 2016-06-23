@@ -1,14 +1,14 @@
 package com.beessoft.dyyd.update;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class ParseXmlService { 
   public HashMap<String, String> parseXml (InputStream inStream) throws Exception{ 
@@ -35,8 +35,11 @@ public class ParseXmlService {
           hashMap.put("name", childElement.getFirstChild().getNodeValue()); 
         //下载地址 
         } else if("url".equals(childElement.getNodeName())) { 
-          hashMap.put("url", childElement.getFirstChild().getNodeValue()); 
-        } 
+          hashMap.put("url", childElement.getFirstChild().getNodeValue());
+          //更新内容
+        } else if ("info".equals(childElement.getNodeName())) {
+          hashMap.put("info", childElement.getFirstChild().getNodeValue());
+        }
       } 
     } 
     return hashMap; 

@@ -8,10 +8,10 @@ import android.view.MenuItem;
 import com.beessoft.dyyd.utils.GetInfo;
 
 public class BaseActivity extends Activity {
-	public Context context;
-	public String mac;
-	public String username;
-	public String ifSf;
+    public Context context;
+    public String mac;
+    public String username;
+    public String ifSf;
 
 //	@Override
 //	public boolean onCreateOptionsMenu(Menu menu) {
@@ -21,25 +21,27 @@ public class BaseActivity extends Activity {
 //
 //	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-		context= this;
-		mac = GetInfo.getIMEI(context);
-		username= GetInfo.getUserName(context);
-		ifSf= GetInfo.getIfSf(context)?"0":"1";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);// 使导航栏出现返回按钮
-	}
+        context = this;
+        mac = GetInfo.getIMEI(context);
+        username = GetInfo.getUserName(context);
+        ifSf = GetInfo.getIfSf(context) ? "0" : "1";
+
+
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);// 使导航栏出现返回按钮
+    }
 }

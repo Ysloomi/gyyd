@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.Escape;
-import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -117,8 +116,8 @@ public class AskLeaveApproveActivity extends BaseActivity {
                 case R.id.agree_button:
                     ProgressDialogUtil.showProgressDialog(context);
                     saveData("yes", "");
-                    if (GetInfo.getIfSf(context))
-                        saveDy("yes", "");
+//                    if (GetInfo.getIfSf(context))
+//                        saveDy("yes", "");
                     break;
                 case R.id.refuse_button:
                     inputExamineDialog();
@@ -157,8 +156,8 @@ public class AskLeaveApproveActivity extends BaseActivity {
                         } else {
                             ProgressDialogUtil.showProgressDialog(context);
                             saveData("no", unagree_reason);
-                            if (GetInfo.getIfSf(context))
-                                saveDy("no", unagree_reason);
+//                            if (GetInfo.getIfSf(context))
+//                                saveDy("no", unagree_reason);
                             myDialog.dismiss();
                         }
                     }
@@ -216,43 +215,43 @@ public class AskLeaveApproveActivity extends BaseActivity {
                 });
     }
 
-    private void saveDy(String btn, String unagree_reason) {
-
-        String httpUrl = User.dyMainurl + "sf/LeaveCheckSave";
-        AsyncHttpClient client_request = new AsyncHttpClient();
-        RequestParams parameters_userInfo = new RequestParams();
-
-        parameters_userInfo.put("mac", mac);
-        parameters_userInfo.put("usercode", usercode);
-        parameters_userInfo.put("intodate", intodate);
-        parameters_userInfo.put("btn", btn);
-        parameters_userInfo.put("reason", Escape.escape(unagree_reason));
-        parameters_userInfo.put("sf", ifSf);
-
-        client_request.post(httpUrl, parameters_userInfo,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String response) {
-                        try {
-                            JSONObject dataJson = new JSONObject(response);
-                            int code = dataJson.getInt("code");
-                            if (code==0) {
-
-                            } else {
-                                ToastUtil.toast(context,getResources().getString(R.string.dy_wrong_mes));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            ProgressDialogUtil.closeProgressDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error, String data) {
-                        error.printStackTrace(System.out);
-                        ProgressDialogUtil.closeProgressDialog();
-                    }
-                });
-    }
+//    private void saveDy(String btn, String unagree_reason) {
+//
+//        String httpUrl = User.dyMainurl + "sf/LeaveCheckSave";
+//        AsyncHttpClient client_request = new AsyncHttpClient();
+//        RequestParams parameters_userInfo = new RequestParams();
+//
+//        parameters_userInfo.put("mac", mac);
+//        parameters_userInfo.put("usercode", usercode);
+//        parameters_userInfo.put("intodate", intodate);
+//        parameters_userInfo.put("btn", btn);
+//        parameters_userInfo.put("reason", Escape.escape(unagree_reason));
+//        parameters_userInfo.put("sf", ifSf);
+//
+//        client_request.post(httpUrl, parameters_userInfo,
+//                new AsyncHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(String response) {
+//                        try {
+//                            JSONObject dataJson = new JSONObject(response);
+//                            int code = dataJson.getInt("code");
+//                            if (code==0) {
+//
+//                            } else {
+//                                ToastUtil.toast(context,getResources().getString(R.string.dy_wrong_mes));
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        } finally {
+//                            ProgressDialogUtil.closeProgressDialog();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable error, String data) {
+//                        error.printStackTrace(System.out);
+//                        ProgressDialogUtil.closeProgressDialog();
+//                    }
+//                });
+//    }
 }

@@ -62,7 +62,7 @@ public class MyWorkAdapter extends BaseAdapter {
 		HashMap<String,String> map = mDatas.get(position);
 		String name =  map.get("name");
 		holder.mName.setText(name);
-		if ("拜访".equals(name)) {
+		if ("政企拜访".equals(name)||"渠道拜访".equals(name)) {
 			holder.mMes.setText(map.get("message"));
 			holder.mMes.setVisibility(View.VISIBLE);
 			holder.mMes1.setVisibility(View.GONE);

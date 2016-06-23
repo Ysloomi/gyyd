@@ -5,8 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -96,13 +95,14 @@ public class NetUtil {
 			ArrayList<NetworkInterface> nilist = Collections
 					.list(NetworkInterface.getNetworkInterfaces());
 			for (NetworkInterface ni : nilist) {
-				ArrayList<InetAddress> ialist = Collections.list(ni
-						.getInetAddresses());
+				ArrayList<InetAddress> ialist = Collections.list(ni.getInetAddresses());
 				for (InetAddress address : ialist) {
+					final String ipAddress = address.getHostAddress();
 					if (!address.isLoopbackAddress()
-							&& InetAddressUtils.isIPv4Address(ipv4 = address
-									.getHostAddress())) {
-						return ipv4;
+							&& address instanceof Inet4Address
+//							&& InetAddressUtils.isIPv4Address(ipv4 = address.getHostAddress())
+					) {
+						return ipAddress;
 					}
 				}
 			}

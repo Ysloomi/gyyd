@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public class PhotoQueryActivity extends BaseActivity {
 
 	private TextView textView1, textView2, textView3, textView4;
-	private String mac, idTarget, photo;
+	private String idTarget, photo;
 	private ImageView imageView;
 	// // 创建Bitmap对象
 	private Bitmap bitmap;
