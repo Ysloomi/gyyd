@@ -97,8 +97,7 @@ public class MyCheckFragment extends Fragment {
 				String idTarget = map.get(dateSelect);
 
 				if (null != idTarget) {
-					Intent intent = new Intent(getActivity(),
-							CheckApproveActivity.class);
+					Intent intent = new Intent(getActivity(), CheckApproveActivity.class);
 					intent.putExtra("idTarget", idTarget);
 					intent.putExtra("query", "query");
 					startActivity(intent);

@@ -53,8 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/graywhite"
-                android:listSelector="@drawable/search_more_morelistselect"
-                android:visibility="gone" />
+                android:listSelector="@drawable/search_more_morelistselect" />
 
             <ListView
                 android:id="@+id/list_view"

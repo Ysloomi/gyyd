@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
@@ -43,8 +42,7 @@ public class ApproveActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_mileage:
-			Intent intent = new Intent(ApproveActivity.this,
-					MapActivity.class);
+			Intent intent = new Intent(context, MapActivity.class);
 			intent.putExtra("id", id);
 			intent.putExtra("department", "");
 			intent.putExtra("person", "");
@@ -156,15 +154,12 @@ public class ApproveActivity extends BaseActivity {
 							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code==0) {
-								Toast.makeText(ApproveActivity.this,
-										"工作审批数据上传成功", Toast.LENGTH_SHORT)
-										.show();
+								ToastUtil.toast(context, "工作审批数据上传成功");
 								String time = DateUtil.getDate();
 								planTxt.setText(time);
 								finish();
 							} else {
-								Toast.makeText(ApproveActivity.this, "请重新上传",
-										Toast.LENGTH_SHORT).show();
+								ToastUtil.toast(context, "请重新上传");
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

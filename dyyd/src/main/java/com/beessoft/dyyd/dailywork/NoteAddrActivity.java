@@ -2,6 +2,7 @@ package com.beessoft.dyyd.dailywork;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,7 +55,7 @@ public class NoteAddrActivity extends BaseActivity
 
     private int currentPage = 1;
     private String keyword = "";
-    private String type = "0";
+    private String type = "2";
     private String addr = "";
     private String addrCode = "";
 
@@ -211,9 +212,9 @@ public class NoteAddrActivity extends BaseActivity
         mListView.setAdapter(noteAddrAdapter);
 
         List<String> lists = new ArrayList<>();
+        lists.add("公司部门");
         lists.add("政企单位");
         lists.add("渠道商家");
-        lists.add("公司部门");
         addrTypeAdapter = new NoteAddrTypeAdapter(context, lists);
         typeList.setAdapter(addrTypeAdapter);
     }
@@ -254,7 +255,7 @@ public class NoteAddrActivity extends BaseActivity
 //                            NoteAddrDBManager.getInstance().delete("0");
 //                            noteAddrs.clear();
 //                            noteAddrs.addAll(NoteAddrDBManager.getInstance().getCheck("1"));
-                            if ("2".equals(type) && "1".equals(mId)) {
+                            if ("2".equals(type) && "1".equals(mId)&& TextUtils.isEmpty(keyword)) {
                                 noteAddrsDepart.clear();
                                 JSONArray array = dataJson.getJSONArray("list");
                                 List<NoteAddr> mDatas = new ArrayList<>();
@@ -405,8 +406,12 @@ public class NoteAddrActivity extends BaseActivity
         switch (v.getId()) {
             case R.id.txt_search:
                 keyword = keywordEdt.getText().toString();
-                mId= "1";
-                visitRefresh();
+                if (!TextUtils.isEmpty(keyword)){
+                    mId= "1";
+                    visitRefresh();
+                }else {
+                    ToastUtil.toast(context,"请输入关键字搜索");
+                }
                 break;
         }
     }
@@ -448,15 +453,19 @@ public class NoteAddrActivity extends BaseActivity
             case R.id.type_list:
                 addrTypeAdapter.setSelectItem(position);
                 addrTypeAdapter.notifyDataSetChanged();
-                type = position + "";
+                if (position==0){
+                    type = "2";
+                    departList.setVisibility(View.VISIBLE);
+                }else if (position==1){
+                    type = "0";
+                    departList.setVisibility(View.GONE);
+                }else {
+                    type = "1";
+                    departList.setVisibility(View.GONE);
+                }
                 mId = "1";//点击类型，则id设为1
                 keyword = "";
                 keywordEdt.setText("");
-                if (position == 2) {
-                    departList.setVisibility(View.VISIBLE);
-                } else {
-                    departList.setVisibility(View.GONE);
-                }
                 visitRefresh();
                 break;
         }

@@ -33,7 +33,6 @@ import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -97,14 +96,14 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_SUCCESS:
-                    if (GetInfo.getIfSf(context)) {
-                        if ("Gps".equals(type) || "Wifi".equals(type)) {
-                            addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
-                            getInfo(longitude, latitude);
-                        } else {
-                            addrText.setText("无GPS或Wifi信号，请刷新定位");// textView显示从定位获取到的地址}
-                        }
-                    } else {
+//                    if (GetInfo.getIfSf(context)) {
+//                        if ("Gps".equals(type) || "Wifi".equals(type)) {
+//                            addrText.setText("[" + type + "]" + addr);// textView显示从定位获取到的地址
+//                            getInfo(longitude, latitude);
+//                        } else {
+//                            addrText.setText("无GPS或Wifi信号，请刷新定位");// textView显示从定位获取到的地址}
+//                        }
+//                    } else {
                         if (GetInfo.getIfGps(context)) {
                             if ("Gps".equals(type)) {
                                 addrText.setText("[" + type + "]" + addr);
@@ -116,7 +115,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                             addrText.setText("[" + type + "]" + addr);
                             getInfo(longitude, latitude);
                         }
-                    }
+//                    }
                     break;
                 case MSG_FAILURE:
                     addrText.setText("请重新定位");
@@ -339,7 +338,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
 
-        Logger.e(httpUrl+""+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -361,10 +360,10 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                                 ifInsideText.setText("否");
                                 code = 1;
                                 JSONArray array = dataJson.getJSONArray("list");
-                                List<String> list = new ArrayList<String>();
+                                List<String> list = new ArrayList<>();
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
-                                    list.add(obj.get("name").toString());
+                                    list.add(obj.getString("name"));
                                 }
                                 com.beessoft.dyyd.utils.ArrayAdapter<String> adapter = new com.beessoft.dyyd.utils.ArrayAdapter<String>(
                                         context,
@@ -467,8 +466,8 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                     public void onSuccess(String response) {
                         try {
                             JSONObject dataJson = new JSONObject(response);
-                            String code = dataJson.getString("code");
-                            if (code.equals("0")) {
+                            int code = dataJson.getInt("code");
+                            if (code==0) {
                                 // 删除distance.db数据库
                                 deleteDatabase("distance.db");
                                 distanceHelper = new DistanceDatabaseHelper(
@@ -491,7 +490,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                                     ToastUtil.toast(context, "签到成功");
                                 }
                                 finish();
-                            } else if (dataJson.getString("code").equals("2")) {
+                            } else if (code==2) {
                                 ToastUtil.toast(context, "当日已签到");
                             } else {
                                 ToastUtil.toast(context, "请重新提交");
@@ -605,15 +604,15 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                 mThread.start();
                 break;
             case R.id.txt_map:
-                if (pins.size() > 0){
+                if (pins.size() > 0) {
                     Intent intent = new Intent();
-                    intent.setClass(context,QueryMapListActivity.class);
-                    intent.putExtra("pin",(Serializable) pins);
-                    intent.putExtra("jd",longitude);
-                    intent.putExtra("wd",latitude);
+                    intent.setClass(context, QueryMapListActivity.class);
+                    intent.putExtra("pin", (Serializable) pins);
+                    intent.putExtra("jd", longitude);
+                    intent.putExtra("wd", latitude);
                     startActivity(intent);
-                }else {
-                    ToastUtil.toast(context,"等待位置判断再查看");
+                } else {
+                    ToastUtil.toast(context, "等待位置判断再查看");
                 }
                 break;
             case R.id.txt_take_photo:
@@ -624,7 +623,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.checkin_image:
-                if (bitmap!=null) {
+                if (bitmap != null) {
                     PhotoHelper.openPictureDialog_down(context, bitmap);
                 }
                 break;
@@ -647,7 +646,6 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                     ToastUtil.toast(context, "请等待，有效范围判断");
                 }
                 break;
-
         }
     }
 }

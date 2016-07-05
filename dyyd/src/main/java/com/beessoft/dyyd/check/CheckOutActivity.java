@@ -257,6 +257,8 @@ public class CheckOutActivity extends BaseActivity implements View.OnClickListen
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
 
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
+
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override

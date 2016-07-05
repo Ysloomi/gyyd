@@ -28,7 +28,6 @@ import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.utils.ArrayAdapter;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.Gps;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PhotoHelper;
 import com.beessoft.dyyd.utils.PhotoUtil;
 import com.beessoft.dyyd.utils.PreferenceUtil;
@@ -245,8 +244,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
 
-        Logger.e(httpUrl + "?" + parameters_userInfo);
-
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -255,7 +252,6 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
                             questionCodes.clear();
-                            ;
                             if (code == 0) {
                                 JSONArray array = dataJson.getJSONArray("list");
                                 JSONObject obj = array.getJSONObject(0);

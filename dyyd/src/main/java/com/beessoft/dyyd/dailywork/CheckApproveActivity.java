@@ -38,7 +38,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 	private Button agreeBtn, refuseBtn, queryBtn;
 	private TextView personTxt, timeTxt, locationTxt, contextTxt, classTxt,
 			explainTxt, journeyTxt, approvemanTxt, approvetimeTxt, approveresultTxt;
-	private String id, btn, photo, result, jd, wd,unagree_reason;
+	private String  btn, photo, result, jd, wd,unagree_reason;
 	private ImageView photoImg;
 	private ProgressBar progressBar;
 	private Bitmap bitmap;
@@ -48,6 +48,7 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 	private LinearLayout approveTimeLl;
 	private LinearLayout approveResultLl;
 
+	private String date,workid;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,8 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 		context = CheckApproveActivity.this;
 		initView();
 
-		id =  getIntent().getStringExtra("idTarget");
+		date =  getIntent().getStringExtra("date");
+		workid =  getIntent().getStringExtra("workid");
 
 		if ("query".equals(getIntent().getStringExtra("query"))) {
 			agreeBtn.setVisibility(View.GONE);
@@ -158,7 +160,8 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("date", date);
+		parameters_userInfo.put("workid", workid);
 		parameters_userInfo.put("sf", ifSf);
 
 		client_request.post(httpUrl, parameters_userInfo,
@@ -206,7 +209,8 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 
 		parameters_userInfo.put("mac", mac);
 		parameters_userInfo.put("usercode", username);
-		parameters_userInfo.put("id", id);
+		parameters_userInfo.put("date", date);
+		parameters_userInfo.put("workid", workid);
 		parameters_userInfo.put("btn", btn);
 		parameters_userInfo.put("unagree_reason", unagree_reason);
 		parameters_userInfo.put("sf", ifSf);
@@ -340,12 +344,6 @@ public class CheckApproveActivity extends BaseActivity implements View.OnClickLi
 				} else {
 					ToastUtil.toast(context,"已审批，请勿重复提交");
 				}
-
-				queryBtn.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-
-					}
-				});
 				break;
 			case R.id.query_map:
 				String username = personTxt.getText().toString();

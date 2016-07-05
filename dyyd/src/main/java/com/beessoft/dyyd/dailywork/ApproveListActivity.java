@@ -8,12 +8,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.MainActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -45,7 +45,6 @@ public class ApproveListActivity extends BaseActivity {
 				}else{
 					finish();
 				}
-
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -55,8 +54,9 @@ public class ApproveListActivity extends BaseActivity {
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
-
 	}
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,8 +97,7 @@ public class ApproveListActivity extends BaseActivity {
 							datas.clear();
 							int code = dataJson.getInt("code");
 							if (code==1) {
-								Toast.makeText(ApproveListActivity.this,
-										"没有相关信息", Toast.LENGTH_SHORT).show();
+								ToastUtil.toast(context, "没有相关信息");
 							} else if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
@@ -107,18 +106,16 @@ public class ApproveListActivity extends BaseActivity {
 									map.put("id", obj.getString("id"));
 									map.put("name", obj.getString("username"));
 									map.put("date", obj.getString("iday"));
-									map.put("verifier",
-											"审批人:" + obj.getString("verifier"));
+									map.put("verifier", "审批人:" + obj.getString("verifier"));
 									datas.add(map);
 								}
 							}
 							simAdapter = new SimpleAdapter(
-									ApproveListActivity.this, datas,// 数据源
+									context,
+									datas,// 数据源
 									R.layout.item_approvelist,// 显示布局
-									new String[] { "date", "name",
-											"verifier" }, new int[] {
-									R.id.date, R.id.person,
-									R.id.verifier });
+									new String[] { "date", "name", "verifier" },
+									new int[] {R.id.date, R.id.person, R.id.verifier });
 							listView.setAdapter(simAdapter);
 							listView.setOnItemClickListener(new OnItemClickListener() {
 								@SuppressWarnings("unchecked")
@@ -130,8 +127,7 @@ public class ApproveListActivity extends BaseActivity {
 									HashMap<String, String> map = (HashMap<String, String>) listView
 											.getItemAtPosition(position);
 									String idTarget = map.get("id");
-									Intent intent = new Intent(context,
-											ApproveActivity.class);
+									Intent intent = new Intent(context, ApproveActivity.class);
 									intent.putExtra("id", idTarget);
 									startActivity(intent);
 								}

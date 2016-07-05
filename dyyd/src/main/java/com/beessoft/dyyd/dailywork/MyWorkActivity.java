@@ -78,7 +78,7 @@ public class MyWorkActivity extends BaseActivity {
 				} else if ("待审批请假".equals(name)) {
 					intent.setClass(context, AskLeaveApproveListActivity.class);
 					startActivity(intent);
-				} else if ("专项检查".equals(name)) {
+				} else if ("专项执行".equals(name)) {
 					intent.setClass(context, SpecialActivity.class);
 					startActivity(intent);
 				} else if ("专项审批".equals(name)) {

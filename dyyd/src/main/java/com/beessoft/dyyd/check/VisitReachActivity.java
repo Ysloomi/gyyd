@@ -1,6 +1,7 @@
 package com.beessoft.dyyd.check;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -159,6 +160,7 @@ public class VisitReachActivity extends BaseActivity
 
         findViewById(R.id.txt_preserve).setOnClickListener(this);
         findViewById(R.id.txt_refresh).setOnClickListener(this);
+        findViewById(R.id.txt_map).setOnClickListener(this);
         findViewById(R.id.btn_submit).setOnClickListener(this);
 
         List<String> list = new ArrayList<>();
@@ -221,7 +223,7 @@ public class VisitReachActivity extends BaseActivity
 //			builder.show();
 //		} else {
         ProgressDialogUtil.showProgressDialog(context);
-        saveData(customerType, customer, person, aim, location);
+        saveData(customer, person, aim, location);
 //			if (GetInfo.getIfSf(context))
 //				saveDy(customerType, customer, person, aim, location);
 //		}
@@ -323,8 +325,6 @@ public class VisitReachActivity extends BaseActivity
 //							String msg = dataJson.getString("msg");
                             if (code == 0) {
                                 JSONArray array = dataJson.getJSONArray("list");
-
-
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
                                     ReachCustomer reachCustomer = new ReachCustomer();
@@ -334,7 +334,6 @@ public class VisitReachActivity extends BaseActivity
 //                                    reachCustomer.setAim(obj.getString("visitgoal"));
                                     reachCustomers.add(reachCustomer);
                                 }
-
                             } else
                                 ToastUtil.toast(context, "周围无客户或客户未采集");
 
@@ -355,7 +354,7 @@ public class VisitReachActivity extends BaseActivity
                 });
     }
 
-    private void saveData(String customerType, String customer, String person, String aim, String location) {
+    private void saveData(String customer, String person, String aim, String location) {
 
         String httpUrl = User.mainurl + "sf/startvisit_save";
 
@@ -371,7 +370,7 @@ public class VisitReachActivity extends BaseActivity
         parameters_userInfo.put("jd", longitude);
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("ccuscode", customerCode);
-        parameters_userInfo.put("type", Escape.escape(customerType));
+        parameters_userInfo.put("type", customerType);
 //        parameters_userInfo.put("checkresult", Escape.escape(""));
 //        parameters_userInfo.put("leavetype", Escape.escape(""));
         parameters_userInfo.put("sf", ifSf);
@@ -493,7 +492,6 @@ public class VisitReachActivity extends BaseActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.type_spinner:
-//                customerType = parent.getItemAtPosition(position).toString();
                 customerType = (position + 1) + "";
                 if (ifGetCustomer)
                     getCustomer();
@@ -555,6 +553,18 @@ public class VisitReachActivity extends BaseActivity
 //							}
                 }
 
+                break;
+            case R.id.txt_map:
+                if (!TextUtils.isEmpty(latitude)) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, QueryMapActivity.class);
+                    intent.putExtra("jd", longitude);
+                    intent.putExtra("wd", latitude);
+                    intent.putExtra("username", username);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "请等待位置加载");
+                }
                 break;
         }
     }

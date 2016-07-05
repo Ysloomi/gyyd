@@ -9,7 +9,6 @@ import android.widget.SimpleAdapter;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
-import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -61,7 +60,7 @@ public class TodoListActivity extends BaseActivity {
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("sf", ifSf);
 
-        Logger.e(httpUrl+"?"+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

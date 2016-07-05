@@ -2,6 +2,7 @@ package com.beessoft.dyyd.check;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -30,13 +31,12 @@ public class QueryMapActivity extends BaseActivity {
 		setContentView(R.layout.activity_map);
 
 		Intent intent = getIntent();
-		jd = intent.getStringExtra("jd");
-		wd = intent.getStringExtra("wd");
+		jd = getIntent().getStringExtra("jd");
+		wd = getIntent().getStringExtra("wd");
 		username = intent.getStringExtra("username");
 
-		// 获取地图控件引用
-		mMapView = (MapView) findViewById(R.id.bmapView);
-		mBaiduMap = mMapView.getMap();
+		initView();
+
 		//定义Maker坐标点  
 		LatLng point = new LatLng(Float.valueOf(wd),Float.valueOf(jd));
 //		LatLng point = new LatLng(31.133648, 104.173363);
@@ -60,6 +60,13 @@ public class QueryMapActivity extends BaseActivity {
 		mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(point, 18));
 	}
 
+	private void initView() {
+		// 获取地图控件引用
+		mMapView = (MapView) findViewById(R.id.bmapView);
+		mBaiduMap = mMapView.getMap();
+		TextView infoTxt = (TextView) findViewById(R.id.mileage_text);
+		infoTxt.setText("当前地图位置是刷新地址，室内不开Wi-Fi定位距离会偏离很大");
+	}
 	@Override
 	protected void onPause() {
 		super.onPause();

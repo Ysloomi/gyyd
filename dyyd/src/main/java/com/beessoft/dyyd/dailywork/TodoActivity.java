@@ -70,7 +70,7 @@ public class TodoActivity extends BaseActivity {
 
         AsyncHttpClient client_request = new AsyncHttpClient();
 
-        Logger.e(httpUrl+"?"+parameters_userInfo);
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

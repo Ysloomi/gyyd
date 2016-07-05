@@ -84,7 +84,7 @@ public class QueryMapListActivity extends BaseActivity {
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
         TextView infoTxt = (TextView) findViewById(R.id.mileage_text);
-        infoTxt.setText("红色的点显示的是签到点以及显示了当前位置的距离，绿色的点显示当前位置。");
+        infoTxt.setText("当前地图位置是刷新地址，室内不开Wi-Fi定位距离会偏离很大");
     }
 
     @Override

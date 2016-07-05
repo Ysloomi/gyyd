@@ -25,6 +25,7 @@
         android:id="@+id/time_last"
         style="@style/ListItemText"
         android:layout_alignTop="@+id/do_proportion"
-        android:layout_toRightOf="@+id/do_proportion" />
+        android:layout_toRightOf="@+id/do_proportion"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -8,8 +8,8 @@ android {
         applicationId "com.beessoft.dyyd"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 30
-        versionName "3.0"
+        versionCode 31
+        versionName "3.1"
         manifestPlaceholders = [
                 GETUI_APP_ID : "EF69hfDZTf7mTJHQjd5yr6",
                 GETUI_APP_KEY : "ibkALzw1ovAeEjeua6LLh3",

@@ -37,12 +37,6 @@ import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.NetUtil;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
-import com.tencent.android.tpush.XGPushClickedResult;
-import com.tencent.android.tpush.XGPushManager;
-
-import org.json.JSONObject;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class WebViewActivity extends BaseActivity {
 
@@ -420,38 +414,38 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        try {
-            mainWebView.getClass().getMethod("onPause").invoke(mainWebView, (Object[]) null);
-        } catch (IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        XGPushManager.onActivityStoped(this);
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        XGPushClickedResult click = XGPushManager.onActivityStarted(this);
-//		Log.d("TPush", "onResumeXGPushClickedResult:" + click);
-        if (click != null) { // 判断是否来自信鸽的打开方式
-//			Toast.makeText(this, "通知被点击:" + click.toString(),
-//					Toast.LENGTH_SHORT).show();
-
-            try {
-                String customContent = click.getCustomContent();
-                JSONObject obj = new JSONObject(customContent);
-                url = obj.getString("url");
-//                Logger.e("url>>>" + url);
-                mainWebView.loadUrl(url);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        super.onResume();
-    }
+//    @Override
+//    protected void onPause() {
+//        try {
+//            mainWebView.getClass().getMethod("onPause").invoke(mainWebView, (Object[]) null);
+//        } catch (IllegalAccessException | IllegalArgumentException
+//                | InvocationTargetException | NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+//        XGPushManager.onActivityStoped(this);
+//        super.onPause();
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        XGPushClickedResult click = XGPushManager.onActivityStarted(this);
+////		Log.d("TPush", "onResumeXGPushClickedResult:" + click);
+//        if (click != null) { // 判断是否来自信鸽的打开方式
+////			Toast.makeText(this, "通知被点击:" + click.toString(),
+////					Toast.LENGTH_SHORT).show();
+//
+//            try {
+//                String customContent = click.getCustomContent();
+//                JSONObject obj = new JSONObject(customContent);
+//                url = obj.getString("url");
+////                Logger.e("url>>>" + url);
+//                mainWebView.loadUrl(url);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        super.onResume();
+//    }
 
     public void getAddrLocation() {
         mThread = new Thread(runnable);

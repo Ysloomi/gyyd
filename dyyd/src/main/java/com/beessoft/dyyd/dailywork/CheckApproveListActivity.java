@@ -127,10 +127,12 @@ public class CheckApproveListActivity extends BaseActivity {
 										int position, long id) {
 									ListView listView = (ListView) parent;
 									HashMap<String, String> map = (HashMap<String, String>) listView.getItemAtPosition(position);
-									String idTarget = map.get("id");
-									Intent intent = new Intent(context,
-											CheckApproveActivity.class);
-									intent.putExtra("idTarget", idTarget);
+									Intent intent = new Intent();
+									String date = map.get("date");
+									String workid = map.get("workid");
+									intent.setClass(context, CheckApproveActivity.class);
+									intent.putExtra("workid", workid);
+									intent.putExtra("date", date);
 									startActivity(intent);
 
 								}
