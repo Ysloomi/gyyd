@@ -57,7 +57,8 @@ public class GetInfo {
         *
         * */
     public static boolean getIfSf(Context context) {
-        return PreferenceUtil.readBoolean(context, "ifSf");
+//        return PreferenceUtil.readBoolean(context, "ifSf");
+        return false;
     }
 
     /*

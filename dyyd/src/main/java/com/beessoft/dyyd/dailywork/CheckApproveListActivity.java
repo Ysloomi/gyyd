@@ -62,6 +62,7 @@ public class CheckApproveListActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_list);
+
 		context = CheckApproveListActivity.this;
 
 		isNotice = getIntent().getBooleanExtra("notice",false);
@@ -104,13 +105,14 @@ public class CheckApproveListActivity extends BaseActivity {
 									HashMap<String, Object> map = new HashMap<String, Object>();
 									map.put("id", obj.getString("id"));
 									map.put("name", obj.getString("username"));
+									map.put("workid", obj.getString("work_id"));
 									map.put("date", obj.getString("iday"));
 									map.put("explanation", obj.getString("iclass"));
 									datas.add(map);
 								}
 							}
 							simAdapter = new SimpleAdapter(
-									CheckApproveListActivity.this,
+									context,
 									datas,// 数据源
 									R.layout.item_checkapprovelist,// 显示布局
 									new String[] { "date", "name",

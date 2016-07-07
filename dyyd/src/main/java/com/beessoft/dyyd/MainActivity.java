@@ -63,7 +63,6 @@ public class MainActivity extends FragmentActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_actions, menu);
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override

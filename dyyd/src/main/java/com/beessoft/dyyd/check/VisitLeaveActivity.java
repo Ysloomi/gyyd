@@ -244,6 +244,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
 
+//        Logger.e(httpUrl+"?"+parameters_userInfo);
+
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override

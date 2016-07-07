@@ -1,5 +1,13 @@
 package com.beessoft.dyyd.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.os.Build;
+import android.util.Base64;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,24 +17,15 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.os.Build;
-import android.util.Base64;
-
 
 public class PhotoUtil {
 
 	/**
 	 * 照片编码
 	 *
-	 * @param file
+	 * @param file  文件
 	 * @param ifTake 是否拍照
-	 * @return
+	 * @return  bitmap bitmap
 	 */
 	public static Bitmap imageEncode(File file, Boolean ifTake){
 		// 创建Options对象
@@ -60,9 +59,9 @@ public class PhotoUtil {
 		}
 		if (bitmap != null) {
 			Bitmap bitmapCompress = PhotoUtil.comp(bitmap);
+			bitmap.recycle();
 			return bitmapCompress;
 		}
-		bitmap.recycle();
 		System.gc(); // 提醒系统及时回收
 		return null;
 	}
@@ -158,7 +157,7 @@ public class PhotoUtil {
 	/**
 	 * 通过降低图片的质量来压缩图片
 	 * 
-	 * @param bmp
+	 * @param bitmap
 	 *            要压缩的图片位图对象
 	 * @param maxSize
 	 *            压缩后图片大小的最大值,单位KB
@@ -267,7 +266,7 @@ public class PhotoUtil {
 	/**
 	 * 通过压缩图片的尺寸来压缩图片大小，通过读入流的方式，可以有效防止网络图片数据流形成位图对象时内存过大的问题；
 	 * 
-	 * @param InputStream
+	 * @param inputStream
 	 *            要压缩图片，以流的形式传入
 	 * @param targetWidth
 	 *            缩放的目标宽度
@@ -277,12 +276,12 @@ public class PhotoUtil {
 	 * @throws IOException
 	 *             读输入流的时候发生异常
 	 */
-	public static Bitmap compressBySize(InputStream is, int targetWidth,
+	public static Bitmap compressBySize(InputStream inputStream, int targetWidth,
 			int targetHeight) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		byte[] buff = new byte[1024];
 		int len = 0;
-		while ((len = is.read(buff)) != -1) {
+		while ((len = inputStream.read(buff)) != -1) {
 			baos.write(buff, 0, len);
 		}
 

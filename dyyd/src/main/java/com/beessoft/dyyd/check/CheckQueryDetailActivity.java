@@ -88,10 +88,13 @@ public class CheckQueryDetailActivity extends BaseActivity {
 			public void onDateSelected(Date date) {
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				String dateSelect = format.format(date);
-				String idTarget = map.get(dateSelect);
-				if (!Tools.isEmpty(idTarget)) {
+//				String idTarget = map.get(dateSelect);
+				String username = map.get(dateSelect);
+				if (!Tools.isEmpty(username)) {
 					Intent intent = new Intent(context,CheckApproveActivity.class);
-					intent.putExtra("idTarget", idTarget);
+//					intent.putExtra("idTarget", idTarget);
+					intent.putExtra("date", dateSelect);
+					intent.putExtra("workid", username);
 					intent.putExtra("query", "query");
 					startActivity(intent);
 				}
@@ -219,8 +222,8 @@ public class CheckQueryDetailActivity extends BaseActivity {
 									idGet = obj.getString("id");
 									idate = obj.getString("idate");
 									state = obj.getString("state");
-
-									map.put(idate, idGet);
+									String usercode1 = obj.getString("usercode");
+									map.put(idate, usercode1);
 
 									String[] str = idate.split("\\-");
 									int yearGet = Integer.valueOf(str[0]);
@@ -235,22 +238,15 @@ public class CheckQueryDetailActivity extends BaseActivity {
 
 									if ("1".equals(state)) {
 
-										String idateState = obj
-												.getString("idate");
-										String[] strState = idateState
-												.split("\\-");
+										String idateState = obj.getString("idate");
+										String[] strState = idateState.split("\\-");
 
-										int yearState = Integer
-												.valueOf(strState[0]);
-										int monthState = Integer
-												.valueOf(strState[1]) - 1;
-										int dayState = Integer
-												.valueOf(strState[2]);
+										int yearState = Integer.valueOf(strState[0]);
+										int monthState = Integer.valueOf(strState[1]) - 1;
+										int dayState = Integer.valueOf(strState[2]);
 
-										Calendar calState = Calendar
-												.getInstance();
-										calState.set(yearState, monthState,
-												dayState, 0, 0, 0);
+										Calendar calState = Calendar.getInstance();
+										calState.set(yearState, monthState, dayState, 0, 0, 0);
 										calendars.add(calState);
 									}
 								}

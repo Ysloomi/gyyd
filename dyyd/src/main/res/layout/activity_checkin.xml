@@ -29,8 +29,6 @@
                     style="@style/TapText"
                     android:text="刷新" />
 
-
-
             </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">

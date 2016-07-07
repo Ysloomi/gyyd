@@ -165,14 +165,14 @@ public class LoginActivity extends Activity {
                                     } else {
                                         PreferenceUtil.write(context, "ifCheck", false);
                                     }
-                                    if (dataJson.has("sf")) {
-                                        int ifSf = dataJson.getInt("sf");//0什邡，1不是
-                                        if (0 == ifSf) {
-                                            PreferenceUtil.write(context, "ifSf", true);
-                                        } else {
-                                            PreferenceUtil.write(context, "ifSf", false);
-                                        }
-                                    }
+//                                    if (dataJson.has("sf")) {
+//                                        int ifSf = dataJson.getInt("sf");//0什邡，1不是
+//                                        if (0 == ifSf) {
+//                                            PreferenceUtil.write(context, "ifSf", true);
+//                                        } else {
+//                                            PreferenceUtil.write(context, "ifSf", false);
+//                                        }
+//                                    }
                                     if (dataJson.has("ifgps")) {
                                         int ifgps = dataJson.getInt("ifgps");//ifgps 0 允许室外签到 1不允许
                                         if (0 == ifgps) {

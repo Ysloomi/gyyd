@@ -252,7 +252,7 @@ public class LocationApplication extends Application {
 				sb.append(location.getDirection());// 单位度
 				sb.append("\ndescribe : ");
 				sb.append("gps定位成功");
-				describe = "gps定位成功";
+//				describe = "gps定位成功";
 				type = "Gps";
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
 				sb.append("\naddr : ");
@@ -264,17 +264,17 @@ public class LocationApplication extends Application {
 					type = "Wifi";
 					sb.append("\ndescribe : ");
 					sb.append("Wifi网络定位成功");
-					describe = "Wifi网络定位成功";
+//					describe = "Wifi网络定位成功";
 				} else if (location.getNetworkLocationType().equals("cl")) {
 					type = "基站";
 					sb.append("\ndescribe : ");
 					sb.append("基站网络定位成功");
-					describe = "基站网络定位成功";
+//					describe = "基站网络定位成功";
 				}
 			} else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
 				sb.append("\ndescribe : ");
 				sb.append("离线定位成功，离线定位结果也是有效的");
-				describe = "离线定位成功，离线定位结果也是有效的";
+//				describe = "离线定位成功，离线定位结果也是有效的";
 				//				请求离线定位：
 //				离线定位功能：用户请求过得基站定位结果会缓存在本地文件。
 //
@@ -284,15 +284,15 @@ public class LocationApplication extends Application {
 			} else if (location.getLocType() == BDLocation.TypeServerError) {
 				sb.append("\ndescribe : ");
 				sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-				describe = "服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因";
+//				describe = "服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因";
 			} else if (location.getLocType() == BDLocation.TypeNetWorkException) {
 				sb.append("\ndescribe : ");
 				sb.append("网络不同导致定位失败，请检查网络是否通畅");
-				describe = "\"网络不同导致定位失败，请检查网络是否通畅";
+//				describe = "\"网络不同导致定位失败，请检查网络是否通畅";
 			} else if (location.getLocType() == BDLocation.TypeCriteriaException) {
 				sb.append("\ndescribe : ");
 				sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-				describe = "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机";
+//				describe = "无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机";
 			}
 			logMsg(sb.toString(), Latitude, Longitude, addr, type, speed);
 		}
@@ -323,7 +323,6 @@ public class LocationApplication extends Application {
 					@Override
 					public void onSuccess(String response) {
 						distanceHelper = new DistanceDatabaseHelper(getApplicationContext(), "distance.db", 1);
-						// 更新用户参数
 						try {
 							JSONObject dataJson = new JSONObject(response);
 							if (dataJson.getString("code").equals("0")) {
