@@ -41,8 +41,8 @@ public class VisitReachActivity extends BaseActivity
 
     private LocationClient mLocationClient;
 
-    private String customer, person, aim, type, location,
-            customerType, longitude, latitude, addr;
+    private String customer="", person="", aim="", type="", location="",
+            customerType="", longitude="", latitude="", addr="";
     private List<ReachCustomer> reachCustomers = new ArrayList<>();
 
     private String from;

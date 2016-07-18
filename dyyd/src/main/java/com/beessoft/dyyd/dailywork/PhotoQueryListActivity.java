@@ -125,7 +125,6 @@ public class PhotoQueryListActivity extends BaseActivity {
 				});
 	}
 
-	// 访问服务器http post
 	private void visitServer_Main() {
 		String httpUrl = User.mainurl + "sf/imglist";
 		AsyncHttpClient client_request = new AsyncHttpClient();

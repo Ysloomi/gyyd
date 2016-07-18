@@ -7,14 +7,13 @@ import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.beessoft.dyyd.check.CheckInActivity;
 import com.beessoft.dyyd.utils.User;
 import com.igexin.sdk.PushManager;
 
 import java.util.TimerTask;
 
 public class LoadingActivity extends Activity {
-
-	private TextView versionText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,15 +30,14 @@ public class LoadingActivity extends Activity {
 
 		PushManager.getInstance().initialize(this.getApplicationContext());
 
-		versionText = (TextView) findViewById(R.id.version_text);
+		TextView versionText = (TextView) findViewById(R.id.version_text);
 
 		versionText.setText(User.version + User.getVersionName(this));
 
 		Handler handler = new Handler();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				startActivity(new Intent(LoadingActivity.this,
-						LoginActivity.class));
+				startActivity(new Intent(LoadingActivity.this,LoginActivity.class));
 			}
 		};
 		// 2秒后执行TimerTask任务
