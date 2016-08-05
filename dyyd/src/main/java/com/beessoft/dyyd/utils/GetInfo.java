@@ -197,8 +197,11 @@ public class GetInfo {
                     case "9":
                         a = R.drawable.note_untap;
                         break;
-                    case "10":
+                    case "11":
                         a = R.drawable.visitquery_untap;
+                        break;
+                    case "12":
+                        a = R.drawable.mymileage_untap;
                         break;
                 }
             }

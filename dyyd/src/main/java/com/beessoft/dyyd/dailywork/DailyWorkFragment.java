@@ -80,27 +80,14 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         arrangeBtn.setOnClickListener(DailyWorkFragment.this);
         specialBtn.setOnClickListener(DailyWorkFragment.this);
 
-        if (GetInfo.getIfSf(context)) {
-            noticeNumTxt.setVisibility(View.VISIBLE);
-            todoTxt.setVisibility(View.VISIBLE);
-            mileageBtn.setVisibility(View.VISIBLE);
-            queryButton.setVisibility(View.VISIBLE);
-            noticeBtn.setVisibility(View.VISIBLE);
-            workQueryBtn.setVisibility(View.VISIBLE);
-            mymemoBtn.setVisibility(View.VISIBLE);
-            arrangeBtn.setVisibility(View.VISIBLE);
-            specialBtn.setVisibility(View.VISIBLE);
-        } else {
-            noticeNumTxt.setVisibility(View.GONE);
-            todoTxt.setVisibility(View.GONE);
-            mileageBtn.setVisibility(View.GONE);
-            queryButton.setVisibility(View.GONE);
-            noticeBtn.setVisibility(View.GONE);
-            workQueryBtn.setVisibility(View.GONE);
-            mymemoBtn.setVisibility(View.GONE);
-            arrangeBtn.setVisibility(View.GONE);
-            specialBtn.setVisibility(View.GONE);
-        }
+        noticeNumTxt.setVisibility(View.GONE);
+        todoTxt.setVisibility(View.GONE);
+        queryButton.setVisibility(View.GONE);
+        noticeBtn.setVisibility(View.GONE);
+        workQueryBtn.setVisibility(View.GONE);
+        mymemoBtn.setVisibility(View.GONE);
+        arrangeBtn.setVisibility(View.GONE);
+        specialBtn.setVisibility(View.GONE);
 
         GetInfo.getButtonRole(context, photoBtn, "5", "");
         GetInfo.getButtonRole(context, myworkButton, "6", "");
@@ -108,9 +95,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
         GetInfo.getButtonRole(context, workLocationButton, "8", "");
         GetInfo.getButtonRole(context, noteBTn, "9", "");
         GetInfo.getButtonRole(context, visitQueryBtn, "11", "");
-//        GetInfo.getButtonRole(context, specialBtn ,"12","");
-
-
+        GetInfo.getButtonRole(context, mileageBtn, "12", "");
     }
 
 
@@ -127,7 +112,7 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
 
         String mac = GetInfo.getIMEI(getActivity());
         String username = GetInfo.getUserName(context);
-        String ifSf = GetInfo.getIfSf(context)?"0":"1";
+        String ifSf = GetInfo.getIfSf(context) ? "0" : "1";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
@@ -216,12 +201,12 @@ public class DailyWorkFragment extends Fragment implements OnClickListener {
                 break;
 
             case R.id.btn_mileage:
-//                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {
-                intent.setClass(getActivity(), MyMileageActivity.class);
-                startActivity(intent);
-//                } else {
-//                    ToastUtil.toast(context, "无权限");
-//                }
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {
+                    intent.setClass(context, MyMileageActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
                 break;
             case R.id.btn_approve_query:
 //                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {

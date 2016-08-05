@@ -109,9 +109,9 @@
             <Button
                 android:id="@+id/btn_mileage"
                 style="@style/FragmentButton"
-                android:layout_alignLeft="@+id/btn_memo"
-                android:layout_alignStart="@+id/btn_memo"
-                android:layout_below="@+id/btn_memo"
+                android:layout_alignLeft="@+id/btn_location"
+                android:layout_alignStart="@+id/btn_location"
+                android:layout_below="@+id/btn_location"
                 android:layout_marginTop="35dp"
                 android:drawableTop="@drawable/mymileage"
                 android:text="@string/activity_mymileage" />

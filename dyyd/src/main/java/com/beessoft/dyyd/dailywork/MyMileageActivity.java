@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MyMileageActivity extends BaseActivity {
 
 	private TextView mileageTxt, totalTxt, finishTxt, leftTxt;
+	private TextView monthMileageTxt;
 	public List<HashMap<String, Object>> datas = new ArrayList<HashMap<String, Object>>();
 	private ListView listView;
 	private SimpleAdapter simAdapter;
@@ -35,14 +37,24 @@ public class MyMileageActivity extends BaseActivity {
 
 		context = MyMileageActivity.this;
 
+		initView();
+
+		initData();
+	}
+
+	private void initView() {
+		monthMileageTxt = (TextView) findViewById(R.id.txt_month_mileage);
 		mileageTxt = (TextView) findViewById(R.id.mileage_text);
 		totalTxt = (TextView) findViewById(R.id.total_text);
 		finishTxt = (TextView) findViewById(R.id.finish_text);
 		leftTxt = (TextView) findViewById(R.id.left_text);
 
 		listView = (ListView) findViewById(R.id.mymileage_list);
+	}
 
-		ProgressDialogUtil.showProgressDialog(context);
+
+	private void initData() {
+		showProgressDialog();
 		visitServer();
 	}
 
@@ -65,8 +77,7 @@ public class MyMileageActivity extends BaseActivity {
 							JSONObject dataJson = new JSONObject(response);
 							int code = dataJson.getInt("code");
 							if (code==1) {
-								Toast.makeText(MyMileageActivity.this,
-										"没有里程数据", Toast.LENGTH_SHORT).show();
+								ToastUtil.toast(context,"没有里程数据");
 							} else if (code==0) {
 								JSONArray array = dataJson.getJSONArray("list");
 								for (int j = 0; j < array.length(); j++) {
@@ -74,15 +85,13 @@ public class MyMileageActivity extends BaseActivity {
 									HashMap<String, Object> map = new HashMap<String, Object>();
 									map.put("date", obj.getString("iday"));
 									map.put("journey", obj.getString("type"));
-									map.put("mileage",
-											"里程:" + obj.getString("km"));
-									map.put("unitprice",
-											"单价:" + obj.getString("dj"));
+									map.put("mileage", "里程:" + obj.getString("km"));
+									map.put("unitprice", "单价:" + obj.getString("dj"));
 									map.put("sum", "金额:" + obj.getString("je"));
 									datas.add(map);
 								}
 								simAdapter = new SimpleAdapter(
-										MyMileageActivity.this,
+										context,
 										datas,// 数据源
 										R.layout.item_mymileage,// 显示布局
 										new String[] { "date", "journey",
@@ -91,7 +100,9 @@ public class MyMileageActivity extends BaseActivity {
 												R.id.mileage, R.id.unitprice,
 												R.id.sum });
 								listView.setAdapter(simAdapter);
-
+								if (dataJson.has("monthkm")){
+									monthMileageTxt.setText(dataJson.getString("monthkm"));
+								}
 								mileageTxt.setText(dataJson.getString("icost"));
 								totalTxt.setText(dataJson.getString("iprice"));
 								finishTxt.setText(dataJson.getString("iprice_pay"));
@@ -100,14 +111,14 @@ public class MyMileageActivity extends BaseActivity {
 						} catch (Exception e) {
 							e.printStackTrace();
 						} finally {
-							ProgressDialogUtil.closeProgressDialog();
+							cancelProgressDialog();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable error, String data) {
 						error.printStackTrace(System.out);
-						ProgressDialogUtil.closeProgressDialog();
+						cancelProgressDialog();
 					}
 				});
 	}

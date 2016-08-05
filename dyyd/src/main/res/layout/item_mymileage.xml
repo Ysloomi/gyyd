@@ -18,19 +18,21 @@
     <TextView
         android:id="@+id/mileage"
         style="@style/ListItemText"
-        android:layout_below="@+id/date"
-        android:layout_marginTop="10dp" />
+        android:layout_alignTop="@+id/journey"
+        android:layout_toRightOf="@+id/journey" />
 
     <TextView
         android:id="@+id/unitprice"
         style="@style/ListItemText"
         android:layout_alignTop="@+id/mileage"
-        android:layout_toRightOf="@+id/mileage" />
+        android:layout_toRightOf="@+id/mileage"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/sum"
         style="@style/ListItemText"
         android:layout_alignTop="@+id/unitprice"
-        android:layout_toRightOf="@+id/unitprice" />
+        android:layout_toRightOf="@+id/unitprice"
+        android:visibility="gone"/>
 
 </RelativeLayout>

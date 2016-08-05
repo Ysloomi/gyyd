@@ -1,6 +1,7 @@
 package com.beessoft.dyyd;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -44,4 +45,28 @@ public class BaseActivity extends Activity {
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);// 使导航栏出现返回按钮
     }
+
+
+
+    private ProgressDialog progressDialog;
+
+    public void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("和外勤加载中..");
+            progressDialog.show();
+        } else {
+            if (!progressDialog.isShowing()) {
+                progressDialog.show();
+            }
+        }
+    }
+
+    //隐藏ProgressDialog
+    public void cancelProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
 }

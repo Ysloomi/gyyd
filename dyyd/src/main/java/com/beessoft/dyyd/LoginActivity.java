@@ -30,23 +30,24 @@ import com.tencent.bugly.crashreport.CrashReport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
-    private Context context;
     private LocationClient mLocationClient;
-    private String mac;
 
     private ImageButton imgBtn;
     private CheckBox savePassword;
     private EditText nameEdt, passEdt;
     private TextView versionTxt;
     private String IMSI;
-    private String user, pass;
+    private String pass;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(false);
 
         context = LoginActivity.this;
 
@@ -58,8 +59,6 @@ public class LoginActivity extends Activity {
 
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
-
-        mac = GetInfo.getIMEI(LoginActivity.this);
 
         versionTxt.setText(User.version + User.getVersionName(context));
 
@@ -95,13 +94,13 @@ public class LoginActivity extends Activity {
         imgBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = nameEdt.getText().toString();
+                username = nameEdt.getText().toString();
                 pass = passEdt.getText().toString();
-                ProgressDialogUtil.showProgressDialog(context);
-                visitServer_login(user, pass, mac);
+                showProgressDialog();
+                visitServer_login();
             }
         });
-    }
+}
 
 
 //    public void registerXGPush(String username) {
@@ -132,14 +131,14 @@ public class LoginActivity extends Activity {
 //        });
 //    }
 
-    private void visitServer_login(String usercode, String ipass, String mac) {
+    private void visitServer_login() {
 
         String httpUrl = User.mainurl + "app/app_login";
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
-        parameters_userInfo.put("usercode", usercode);
-        parameters_userInfo.put("ipass", ipass);
+        parameters_userInfo.put("usercode", username);
+        parameters_userInfo.put("ipass", pass);
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("sim", IMSI);
         parameters_userInfo.put("version", User.getVersionCode(context) + "");
@@ -152,7 +151,7 @@ public class LoginActivity extends Activity {
                             JSONObject dataJson = new JSONObject(response);
                             switch (dataJson.getString("code")) {
                                 case "0":
-                                    PreferenceUtil.write(context, "username", user);
+                                    PreferenceUtil.write(context, "username", username);
                                     if (savePassword.isChecked()) {
                                         PreferenceUtil.write(context, "password", pass);
                                     }
@@ -193,9 +192,9 @@ public class LoginActivity extends Activity {
                                             }
                                         }
                                     }
-                                    CrashReport.setUserId(user);
+                                    CrashReport.setUserId(username);
                                     visitServer_PersonInfo();
-                                    PushManager.getInstance().bindAlias(context,user);
+                                    PushManager.getInstance().bindAlias(context, username);
                                     break;
                                 case "1":
                                     ToastUtil.toast(context, "账号或密码错误");
@@ -219,14 +218,14 @@ public class LoginActivity extends Activity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            ProgressDialogUtil.closeProgressDialog();
+                            cancelProgressDialog();
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
-                        ProgressDialogUtil.closeProgressDialog();
+                        cancelProgressDialog();
                     }
                 });
     }
