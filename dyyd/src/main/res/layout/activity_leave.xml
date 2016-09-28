@@ -51,35 +51,27 @@
 
             </LinearLayout>
 
-            <RelativeLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
-                    android:id="@+id/TextView01"
                     style="@style/MyTitle"
                     android:text="拜访结果" />
 
                 <EditText
                     android:id="@+id/visitleave_result"
                     style="@style/MyText"
-                    android:layout_toRightOf="@+id/TextView01"
-                    android:background="@drawable/bigtext_bg"
-                    android:gravity="top"
-                    android:hint="请填写沟通的主要内容，发现的问题，取得的效果等。要和拜访目的有一定的对应性。"
-                    android:paddingLeft="2dp"
-                    android:scrollbars="vertical" />
+                    android:hint="请填写沟通的主要内容，发现的问题，取得的效果等。要和拜访目的有一定的对应性。" />
 
                 <TextView
                     android:id="@+id/txt_preserve"
                     style="@style/TapText"
-                    android:text="保存"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:text="保存" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <LinearLayout style="@style/TextOutLayout"
+            <LinearLayout
                 android:id="@+id/ll_question_type"
+                style="@style/TextOutLayout"
                 android:visibility="gone">
 
                 <TextView
@@ -91,8 +83,10 @@
                     style="@style/MyText" />
 
             </LinearLayout>
-            <LinearLayout style="@style/TextOutLayout"
+
+            <LinearLayout
                 android:id="@+id/ll_question"
+                style="@style/TextOutLayout"
                 android:visibility="gone">
 
                 <TextView
@@ -147,8 +141,7 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
                     style="@style/MyTitle"

@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.beessoft.dyyd.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -193,10 +191,9 @@ public class PhotoHelper {
 
 	/** 打开图片查看对话框 **/
 	@SuppressLint("InflateParams")
-	public static void openPictureDialog(Context context, String path, ImageLoader imageLoader, DisplayImageOptions options) {
+	public static void openPictureDialogUrl(Context context, String path) {
 		final Dialog dialogPic = new Dialog(context, R.style.simple_dialog);
-		View view = LayoutInflater.from(context).inflate(
-				R.layout.dialog_picture, null);
+		View view = LayoutInflater.from(context).inflate(R.layout.dialog_picture, null);
 		ImageView imgView = (ImageView) view.findViewById(R.id.img_weibo_img);
 		Button btnBig = (Button) view.findViewById(R.id.btn_big);
 		btnBig.setOnClickListener(new OnClickListener() {
@@ -207,20 +204,6 @@ public class PhotoHelper {
 		});
 		dialogPic.setContentView(view);
 		dialogPic.show();
-		displayForDlg(imgView, btnBig, path,imageLoader,options); // 显示内容到dialog中
+		ImageLoader.load(context,path,imgView);
 	}
-
-	public static void displayForDlg(ImageView imgView, Button btnBig,
-									 String imgPath,ImageLoader imageLoader,
-									 DisplayImageOptions options) {
-		imgView.setVisibility(View.VISIBLE);
-		btnBig.setVisibility(View.VISIBLE);
-		if (!Tools.isEmpty(imgPath)) {
-			imageLoader.displayImage(imgPath, imgView, options);
-			imgView.setScaleType(ScaleType.FIT_CENTER);
-			imgView.setAdjustViewBounds(true);
-		}
-	}
-
-
 }

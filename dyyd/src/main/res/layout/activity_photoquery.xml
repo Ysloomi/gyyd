@@ -1,142 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="拍照地址"/>
+
+        <TextView
+            android:id="@+id/location_txt"
+            style="@style/MyText"/>
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="照片类型" />
+
+        <TextView
+            android:id="@+id/phototype_txt"
+            style="@style/MyText" />
+
+    </LinearLayout>
+
+    <RelativeLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="照片信息" />
+
+        <ImageView
+            android:id="@+id/photo_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+    <LinearLayout style="@style/TextOutLayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="照片说明" />
 
 
-    <TextView
-        android:id="@+id/context_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo_name"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/photo_name"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
+        <TextView
+            android:id="@+id/context_txt"
+            style="@style/MyText"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView02"
-        android:layout_below="@+id/phototype_text"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="照片信息"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+    <LinearLayout style="@style/TextOutLayout">
 
-    <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/photo_num"
-        android:layout_below="@+id/photo_num"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="照片类型"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
+        <TextView
+            style="@style/MyTitle"
+            android:text="照片日期" />
 
-    <ImageView
-        android:id="@+id/photo_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignTop="@+id/TextView01"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"  
-        android:scaleType="fitCenter" />
+        <TextView
+            android:id="@+id/date_txt"
+            style="@style/MyText" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/location_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo_num"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/photo_num"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
-
-
-    <TextView
-        android:id="@+id/phototype_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/context_text"
-        android:layout_alignTop="@+id/TextView02"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/photo_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="拍照地址"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
-
-
-    
-
-    <TextView
-        android:id="@+id/photo_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView01"
-        android:layout_below="@+id/photo_image"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="照片说明"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/TextView03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/photo_name"
-        android:layout_below="@+id/photo_name"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="照片日期"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/date_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignBottom="@+id/TextView03"
-        android:layout_toRightOf="@+id/TextView03"
-        android:background="@drawable/text_bg"
-        android:gravity="center"
-        android:textColor="#000000" />
-
-    <ProgressBar
-        android:id="@+id/photo_progressbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
-
-</RelativeLayout>
+</LinearLayout>

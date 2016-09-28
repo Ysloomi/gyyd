@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.beessoft.dyyd.dailywork.ApproveListActivity;
 import com.beessoft.dyyd.dailywork.AskLeaveApproveListActivity;
 import com.beessoft.dyyd.dailywork.CheckApproveListActivity;
-import com.beessoft.dyyd.dailywork.ConfirmListActivity;
 import com.beessoft.dyyd.utils.Logger;
 import com.igexin.sdk.PushConsts;
 
@@ -53,15 +51,17 @@ public class GtPushReceiver extends BroadcastReceiver {
                             intent1.setClass(context.getApplicationContext(), CheckApproveListActivity.class);
 //                            title="签到异常";
 //                            content="有效范围外签到";
-                        } else if ("1".equals(info)) {//日志审批
-                            intent1.setClass(context.getApplicationContext(), ApproveListActivity.class);
-//                            title="日志审批";
-//                            content="下属提交日志请审批";
-                        } else if ("2".equals(info)) {//日志确认
-                            intent1.setClass(context.getApplicationContext(), ConfirmListActivity.class);
-//                            title="日志确认";
-//                            content="日志已审批请确认";
-                        }else if ("3".equals(info)) {//日志确认
+                        }
+//                        else if ("1".equals(info)) {//日志审批
+//                            intent1.setClass(context.getApplicationContext(), ApproveListActivity.class);
+////                            title="日志审批";
+////                            content="下属提交日志请审批";
+//                        } else if ("2".equals(info)) {//日志确认
+//                            intent1.setClass(context.getApplicationContext(), ConfirmListActivity.class);
+////                            title="日志确认";
+////                            content="日志已审批请确认";
+//                        }
+                        else if ("3".equals(info)) {//请假
                             intent1.setClass(context.getApplicationContext(), AskLeaveApproveListActivity.class);
 //                            title="日志确认";
 //                            content="日志已审批请确认";

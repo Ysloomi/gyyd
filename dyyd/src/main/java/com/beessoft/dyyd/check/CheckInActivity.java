@@ -89,7 +89,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
     private Bitmap bitmap = null;
 
 
-    List<HashMap<String,String>> pins = new ArrayList<>();
+    List<HashMap<String, String>> pins = new ArrayList<>();
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -104,17 +104,17 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
 //                            addrText.setText("无GPS或Wifi信号，请刷新定位");// textView显示从定位获取到的地址}
 //                        }
 //                    } else {
-                        if (GetInfo.getIfGps(context)) {
-                            if ("Gps".equals(type)) {
-                                addrText.setText("[" + type + "]" + addr);
-                                getInfo(longitude, latitude);
-                            } else {
-                                addrText.setText("无GPS信号，请刷新定位");
-                            }
-                        } else {
+                    if (GetInfo.getIfGps(context)) {
+                        if ("Gps".equals(type)) {
                             addrText.setText("[" + type + "]" + addr);
                             getInfo(longitude, latitude);
+                        } else {
+                            addrText.setText("无GPS信号，请刷新定位");
                         }
+                    } else {
+                        addrText.setText("[" + type + "]" + addr);
+                        getInfo(longitude, latitude);
+                    }
 //                    }
                     break;
                 case MSG_FAILURE:
@@ -338,8 +338,6 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("sf", ifSf);
 
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
-
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -400,24 +398,15 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                             }
                             //签到点位置获取
 //                            if (dataJson.getString("typecode").equals("0")) {
-                                JSONArray arrayJwd = dataJson.getJSONArray("jwdlist");
-                                for (int j = 0; j < arrayJwd.length(); j++) {
-                                    JSONObject obj = arrayJwd.getJSONObject(j);
-                                    HashMap<String,String> map = new HashMap<>();
-                                    map.put("latitude",obj.getString("lat"));
-                                    map.put("longitude",obj.getString("lng"));
-                                    map.put("fw",obj.getString("fw"));
-                                    pins.add(map);
-                                }
-//                            }
-//                            if (GetInfo.getIfSf(context)) {
-//                                String confirmDay = dataJson.getString("conday");
-//                                if (!"0".equals(confirmDay)) {
-//                                    ToastUtil.toast(context, confirmDay + "日未确认日志，有效里程"
-//                                            + dataJson.getString("mykm")
-//                                            + "公里未计算");
-//                                }
-//                            }
+                            JSONArray arrayJwd = dataJson.getJSONArray("jwdlist");
+                            for (int j = 0; j < arrayJwd.length(); j++) {
+                                JSONObject obj = arrayJwd.getJSONObject(j);
+                                HashMap<String, String> map = new HashMap<>();
+                                map.put("latitude", obj.getString("lat"));
+                                map.put("longitude", obj.getString("lng"));
+                                map.put("fw", obj.getString("fw"));
+                                pins.add(map);
+                            }
 
                             int stoppedMilliseconds = 0;
                             String chronoText = dataJson.getString("now");
@@ -467,7 +456,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                         try {
                             JSONObject dataJson = new JSONObject(response);
                             int code = dataJson.getInt("code");
-                            if (code==0) {
+                            if (code == 0) {
                                 // 删除distance.db数据库
                                 deleteDatabase("distance.db");
                                 distanceHelper = new DistanceDatabaseHelper(
@@ -490,7 +479,7 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                                     ToastUtil.toast(context, "签到成功");
                                 }
                                 finish();
-                            } else if (code==2) {
+                            } else if (code == 2) {
                                 ToastUtil.toast(context, "当日已签到");
                             } else {
                                 ToastUtil.toast(context, "请重新提交");
@@ -510,53 +499,6 @@ public class CheckInActivity extends BaseActivity implements View.OnClickListene
                     }
                 });
     }
-
-
-//    private void saveDy(String location, String iclass, String explain, String journey) {
-//
-//        String httpUrl = User.dyMainurl + "sf/startwork_save";
-//
-//        AsyncHttpClient client_request = new AsyncHttpClient();
-//        RequestParams parameters_userInfo = new RequestParams();
-//
-//        parameters_userInfo.put("mac", mac);
-//        parameters_userInfo.put("usercode", username);
-//        parameters_userInfo.put("addr", Escape.escape(location));
-//        parameters_userInfo.put("jd", longitude);
-//        parameters_userInfo.put("wd", latitude);
-//        parameters_userInfo.put("image", uploadBuffer);
-//        parameters_userInfo.put("iclass", Escape.escape(iclass));
-//        parameters_userInfo.put("cmemo", Escape.escape(explain));
-//        parameters_userInfo.put("type", Escape.escape(journey));
-//        parameters_userInfo.put("sf", ifSf);
-//
-//        client_request.post(httpUrl, parameters_userInfo,
-//                new AsyncHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(String response) {
-//                        try {
-//                            JSONObject dataJson = new JSONObject(response);
-//                            String code = dataJson.getString("code");
-//                            if (code.equals("0")) {
-//
-//                            } else {
-//                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
-//                            }
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        } finally {
-//                            ProgressDialogUtil.closeProgressDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable error, String data) {
-//                        error.printStackTrace(System.out);
-//                        ProgressDialogUtil.closeProgressDialog();
-//                    }
-//                });
-//    }
 
     public void visitServer_getaddr() {
         String httpUrl = "http://api.map.baidu.com/geocoder/v2/";

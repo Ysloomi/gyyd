@@ -415,8 +415,6 @@ public class NoteDealActivity extends BaseActivity implements View.OnClickListen
             parameters_userInfo.put("inside", leavetype);
         }
 
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
-
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override

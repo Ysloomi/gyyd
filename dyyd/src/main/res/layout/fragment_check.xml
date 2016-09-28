@@ -10,7 +10,7 @@
         android:layout_alignBottom="@+id/checkout_button"
         android:layout_marginRight="35dp"
         android:layout_toLeftOf="@+id/checkout_button"
-        android:drawableTop="@drawable/checkin"
+        android:drawableTop="@drawable/activity_checkin"
         android:text="@string/activity_checkin" />
 
     <Button
@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:drawableTop="@drawable/checkout"
+        android:drawableTop="@drawable/activity_checkout"
         android:text="@string/activity_checkout" />
 
     <Button
@@ -28,8 +28,8 @@
         android:layout_alignTop="@+id/checkout_button"
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/checkout_button"
-        android:drawableTop="@drawable/visitreach"
-        android:text="@string/activity_visitreach" />
+        android:drawableTop="@drawable/activity_reach"
+        android:text="@string/activity_reach" />
 
     <Button
         android:id="@+id/askleave_button"
@@ -56,7 +56,7 @@
         android:layout_alignStart="@+id/checkin_button"
         android:layout_below="@+id/checkin_button"
         android:layout_marginTop="35dp"
-        android:drawableTop="@drawable/leave"
-        android:text="@string/activity_visitleave" />
+        android:drawableTop="@drawable/activity_leave"
+        android:text="@string/activity_leave" />
 
 </RelativeLayout>

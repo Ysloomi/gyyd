@@ -123,8 +123,6 @@ public class AskLeaveActivity extends BaseActivity {
                         }
                         ProgressDialogUtil.showProgressDialog(context);
                         saveData(start, over, am, pm, reason, type);
-//                        if (GetInfo.getIfSf(context))
-//                            saveDy(start, over, am, pm, reason, type);
                     }
                     break;
                 case R.id.start_et:
@@ -259,50 +257,4 @@ public class AskLeaveActivity extends BaseActivity {
                     }
                 });
     }
-
-
-//    private void saveDy(String start, String over, String am, String pm, String reason, String type) {
-//
-//        String httpUrl = User.dyMainurl + "sf/LeaveSave";
-//
-//        AsyncHttpClient client_request = new AsyncHttpClient();
-//        RequestParams parameters_userInfo = new RequestParams();
-//
-//        parameters_userInfo.put("mac", mac);
-//        parameters_userInfo.put("usercode", username);
-//        parameters_userInfo.put("idate", start);
-//        parameters_userInfo.put("idate2", over);
-//        parameters_userInfo.put("am", am);
-//        parameters_userInfo.put("pm", pm);
-//        parameters_userInfo.put("cmemo", Escape.escape(reason));
-//        parameters_userInfo.put("state", Escape.escape(type));
-//        parameters_userInfo.put("sf", ifSf);
-//
-//        client_request.post(httpUrl, parameters_userInfo,
-//                new AsyncHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(String response) {
-//                        try {
-//                            JSONObject dataJson = new JSONObject(response);
-//                            int code = dataJson.getInt("code");
-//                            if (code == 0) {
-//
-//                            } else {
-//                                ToastUtil.toast(context, getResources().getString(R.string.dy_wrong_mes));
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        } finally {
-//                            ProgressDialogUtil.closeProgressDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable error, String data) {
-//                        error.printStackTrace(System.out);
-//                        ProgressDialogUtil.closeProgressDialog();
-//                    }
-//                });
-//    }
-
 }

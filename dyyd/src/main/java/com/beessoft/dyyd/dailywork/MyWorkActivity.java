@@ -10,7 +10,6 @@ import android.widget.ListView;
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.MyWorkAdapter;
-import com.beessoft.dyyd.check.SpecialActivity;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -61,38 +60,14 @@ public class MyWorkActivity extends BaseActivity {
 					intent.setClass(context, TodoActivity.class);
 					intent.putExtra("from","unit");
 					startActivity(intent);
-				} else if ("待审批工作日志".equals(name)) {
-					intent.setClass(context, ApproveListActivity.class);
-					startActivity(intent);
 				} else if ("待审批签到".equals(name)) {
 					intent.setClass(context, CheckApproveListActivity.class);
 					intent.putExtra("from","check");
 					startActivity(intent);
-				} else if ("上级安排工作".equals(name)) {
-					intent.setClass(context, ArrangeQueryListActivity.class);
-					intent.putExtra("itype", "0");
-					startActivity(intent);
-				} else if ("待确认工作日志".equals(name)) {
-					intent.setClass(context, ConfirmListActivity.class);
-					startActivity(intent);
-				} else if ("待审批请假".equals(name)) {
+				}  else if ("待审批请假".equals(name)) {
 					intent.setClass(context, AskLeaveApproveListActivity.class);
 					startActivity(intent);
-				} else if ("专项执行".equals(name)) {
-					intent.setClass(context, SpecialActivity.class);
-					startActivity(intent);
-				} else if ("专项审批".equals(name)) {
-					intent.setClass(MyWorkActivity.this,SpecialApproveActivity.class);
-					intent.putExtra("from","special");
-					startActivity(intent);
 				}
-// else if ("项目待办".equals(name)) {
-//                    intent.setClass(
-//                            MyWorkActivity.this,
-//                            ProjectListActivity.class);
-//                    startActivity(intent);
-//                }
-
 			}
 		});
 	}

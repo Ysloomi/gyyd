@@ -17,12 +17,6 @@ import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONObject;
@@ -91,9 +85,6 @@ public class LocationApplication extends Application {
 		return mInstance;
 	}
 
-	public static ImageLoader imageLoader;
-	public static DisplayImageOptions options;
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -108,22 +99,6 @@ public class LocationApplication extends Application {
 		SDKInitializer.initialize(getApplicationContext());
 //		Stetho.initializeWithDefaults(this);
 		mInstance =this;
-
-		imageLoader = ImageLoader.getInstance();
-		if (!imageLoader.isInited()) {
-			imageLoader.init(ImageLoaderConfiguration.createDefault(this));
-		}
-		options = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.dyyd_icon)
-				.showImageForEmptyUri(R.drawable.dyyd_icon)
-				.showImageOnFail(R.drawable.dyyd_icon)
-//				.cacheInMemory()
-				.cacheOnDisc()
-				.bitmapConfig(Bitmap.Config.RGB_565)
-				.imageScaleType(ImageScaleType.EXACTLY)
-				.displayer(new RoundedBitmapDisplayer(20))
-				.displayer(new FadeInBitmapDisplayer(300))
-				.build();
 	}
 
 	public void logMsg(String str, double Latitude, double Longitude,

@@ -2,261 +2,140 @@ package com.beessoft.dyyd;
 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.beessoft.dyyd.check.CheckFragment;
-import com.beessoft.dyyd.dailywork.DailyWorkFragment;
-import com.beessoft.dyyd.material.MaterialFragment;
-import com.beessoft.dyyd.mymeans.MyMeansFragment;
+import com.baidu.location.LocationClient;
+import com.beessoft.dyyd.check.AskLeaveActivity;
+import com.beessoft.dyyd.check.CollectActivity;
+import com.beessoft.dyyd.dailywork.MyMileageActivity;
+import com.beessoft.dyyd.dailywork.MyWorkActivity;
+import com.beessoft.dyyd.dailywork.NoteActivity;
+import com.beessoft.dyyd.dailywork.NoteQueryActivity;
+import com.beessoft.dyyd.dailywork.PhotoActivity;
+import com.beessoft.dyyd.dailywork.WorkLocationActivity;
+import com.beessoft.dyyd.db.DistanceDatabaseHelper;
 import com.beessoft.dyyd.update.UpdateManager;
-import com.beessoft.dyyd.utils.ChatAdatper;
+import com.beessoft.dyyd.utils.AlarmUtils;
+import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
+import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.PreferenceUtil;
+import com.beessoft.dyyd.utils.ToastUtil;
+import com.beessoft.dyyd.utils.User;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-    private View check;
-    private View dailywork;
-    private View material;
-    private View mymeans;
+public class MainActivity extends BaseActivity {
 
-    private ImageView checkImage;
-    private ImageView dailyworkImage;
-    private ImageView materialImage;
-    private ImageView mymeansImage;
-    private TextView checkText;
+    @BindView(R.id.company_txt)
+    TextView companyTxt;
+    @BindView(R.id.depart_txt)
+    TextView departTxt;
+    @BindView(R.id.name_txt)
+    TextView nameTxt;
+    @BindView(R.id.tel_txt)
+    TextView telTxt;
+    @BindView(R.id.check_img)
+    ImageView checkImg;
+    @BindView(R.id.time_txt)
+    TextView timeTxt;
+    @BindView(R.id.check_txt)
+    TextView checkTxt;
+    @BindView(R.id.check_btn)
+    Button checkBtn;
+    @BindView(R.id.mywork_btn)
+    Button myworkBtn;
+    @BindView(R.id.visit_btn)
+    Button visitBtn;
+    @BindView(R.id.askleave_btn)
+    Button askleaveBtn;
+    @BindView(R.id.info_collect_btn)
+    Button infoCollectBtn;
+    @BindView(R.id.check_collect_btn)
+    Button checkCollectBtn;
+    @BindView(R.id.location_btn)
+    Button locationBtn;
+    @BindView(R.id.note_btn)
+    Button noteBtn;
+    @BindView(R.id.mileage_btn)
+    Button mileageBtn;
 
-    private TextView dailyworkText;
-    private TextView materialText;
-    private TextView mymeansText;
-
+    private ArrayList<String> typeList = new ArrayList<>();
     private UpdateManager mUpdateManager;
 
-    /**
-     * 用于对Fragment进行管理
-     */
-//	private FragmentManager fragmentManager;
+    private DistanceDatabaseHelper distanceHelper; // 数据库帮助类
+    private LocationClient mLocationClient;
 
-    private ViewPager viewPager;// 声明一个viewpager对象
-    private Context context;
+    interface Type {
+        String CHECKIN = "activity_checkin";
+        String CHECKOUT = "activity_checkout";
+        String CHECKQUERY = "activity_checkquery";
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_actions, menu);
-        return super.onCreateOptionsMenu(menu);
+        String REACH = "activity_reach";
+        String LEAVE = "activity_leave";
+        String VISITQUERY = "activity_visitquery";
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_share:
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, ShareActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main_actions, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_share:
+//                Intent intent = new Intent();
+//                intent.setClass(MainActivity.this, ShareActivity.class);
+//                startActivity(intent);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(false);// 使导航栏出现返回按钮
+
         context = MainActivity.this;
-        // 初始化布局元素
-        setUpView();
-        initView();
 
         mUpdateManager = new UpdateManager(this);//判断是否应该升级
         mUpdateManager.checkUpdate(false);//是否弹出版本更新信息
 
-        // fragmentManager = getSupportFragmentManager();
-        // 第一次启动时选中第0个tab
-        if (GetInfo.getIfCheck(context)) {
-            checkImage.setImageResource(R.drawable.check_selected);
-        } else {
-            check.setVisibility(View.GONE);
-            dailyworkImage.setImageResource(R.drawable.dailywork_selected);
-        }
-        if (GetInfo.getIfSf(context))
-            material.setVisibility(View.VISIBLE);
-        else
-            material.setVisibility(View.GONE);
-//		checkText.setTextColor(Color.parseColor("#4db0f6"));
-    }
+        mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
-    /**
-     * 在这里获取到每个需要用到的控件的实例，并给它们设置好必要的点击事件。
-     */
-
-    private void setUpView() {
-        // 实例化对象
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        check = findViewById(R.id.check);
-        dailywork = findViewById(R.id.dailywork);
-        material = findViewById(R.id.material);
-        mymeans = findViewById(R.id.mymeans);
-
-        checkImage = (ImageView) findViewById(R.id.check_image);
-        dailyworkImage = (ImageView) findViewById(R.id.dailywork_image);
-        materialImage = (ImageView) findViewById(R.id.material_image);
-        mymeansImage = (ImageView) findViewById(R.id.mymeans_image);
-
-        checkText = (TextView) findViewById(R.id.check_text);
-        dailyworkText = (TextView) findViewById(R.id.dailywork_text);
-        materialText = (TextView) findViewById(R.id.material_text);
-        mymeansText = (TextView) findViewById(R.id.mymeans_text);
-
-        if (GetInfo.getIfCheck(context)) {
-            check.setOnClickListener(new MyOnClickListener(0));
-            dailywork.setOnClickListener(new MyOnClickListener(1));
-            if (GetInfo.getIfSf(context)) {
-                material.setOnClickListener(new MyOnClickListener(2));
-                mymeans.setOnClickListener(new MyOnClickListener(3));
-            } else {
-                mymeans.setOnClickListener(new MyOnClickListener(2));
-            }
-        } else {
-            dailywork.setOnClickListener(new MyOnClickListener(0));
-            if (GetInfo.getIfSf(context)) {
-                material.setOnClickListener(new MyOnClickListener(1));
-                mymeans.setOnClickListener(new MyOnClickListener(2));
-            } else {
-                mymeans.setOnClickListener(new MyOnClickListener(1));
-            }
-        }
-    }
-
-    private void initView() {
-        ArrayList<Fragment> list = new ArrayList<Fragment>();
-        // 设置数据源
-        CheckFragment checkFragment = new CheckFragment();
-        DailyWorkFragment dailyWorkFragment = new DailyWorkFragment();
-        MaterialFragment materialFragment = new MaterialFragment();
-        MyMeansFragment mymeansFragment = new MyMeansFragment();
-
-        if (GetInfo.getIfCheck(context)) {
-            list.add(checkFragment);
-        }
-        list.add(dailyWorkFragment);
-        if (GetInfo.getIfSf(context))
-            list.add(materialFragment);
-        list.add(mymeansFragment);
-
-        ChatAdatper adapter = new ChatAdatper(getSupportFragmentManager(), list);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-        viewPager.addOnPageChangeListener(new MyOnPageChangeListener());
-    }
-
-    public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
-        @Override
-        public void onPageSelected(int arg0) {
-            // 每次选中之前先清楚掉上次的选中状态
-            clearSelection();
-            if (GetInfo.getIfCheck(context)) {
-                // Animation animation = null;
-                switch (arg0) {
-                    case 0:
-                        checkImage.setImageResource(R.drawable.check_selected);
-                        // checkText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                    case 1:
-                        dailyworkImage
-                                .setImageResource(R.drawable.dailywork_selected);
-                        // dailyworkText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                    case 2:
-                        if (GetInfo.getIfSf(context))
-                            materialImage.setImageResource(R.drawable.material_selected);
-                        else
-                            mymeansImage.setImageResource(R.drawable.mymeans_selected);
-                        // materialText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                    case 3:
-                        mymeansImage.setImageResource(R.drawable.mymeans_selected);
-                        // mymeansText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                }
-            } else {
-                // Animation animation = null;
-                switch (arg0) {
-                    case 0:
-                        dailyworkImage.setImageResource(R.drawable.dailywork_selected);
-                        // dailyworkText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                    case 1:
-                        if (GetInfo.getIfSf(context))
-                            materialImage.setImageResource(R.drawable.material_selected);
-                        else
-                            mymeansImage.setImageResource(R.drawable.mymeans_selected);
-                        // materialText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                    case 2:
-                        mymeansImage.setImageResource(R.drawable.mymeans_selected);
-                        // mymeansText.setTextColor(Color.parseColor("#4db0f6"));
-                        break;
-                }
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-        }
-    }
-
-    public class MyOnClickListener implements View.OnClickListener {
-        private int index = 0;
-
-        public MyOnClickListener(int i) {
-            index = i;
-        }
-
-        @Override
-        public void onClick(View v) {
-            viewPager.setCurrentItem(index);
-        }
-    }
-
-    ;
-
-    /**
-     * 清除掉所有的选中状态。
-     */
-    private void clearSelection() {
-        checkImage.setImageResource(R.drawable.check_unselected);
-        checkText.setTextColor(Color.WHITE);
-        dailyworkImage.setImageResource(R.drawable.dailywork_unselected);
-        dailyworkText.setTextColor(Color.WHITE);
-        materialImage.setImageResource(R.drawable.material_unselected);
-        materialText.setTextColor(Color.WHITE);
-        mymeansImage.setImageResource(R.drawable.mymeans_unselected);
-        mymeansText.setTextColor(Color.WHITE);
+        companyTxt.setText("单位:" + PreferenceUtil.readString(context, "dw"));
+        departTxt.setText("部门:" + PreferenceUtil.readString(context, "cdepname"));
+        nameTxt.setText("姓名:" + PreferenceUtil.readString(context, "name"));
+        telTxt.setText("电话:" + PreferenceUtil.readString(context, "tel"));
     }
 
     @Override
@@ -290,27 +169,138 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    /**
-     * 将所有的Fragment都置为隐藏状态。
-     *
-     * @param transaction
-     *            用于对Fragment执行操作的事务 //
-     */
-    // private void hideFragments(FragmentTransaction transaction) {
-    // if (checkFragment != null) {
-    // transaction.hide(checkFragment);
-    // }
-    // if (dailyWorkFragment != null) {
-    // transaction.hide(dailyWorkFragment);
-    // }
-    // // if (constructionFragment != null) {
-    // // transaction.hide(constructionFragment);
-    // // }
-    // // if (manageFragment != null) {
-    // // transaction.hide(manageFragment);
-    // // }
-    // if(myMeansFragment != null){
-    // transaction.hide(myMeansFragment);
-    // }
-    // }
+    @OnClick({R.id.check_btn, R.id.mywork_btn, R.id.visit_btn, R.id.askleave_btn,
+            R.id.info_collect_btn, R.id.check_collect_btn, R.id.location_btn, R.id.note_btn, R.id.mileage_btn})
+    public void onClick(View view) {
+        typeList.clear();
+        Intent intent = new Intent();
+        switch (view.getId()) {
+            case R.id.check_btn:
+                typeList.add(Type.CHECKIN);
+                typeList.add(Type.CHECKOUT);
+                typeList.add(Type.CHECKQUERY);
+                DialogActivity.navToDialog(context, typeList);
+                break;
+            case R.id.mywork_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode6"))) {
+                    intent.setClass(context, MyWorkActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.visit_btn:
+                typeList.add(Type.REACH);
+                typeList.add(Type.LEAVE);
+                typeList.add(Type.VISITQUERY);
+                DialogActivity.navToDialog(context, typeList);
+                break;
+            case R.id.askleave_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode4"))) {
+                    intent.setClass(context, AskLeaveActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.info_collect_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode5"))) {
+                    intent.setClass(context, PhotoActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.check_collect_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode3"))) {
+                    intent.setClass(context, CollectActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.location_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode8"))) {
+                    intent.setClass(context, WorkLocationActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.note_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode9"))) {
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode10"))) {
+                        intent.setClass(context, NoteActivity.class);
+                    } else {
+                        intent.setClass(context, NoteQueryActivity.class);
+                    }
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+            case R.id.mileage_btn:
+                if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode12"))) {
+                    intent.setClass(context, MyMileageActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.toast(context, "无权限");
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        visitServer();
+    }
+
+    private void visitServer() {
+
+        String httpUrl = User.mainurl + "sf/startwork_do";
+
+        AsyncHttpClient client_request = new AsyncHttpClient();
+        RequestParams parameters_userInfo = new RequestParams();
+
+        parameters_userInfo.put("mac", mac);
+        parameters_userInfo.put("usercode", username);
+
+        client_request.post(httpUrl, parameters_userInfo,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String response) {
+                        try {
+                            JSONObject dataJson = new JSONObject(response);
+                            String code = dataJson.getString("icount");
+                            if ("0".equals(code)) {
+                                checkImg.setImageResource(R.drawable.main_uncheckin);
+                                checkTxt.setText("未签到");
+                            } else if ("1".equals(code)) {
+                                if (!Gps.exist(context, "distance.db")) {
+                                    distanceHelper = new DistanceDatabaseHelper(context.getApplicationContext(), "distance.db", 1);
+                                    String time = DateUtil.getDateLoca();
+                                    distanceHelper
+                                            .getReadableDatabase()
+                                            .execSQL(
+                                                    "insert into distance_table values(null, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                                                    new String[]{time, "0",
+                                                            "0", "0", "0",
+                                                            "0", "", "0", "0"});
+                                    distanceHelper.close();
+                                    Gps.GPS_do(mLocationClient, 8000);// 启动百度定位的8秒轮询
+                                    AlarmUtils.doalarm(context);
+                                }
+                                checkImg.setImageResource(R.drawable.main_checkin);
+                                checkTxt.setText("已签到");
+                            } else if ("2".equals(code)) {
+                                checkImg.setImageResource(R.drawable.main_checkin);
+                                checkTxt.setText("已签退");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 }

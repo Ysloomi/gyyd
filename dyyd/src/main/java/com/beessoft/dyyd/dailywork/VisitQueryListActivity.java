@@ -11,11 +11,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beessoft.dyyd.BaseActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.adapter.VisitQueryAdapter;
+import com.beessoft.dyyd.model.GetJSON;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.ProgressDialogUtil;
@@ -37,8 +39,8 @@ import java.util.List;
 
 public class VisitQueryListActivity extends BaseActivity {
 
-//    private String level;
-    public List<HashMap<String, String>> datas = new ArrayList<HashMap<String, String>>();
+    private String level;
+    private List<HashMap<String, String>> datas = new ArrayList<HashMap<String, String>>();
     private AutoCompleteTextView autoCompleteTextView;
     private PullToRefreshListView mPullRefreshListView;
     private String currentPage = "1";
@@ -52,6 +54,7 @@ public class VisitQueryListActivity extends BaseActivity {
         context = VisitQueryListActivity.this;
 
 //        level = "[全部人员]";
+        level = "";
 
         initView();
 
@@ -94,7 +97,9 @@ public class VisitQueryListActivity extends BaseActivity {
 
                 // Update the LastUpdatedLabel
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                visitRefresh("");
+//                level = "[全部人员]";
+                level = "";
+                visitRefresh(level);
             }
 
             @Override
@@ -108,7 +113,7 @@ public class VisitQueryListActivity extends BaseActivity {
 
                 // Update the LastUpdatedLabel
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                visitLoad("");
+                visitLoad(level);
             }
 
         });
@@ -130,8 +135,9 @@ public class VisitQueryListActivity extends BaseActivity {
 
 //        GetJSON.visitServer_GetInfo_NoSpecial(context, autoCompleteTextView, mac,username);
 //        autoCompleteTextView.setHint("专业、姓名、分局");
+
         ProgressDialogUtil.showProgressDialog(context);
-        visitRefresh("");
+        visitRefresh(level);
     }
 
     private void initView() {
@@ -153,8 +159,6 @@ public class VisitQueryListActivity extends BaseActivity {
         parameters_userInfo.put("sf",ifSf);
         parameters_userInfo.put("psn", Escape.escape(level));
         parameters_userInfo.put("page", currentPage);
-
-        Logger.e(httpUrl+"?"+parameters_userInfo);
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {

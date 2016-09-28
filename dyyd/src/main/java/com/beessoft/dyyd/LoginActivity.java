@@ -1,7 +1,5 @@
 package com.beessoft.dyyd;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -18,7 +16,6 @@ import com.baidu.location.LocationClient;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
-import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.igexin.sdk.PushManager;
@@ -30,14 +27,22 @@ import com.tencent.bugly.crashreport.CrashReport;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class LoginActivity extends BaseActivity {
 
+    @BindView(R.id.remember_password)
+    CheckBox rememberPassword;
+    @BindView(R.id.version_text)
+    TextView versionText;
+    @BindView(R.id.account_edt)
+    EditText accountEdt;
+    @BindView(R.id.pass_edt)
+    EditText passEdt;
     private LocationClient mLocationClient;
 
-    private ImageButton imgBtn;
-    private CheckBox savePassword;
-    private EditText nameEdt, passEdt;
-    private TextView versionTxt;
     private String IMSI;
     private String pass;
 
@@ -45,22 +50,17 @@ public class LoginActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(false);
 
         context = LoginActivity.this;
 
-        versionTxt = (TextView) findViewById(R.id.version_text);
-        savePassword = (CheckBox) findViewById(R.id.remember_password);
-        nameEdt = (EditText) findViewById(R.id.editText1);
-        passEdt = (EditText) findViewById(R.id.editText2);
-        imgBtn = (ImageButton) findViewById(R.id.imageButton);
-
         // 声明百度定位sdk的构造函数
         mLocationClient = ((LocationApplication) getApplication()).mLocationClient;
 
-        versionTxt.setText(User.version + User.getVersionName(context));
+        versionText.setText(User.version + User.getVersionName(context));
 
         Gps gps = new Gps(context);
         gps.openGPSSettings(context);
@@ -70,66 +70,27 @@ public class LoginActivity extends BaseActivity {
 
         IMSI = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getSubscriberId();
 
-        nameEdt.setText(PreferenceUtil.readString(context, "username"));
+        accountEdt.setText(PreferenceUtil.readString(context, "username"));
         Boolean isCheck = PreferenceUtil.readBoolean(context, "isCheck");
         // 判断记住密码多选框的状态
         if (isCheck) {
             // 设置默认是记录密码状态
-            savePassword.setChecked(true);
+            rememberPassword.setChecked(true);
             passEdt.setText(PreferenceUtil.readString(context, "password"));
         }
 
         // 监听记住密码多选框按钮事件
-        savePassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        rememberPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (savePassword.isChecked()) {
+                if (rememberPassword.isChecked()) {
                     PreferenceUtil.write(context, "isCheck", true);
                 } else {
                     PreferenceUtil.write(context, "isCheck", false);
                 }
             }
         });
-
-        imgBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                username = nameEdt.getText().toString();
-                pass = passEdt.getText().toString();
-                showProgressDialog();
-                visitServer_login();
-            }
-        });
-}
-
-
-//    public void registerXGPush(String username) {
-//        // 开启logcat输出，方便debug，发布时请关闭
-//        XGPushConfig.enableDebug(this, false);
-//        // 如果需要知道注册是否成功，请使用registerPush(getApplicationContext(),
-//        // XGIOperateCallback)带callback版本
-//        // 如果需要绑定账号，请使用registerPush(getApplicationContext(),account)版本
-//        // 具体可参考详细的开发指南
-//        // 传递的参数为ApplicationContextx
-//        Context mContext = getApplicationContext();
-////		Log.d("TPush", "注册账户：" + username);
-//        String name = "*";
-//        if (!Tools.isEmpty(username)) {
-//            name = username;
-//        }
-//        XGPushManager.registerPush(mContext, name, new XGIOperateCallback() {
-//            @Override
-//            public void onSuccess(Object data, int flag) {
-//
-////				Log.d("TPush", "注册成功，设备token为：" + data);
-//            }
-//
-//            @Override
-//            public void onFail(Object data, int errCode, String msg) {
-////				Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-//            }
-//        });
-//    }
+    }
 
     private void visitServer_login() {
 
@@ -152,7 +113,7 @@ public class LoginActivity extends BaseActivity {
                             switch (dataJson.getString("code")) {
                                 case "0":
                                     PreferenceUtil.write(context, "username", username);
-                                    if (savePassword.isChecked()) {
+                                    if (rememberPassword.isChecked()) {
                                         PreferenceUtil.write(context, "password", pass);
                                     }
 //                                    registerXGPush(user);
@@ -260,5 +221,13 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    @OnClick(R.id.login_btn)
+    public void onClick() {
+        username = accountEdt.getText().toString();
+        pass = passEdt.getText().toString();
+        showProgressDialog();
+        visitServer_login();
     }
 }

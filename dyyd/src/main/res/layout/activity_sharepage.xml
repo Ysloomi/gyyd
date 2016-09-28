@@ -12,16 +12,19 @@
         android:layout_height="10dp"
         android:layout_alignParentLeft="true" />
 
-    <EditText
-        android:id="@+id/phonenum_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/title1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/title1"
-        android:background="@drawable/text_bg"
-        android:textColor="#000000" />
+    <LinearLayout
+        style="@style/TextOutLayout"
+        android:layout_above="@+id/linearlayout">
+
+        <TextView
+            style="@style/MyTitle"
+            android:text="分享号码" />
+
+        <EditText
+            android:id="@+id/phonenum_text"
+            style="@style/MyText" />
+    </LinearLayout>
+
 
     <WebView
         android:id="@+id/material_web"
@@ -33,10 +36,8 @@
 
     <RelativeLayout
         android:id="@+id/linearlayout"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="#4db0f6">
+        style="@style/RelativeBottom"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/share_button"
@@ -49,18 +50,5 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/title1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/linearlayout"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/title_bg"
-        android:gravity="center"
-        android:text="分享号码"
-        android:textColor="#ffffff"
-        android:textStyle="bold" />
 
 </RelativeLayout>

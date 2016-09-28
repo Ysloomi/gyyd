@@ -33,10 +33,6 @@ public class AskLeaveApproveActivity extends BaseActivity {
     private Button refuseButton;
     private TextView nameText, startText, overText, daysText, typeText, reasonText;
 
-    private LinearLayout approveManLl;
-    private LinearLayout approveTimeLl;
-    private LinearLayout approveResultLl;
-
     private String usercode;
     private String intodate;
 
@@ -74,23 +70,13 @@ public class AskLeaveApproveActivity extends BaseActivity {
             setTitle("请假查询");
             agreeButton.setVisibility(View.GONE);
             refuseButton.setVisibility(View.GONE);
-//            approveManLl.setVisibility(View.VISIBLE);
-//            approveTimeLl.setVisibility(View.VISIBLE);
-//            approveResultLl.setVisibility(View.VISIBLE);
         } else {
             agreeButton.setVisibility(View.VISIBLE);
             refuseButton.setVisibility(View.VISIBLE);
-//            approveManLl.setVisibility(View.GONE);
-//            approveTimeLl.setVisibility(View.GONE);
-//            approveResultLl.setVisibility(View.GONE);
         }
     }
 
     public void initView() {
-
-        approveManLl = (LinearLayout) findViewById(R.id.ll_approveman) ;
-        approveTimeLl = (LinearLayout) findViewById(R.id.ll_approve_time) ;
-        approveResultLl = (LinearLayout) findViewById(R.id.ll_approve_result) ;
 
         nameText = (TextView) findViewById(R.id.person_text);
         startText = (TextView) findViewById(R.id.start_text);
@@ -98,10 +84,6 @@ public class AskLeaveApproveActivity extends BaseActivity {
         daysText = (TextView) findViewById(R.id.days_text);
         typeText = (TextView) findViewById(R.id.type_text);
         reasonText = (TextView) findViewById(R.id.explain_text);
-
-//        approvenameText = (TextView) findViewById(R.id.approveman_text);
-//        approvetimeText = (TextView) findViewById(R.id.approvetime_text);
-//        approveresultText = (TextView) findViewById(R.id.approveresult_text);
 
         agreeButton = (Button) findViewById(R.id.agree_button);
         refuseButton = (Button) findViewById(R.id.refuse_button);
@@ -156,8 +138,6 @@ public class AskLeaveApproveActivity extends BaseActivity {
                         } else {
                             ProgressDialogUtil.showProgressDialog(context);
                             saveData("no", unagree_reason);
-//                            if (GetInfo.getIfSf(context))
-//                                saveDy("no", unagree_reason);
                             myDialog.dismiss();
                         }
                     }
@@ -214,44 +194,4 @@ public class AskLeaveApproveActivity extends BaseActivity {
                     }
                 });
     }
-
-//    private void saveDy(String btn, String unagree_reason) {
-//
-//        String httpUrl = User.dyMainurl + "sf/LeaveCheckSave";
-//        AsyncHttpClient client_request = new AsyncHttpClient();
-//        RequestParams parameters_userInfo = new RequestParams();
-//
-//        parameters_userInfo.put("mac", mac);
-//        parameters_userInfo.put("usercode", usercode);
-//        parameters_userInfo.put("intodate", intodate);
-//        parameters_userInfo.put("btn", btn);
-//        parameters_userInfo.put("reason", Escape.escape(unagree_reason));
-//        parameters_userInfo.put("sf", ifSf);
-//
-//        client_request.post(httpUrl, parameters_userInfo,
-//                new AsyncHttpResponseHandler() {
-//                    @Override
-//                    public void onSuccess(String response) {
-//                        try {
-//                            JSONObject dataJson = new JSONObject(response);
-//                            int code = dataJson.getInt("code");
-//                            if (code==0) {
-//
-//                            } else {
-//                                ToastUtil.toast(context,getResources().getString(R.string.dy_wrong_mes));
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        } finally {
-//                            ProgressDialogUtil.closeProgressDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable error, String data) {
-//                        error.printStackTrace(System.out);
-//                        ProgressDialogUtil.closeProgressDialog();
-//                    }
-//                });
-//    }
 }

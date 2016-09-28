@@ -47,8 +47,8 @@
     <string name="activity_login">登录</string>
     <string name="activity_checkin">上班签到</string>
     <string name="activity_checkout">下班签退</string>
-    <string name="activity_visitreach">到达现场</string>
-    <string name="activity_visitleave">离开现场</string>
+    <string name="activity_reach">到达现场</string>
+    <string name="activity_leave">离开现场</string>
     <string name="activity_photo">信息采集</string>
     <string name="activity_photoquery">信息查询</string>
     <string name="activity_visitquery">拜访记录</string>
@@ -106,4 +106,17 @@
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    
+    
+    
+    <string name="check">考勤打卡</string>
+    <string name="mywork">待办事项</string>
+    <string name="visit">拜访记录</string>
+    <string name="askleave">请假登记</string>
+    <string name="info_collect">信息采集</string>
+    <string name="check_collect">考勤点采集</string>
+    <string name="location">员工位置</string>
+    <string name="note">一线记事本</string>
+    <string name="mileage">我的里程</string>
+
 </resources>

@@ -29,8 +29,7 @@ public class CheckOutDatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		System.out.println("call update");
-		db.execSQL("DROP TABLE IF EXISTS checkout_table");  
+		db.execSQL("DROP TABLE IF EXISTS checkout_table");
         onCreate(db);  
 	}
 

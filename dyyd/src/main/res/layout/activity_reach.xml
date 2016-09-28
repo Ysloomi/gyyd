@@ -32,14 +32,14 @@
 
             <Spinner
                 android:id="@+id/visit_customer"
-                style="@style/MyText" />
+                style="@style/MySpinner" />
 
 
             <TextView
                 android:id="@+id/txt_get_customer"
                 style="@style/TapText"
                 android:text="筛选"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -60,7 +60,6 @@
                 android:hint="选择客户后判定" />
 
 
-
         </LinearLayout>
 
         <LinearLayout style="@style/TextOutLayout">
@@ -77,37 +76,23 @@
                 android:hint="请输入拜访客户中的人员" />
         </LinearLayout>
 
-        <RelativeLayout style="@style/TextOutLayout">
+        <LinearLayout style="@style/TextOutLayout">
 
             <TextView
-                android:id="@+id/textView3"
                 style="@style/MyTitle"
                 android:text="拜访目的" />
 
             <EditText
                 android:id="@+id/visit_aim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/textView3"
-                android:background="@drawable/bigtext_bg"
-                android:gravity="top"
-                android:hint="到达现场的目的（酬金沟通，业务培训，上门检查等），书写时要简要说明培训业务内容、酬金类型、检查内容等。"
-                android:maxLines="6"
-                android:paddingLeft="2dp"
-                android:scrollbars="vertical"
-                android:textColor="#000000"
-                android:textSize="14sp" />
+                style="@style/MyText"
+                android:hint="到达现场的目的（酬金沟通，业务培训，上门检查等），书写时要简要说明培训业务内容、酬金类型、检查内容等。" />
 
             <TextView
                 android:id="@+id/txt_preserve"
                 style="@style/TapText"
-                android:layout_alignBottom="@+id/visit_aim"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:text="保存" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout style="@style/TextOutLayout">
 
@@ -123,6 +108,7 @@
                 android:id="@+id/txt_refresh"
                 style="@style/TapText"
                 android:text="刷新" />
+
             <TextView
                 android:id="@+id/txt_map"
                 style="@style/TapText"

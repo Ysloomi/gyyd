@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.beessoft.dyyd.DetailActivity;
 import com.beessoft.dyyd.R;
 import com.beessoft.dyyd.update.UpdateManager;
 import com.beessoft.dyyd.utils.GetInfo;
@@ -86,14 +85,6 @@ public class MyMeansFragment extends Fragment {
 				break;
 			case R.id.btn_changepassword:
 				intent.setClass(context, ChangePasswordActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.txt_detail:
-				intent.setClass(context, DetailActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.btn_advise:
-				intent.setClass(context, AdviseTypeActivity.class);
 				startActivity(intent);
 				break;
 			default:

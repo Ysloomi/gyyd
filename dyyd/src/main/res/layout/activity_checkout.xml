@@ -29,40 +29,29 @@
 
                 <TextView
                     style="@style/MyTitle"
-                    android:layout_gravity="start"
                     android:text="今日总结" />
 
                 <EditText
                     android:id="@+id/summary_text"
-                    style="@style/MyText"
-                    android:background="@drawable/bigtext_bg"
-                    android:gravity="top"
-                    android:paddingLeft="2dp" />
+                    style="@style/MyText" />
             </LinearLayout>
 
-            <RelativeLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout">
 
                 <TextView
-                    android:id="@+id/title1"
                     style="@style/MyTitle"
                     android:text="下个工作\n日计划" />
 
                 <EditText
                     android:id="@+id/plan_text"
-                    style="@style/MyText"
-                    android:layout_toRightOf="@+id/title1"
-                    android:background="@drawable/bigtext_bg"
-                    android:gravity="top"
-                    android:paddingLeft="2dp" />
+                    style="@style/MyText" />
 
                 <TextView
                     android:id="@+id/txt_preserve"
                     style="@style/TapText"
-                    android:layout_alignBottom="@+id/plan_text"
-                    android:layout_alignLeft="@+id/title1"
                     android:text="保存" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout style="@style/TextOutLayout">
 

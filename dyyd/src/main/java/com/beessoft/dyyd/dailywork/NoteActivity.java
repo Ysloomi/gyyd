@@ -224,8 +224,6 @@ public class NoteActivity extends BaseActivity
         parameters_userInfo.put("date2", end);
         parameters_userInfo.put("currentPage", currentPage + "");
 
-//        Logger.e(httpUrl+"?"+parameters_userInfo);
-
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -253,11 +251,6 @@ public class NoteActivity extends BaseActivity
                     @Override
                     public void onFailure(Throwable error, String data) {
                         ToastUtil.toast(context, "网络错误，请重试");
-//                        NoticeDialogFragment noticeDialogFragment = new NoticeDialogFragment();
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("title","网络错误，请重试");
-//                        noticeDialogFragment.setArguments(bundle);
-//                        noticeDialogFragment.show(getFragmentManager(),"网络");
                         ProgressDialogUtil.closeProgressDialog();
                         pullToRefreshListView.stopRefresh();
                     }
@@ -375,55 +368,10 @@ public class NoteActivity extends BaseActivity
         Calendar c = Calendar.getInstance();
         switch (v.getId()) {
             case R.id.edt_start:
-//                new DatePickerDialog(context,
-//                        new DatePickerDialog.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(DatePicker view, int year,
-//                                                  int monthOfYear, int dayOfMonth) {
-//                                String yearStr = String.valueOf(year);
-//                                String month = String.valueOf(monthOfYear + 1);
-//                                String day = String.valueOf(dayOfMonth);
-//                                if ((monthOfYear + 1) < 10) {
-//                                    month = "0" + month;
-//                                }
-//                                if (dayOfMonth < 10) {
-//                                    day = "0" + day;
-//                                }
-//                                startEdit.setText(yearStr + "-" + month + "-" + day);
-//                            }
-//                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-//                        .get(Calendar.DAY_OF_MONTH)).show();
-
                 dateType = 0;
                 pvTime.show();
                 break;
             case R.id.edt_end:
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-//                        new DatePickerDialog.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(DatePicker view, int year,
-//                                                  int monthOfYear, int dayOfMonth) {
-//                                String yearStr = String.valueOf(year);
-//                                String month = String.valueOf(monthOfYear + 1);
-//                                String day = String.valueOf(dayOfMonth);
-//                                if ((monthOfYear + 1) < 10) {
-//                                    month = "0" + month;
-//                                }
-//                                if (dayOfMonth < 10) {
-//                                    day = "0" + day;
-//                                }
-//                                endEdit.setText(yearStr + "-" + month + "-" + day);
-//                            }
-//                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c
-//                        .get(Calendar.DAY_OF_MONTH));
-//                start = startEdit.getText().toString();
-//                if (!TextUtils.isEmpty(start)){
-//                    long timeInMillisSinceEpoch = DateUtil.getTimeInMillisSinceEpoch(start);
-//                    datePickerDialog.getDatePicker().setMinDate(timeInMillisSinceEpoch);
-//                    datePickerDialog.show();
-//                }else{
-//                    ToastUtil.toast(context,"请先选择开始日期");
-//                }
                 dateType = 1;
                 pvTime.show();
                 break;

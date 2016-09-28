@@ -64,7 +64,6 @@ public class NoteAddActivity extends BaseActivity
 
         initView();
         initData();
-
     }
 
     private void initView() {

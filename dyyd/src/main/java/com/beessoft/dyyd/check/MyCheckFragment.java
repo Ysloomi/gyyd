@@ -101,10 +101,7 @@ public class MyCheckFragment extends Fragment {
 					intent.putExtra("idTarget", idTarget);
 					intent.putExtra("query", "query");
 					startActivity(intent);
-					// Toast.makeText(CheckQueryActivity.this, idTarget,
-					// Toast.LENGTH_SHORT).show();
 				}
-
 			}
 		});
 		// 设置月份改变监听器
