@@ -165,43 +165,43 @@ public class GetInfo {
 
     public static void getButtonRole(Context context, Button button, String type, String from) {
         if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode" + type))) {
-            int a = R.drawable.checkin_untap;
+            int a = R.drawable.activity_checkin_untap;
             if ("1".equals(type) || "2".equals(type)) {
                 if ("checkout".equals(from)) {
-                    a = R.drawable.checkout_untap;
+                    a = R.drawable.activity_checkout_untap;
                 } else if ("reach".equals(from)) {
-                    a = R.drawable.reach_untap;
+                    a = R.drawable.activity_reach_untap;
                 } else if ("leave".equals(from)) {
-                    a = R.drawable.leave_untap;
+                    a = R.drawable.activity_leave_untap;
                 }
             } else {
                 switch (type) {
                     case "3":
-                        a = R.drawable.collect_uptap;
+                        a = R.drawable.main_check_collect_untap;
                         break;
                     case "4":
-                        a = R.drawable.askleave_untap;
+                        a = R.drawable.main_askleave_untap;
                         break;
                     case "5":
-                        a = R.drawable.photo_untap;
+                        a = R.drawable.main_info_collect_untap;
                         break;
                     case "6":
-                        a = R.drawable.mywork_untap;
+                        a = R.drawable.main_mywork_untap;
                         break;
                     case "7":
-                        a = R.drawable.checkquery_untap;
+                        a = R.drawable.activity_checkquery_untap;
                         break;
                     case "8":
-                        a = R.drawable.photo_untap;
+                        a = R.drawable.main_location_untap;
                         break;
                     case "9":
-                        a = R.drawable.note_untap;
+                        a = R.drawable.main_note_untap;
                         break;
                     case "11":
-                        a = R.drawable.visitquery_untap;
+                        a = R.drawable.activity_visitquery_untap;
                         break;
                     case "12":
-                        a = R.drawable.mymileage_untap;
+                        a = R.drawable.main_mileage_untap;
                         break;
                 }
             }

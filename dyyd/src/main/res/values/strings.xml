@@ -45,13 +45,23 @@
     <string name="action_submit">确认</string>
 
     <string name="activity_login">登录</string>
+
     <string name="activity_checkin">上班签到</string>
+    <string name="activity_checkin_untap">上班签到</string>
     <string name="activity_checkout">下班签退</string>
+    <string name="activity_checkout_untap">下班签退</string>
+    <string name="activity_checkquery">考勤查询</string>
+    <string name="activity_checkquery_untap">考勤查询</string>
+
     <string name="activity_reach">到达现场</string>
+    <string name="activity_reach_untap">到达现场</string>
     <string name="activity_leave">离开现场</string>
+    <string name="activity_leave_untap">离开现场</string>
+    <string name="activity_visitquery">拜访记录</string>
+    <string name="activity_visitquery_untap">拜访记录</string>
+
     <string name="activity_photo">信息采集</string>
     <string name="activity_photoquery">信息查询</string>
-    <string name="activity_visitquery">拜访记录</string>
     <string name="activity_mywork">待办事项</string>
     <string name="activity_mymileage">我的里程</string>
     <string name="activity_approvequery">审批查询</string>
@@ -67,7 +77,6 @@
     <string name="activity_changepassword">修改密码</string>
     <string name="activity_share">分享</string>
     <string name="activity_checkapprove">签到审批</string>
-    <string name="activity_checkquery">考勤查询</string>
     <string name="activity_collect">考勤点采集</string>
     <string name="activity_askleave">请假登记</string>
     <string name="activity_askleavequery">请假查询</string>

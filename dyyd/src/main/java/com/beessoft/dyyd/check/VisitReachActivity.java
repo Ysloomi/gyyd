@@ -23,7 +23,6 @@ import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.Escape;
 import com.beessoft.dyyd.utils.Gps;
 import com.beessoft.dyyd.utils.PreferenceUtil;
-import com.beessoft.dyyd.utils.ProgressDialogUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
 import com.loopj.android.http.AsyncHttpClient;
@@ -222,7 +221,7 @@ public class VisitReachActivity extends BaseActivity
 //					}).setNegativeButton("否", null);
 //			builder.show();
 //		} else {
-        ProgressDialogUtil.showProgressDialog(context);
+        showProgressDialog();
         saveData(customer, person, aim, location);
 //			if (GetInfo.getIfSf(context))
 //				saveDy(customerType, customer, person, aim, location);
@@ -398,14 +397,14 @@ public class VisitReachActivity extends BaseActivity
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            ProgressDialogUtil.closeProgressDialog();
+                            cancelProgressDialog();
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
-                        ProgressDialogUtil.closeProgressDialog();
+                        cancelProgressDialog();
                     }
                 });
     }

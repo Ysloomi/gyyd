@@ -25,6 +25,7 @@ import com.beessoft.dyyd.utils.AlarmUtils;
 import com.beessoft.dyyd.utils.DateUtil;
 import com.beessoft.dyyd.utils.GetInfo;
 import com.beessoft.dyyd.utils.Gps;
+import com.beessoft.dyyd.utils.Logger;
 import com.beessoft.dyyd.utils.PreferenceUtil;
 import com.beessoft.dyyd.utils.ToastUtil;
 import com.beessoft.dyyd.utils.User;
@@ -48,9 +49,9 @@ public class DialogActivity extends BaseActivity {
     private MainAdapter mainAdapter;
     private List<String> typeList = new ArrayList<>();
 
-    public static  void navToDialog(Context context,ArrayList<String> typeList){
-        Intent intent = new Intent(context,DialogActivity.class);
-        intent.putStringArrayListExtra(INTENT_KEY,typeList);
+    public static void navToDialog(Context context, ArrayList<String> typeList) {
+        Intent intent = new Intent(context, DialogActivity.class);
+        intent.putStringArrayListExtra(INTENT_KEY, typeList);
         context.startActivity(intent);
     }
 
@@ -98,6 +99,9 @@ public class DialogActivity extends BaseActivity {
                             ToastUtil.toast(context, "无权限");
                         }
                         break;
+                    case MainActivity.Type.CHECKIN_UNTAP:
+                        ToastUtil.toast(context, "无权限");
+                        break;
                     case MainActivity.Type.CHECKOUT:
                         itype = MainActivity.Type.CHECKOUT;
                         if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode1"))) {
@@ -105,6 +109,9 @@ public class DialogActivity extends BaseActivity {
                         } else {
                             ToastUtil.toast(context, "无权限");
                         }
+                        break;
+                    case MainActivity.Type.CHECKOUT_UNTAP:
+                        ToastUtil.toast(context, "无权限");
                         break;
                     case MainActivity.Type.CHECKQUERY:
                         if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode7"))) {
@@ -114,6 +121,9 @@ public class DialogActivity extends BaseActivity {
                             ToastUtil.toast(context, "无权限");
                         }
                         break;
+                    case MainActivity.Type.CHECKQUERY_UNTAP:
+                        ToastUtil.toast(context, "无权限");
+                        break;
                     case MainActivity.Type.REACH:
                         itype = MainActivity.Type.REACH;
                         if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode2"))) {
@@ -121,6 +131,9 @@ public class DialogActivity extends BaseActivity {
                         } else {
                             ToastUtil.toast(context, "无权限");
                         }
+                        break;
+                    case MainActivity.Type.REACH_UNTAP:
+                        ToastUtil.toast(context, "无权限");
                         break;
                     case MainActivity.Type.LEAVE:
                         itype = MainActivity.Type.LEAVE;
@@ -130,6 +143,9 @@ public class DialogActivity extends BaseActivity {
                             ToastUtil.toast(context, "无权限");
                         }
                         break;
+                    case MainActivity.Type.LEAVE_UNTAP:
+                        ToastUtil.toast(context, "无权限");
+                        break;
                     case MainActivity.Type.VISITQUERY:
                         if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode11"))) {
                             intent.setClass(context, VisitQueryListActivity.class);
@@ -137,6 +153,9 @@ public class DialogActivity extends BaseActivity {
                         } else {
                             ToastUtil.toast(context, "无权限");
                         }
+                        break;
+                    case MainActivity.Type.VISITQUERY_UNTAP:
+                        ToastUtil.toast(context, "无权限");
                         break;
                 }
             }

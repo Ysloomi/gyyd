@@ -43,7 +43,7 @@ public class CustomerActivity extends BaseActivity {
         String type = getIntent().getStringExtra("type");
         initView();
 
-        ProgressDialogUtil.showProgressDialog(context);
+        showProgressDialog();
         visitServer(name,type);
     }
 
@@ -111,7 +111,7 @@ public class CustomerActivity extends BaseActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
-                            ProgressDialogUtil.closeProgressDialog();
+                            cancelProgressDialog();
                         }
                     }
 
@@ -119,7 +119,7 @@ public class CustomerActivity extends BaseActivity {
                     public void onFailure(Throwable error, String data) {
                         error.printStackTrace(System.out);
                         ToastUtil.toast(context,"网络连接错误");
-                        ProgressDialogUtil.closeProgressDialog();
+                        cancelProgressDialog();
                     }
                 });
     }

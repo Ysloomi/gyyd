@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -87,12 +88,18 @@ public class MainActivity extends BaseActivity {
 
     interface Type {
         String CHECKIN = "activity_checkin";
+        String CHECKIN_UNTAP = "activity_checkin_untap";
         String CHECKOUT = "activity_checkout";
+        String CHECKOUT_UNTAP = "activity_checkout_untap";
         String CHECKQUERY = "activity_checkquery";
+        String CHECKQUERY_UNTAP = "activity_checkquery_untap";
 
         String REACH = "activity_reach";
+        String REACH_UNTAP = "activity_reach_untap";
         String LEAVE = "activity_leave";
+        String LEAVE_UNTAP = "activity_leave_untap";
         String VISITQUERY = "activity_visitquery";
+        String VISITQUERY_UNTAP = "activity_visitquery_untap";
     }
 
 
@@ -136,6 +143,34 @@ public class MainActivity extends BaseActivity {
         departTxt.setText("部门:" + PreferenceUtil.readString(context, "cdepname"));
         nameTxt.setText("姓名:" + PreferenceUtil.readString(context, "name"));
         telTxt.setText("电话:" + PreferenceUtil.readString(context, "tel"));
+
+
+//        GetInfo.getButtonRole(context, checkInButton, "1", "checkin");
+//        GetInfo.getButtonRole(context, checkOutButton, "1", "checkout");
+//        GetInfo.getButtonRole(context, visitReachBtn, "2", "reach");
+//        GetInfo.getButtonRole(context, visitLeaveBtn, "2", "leave");
+        if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode1"))
+                && !"0".equals(PreferenceUtil.readString(context, "rolebuttoncode7"))) {
+            Drawable drawableTopCheckIn = context.getResources().getDrawable(R.drawable.main_check_untap);
+            checkBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCheckIn, null, null);
+            checkBtn.setTextColor(0xffc8c8c8);
+        }
+
+        if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode2"))
+                && !"0".equals(PreferenceUtil.readString(context, "rolebuttoncode11"))) {
+            Drawable drawableTopCheckIn = context.getResources().getDrawable(R.drawable.main_visit_untap);
+            visitBtn.setCompoundDrawablesWithIntrinsicBounds(null, drawableTopCheckIn, null, null);
+            visitBtn.setTextColor(0xffc8c8c8);
+        }
+        GetInfo.getButtonRole(context, checkCollectBtn, "3", "");
+        GetInfo.getButtonRole(context, askleaveBtn, "4", "");
+        GetInfo.getButtonRole(context, infoCollectBtn, "5", "");
+        GetInfo.getButtonRole(context, myworkBtn, "6", "");
+//        GetInfo.getButtonRole(context, che, "7", "");
+        GetInfo.getButtonRole(context, locationBtn, "8", "");
+        GetInfo.getButtonRole(context, noteBtn, "9", "");
+//        GetInfo.getButtonRole(context, visitqueryBtn, "11", "");
+        GetInfo.getButtonRole(context, mileageBtn, "12", "");
     }
 
     @Override
@@ -176,10 +211,24 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.check_btn:
-                typeList.add(Type.CHECKIN);
-                typeList.add(Type.CHECKOUT);
-                typeList.add(Type.CHECKQUERY);
-                DialogActivity.navToDialog(context, typeList);
+                if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode1"))
+                        && !"0".equals(PreferenceUtil.readString(context, "rolebuttoncode7"))) {
+                    ToastUtil.toast(context, "无权限");
+                } else {
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode1"))) {
+                        typeList.add(Type.CHECKIN);
+                        typeList.add(Type.CHECKOUT);
+                    } else {
+                        typeList.add(Type.CHECKIN_UNTAP);
+                        typeList.add(Type.CHECKOUT_UNTAP);
+                    }
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode7"))) {
+                        typeList.add(Type.CHECKQUERY);
+                    } else {
+                        typeList.add(Type.CHECKQUERY_UNTAP);
+                    }
+                    DialogActivity.navToDialog(context, typeList);
+                }
                 break;
             case R.id.mywork_btn:
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode6"))) {
@@ -190,10 +239,24 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.visit_btn:
-                typeList.add(Type.REACH);
-                typeList.add(Type.LEAVE);
-                typeList.add(Type.VISITQUERY);
-                DialogActivity.navToDialog(context, typeList);
+                if (!"0".equals(PreferenceUtil.readString(context, "rolebuttoncode2"))
+                        && !"0".equals(PreferenceUtil.readString(context, "rolebuttoncode11"))) {
+                    ToastUtil.toast(context, "无权限");
+                } else {
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode2"))) {
+                        typeList.add(Type.REACH);
+                        typeList.add(Type.LEAVE);
+                    } else {
+                        typeList.add(Type.REACH_UNTAP);
+                        typeList.add(Type.LEAVE_UNTAP);
+                    }
+                    if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode11"))) {
+                        typeList.add(Type.VISITQUERY);
+                    } else {
+                        typeList.add(Type.VISITQUERY_UNTAP);
+                    }
+                    DialogActivity.navToDialog(context, typeList);
+                }
                 break;
             case R.id.askleave_btn:
                 if ("0".equals(PreferenceUtil.readString(context, "rolebuttoncode4"))) {
