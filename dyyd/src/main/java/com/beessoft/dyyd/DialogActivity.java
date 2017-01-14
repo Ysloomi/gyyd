@@ -68,7 +68,7 @@ public class DialogActivity extends BaseActivity {
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
 //        params.x = -20;
-        params.height = (height)/3;
+        params.height = (height) / 3;
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
 //        params.y = -10;
 
