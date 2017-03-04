@@ -20,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class PhotoHelper {
-
 	// public static final int PHOTO_CODE = 5;
 	// public void photoStart(Context context) {
 	// // 调用相机
@@ -127,6 +126,7 @@ public class PhotoHelper {
 	}
 
 	/** 打开图片查看对话框 **/
+
 	@SuppressLint("InflateParams")
 	public static void openPictureDialog_down(Context context, Bitmap bitmap) {
 		final Dialog dialogPic = new Dialog(context, R.style.simple_dialog);
