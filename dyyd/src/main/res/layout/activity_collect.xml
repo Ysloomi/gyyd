@@ -19,7 +19,7 @@
 
                 <TextView
                     style="@style/MyTitle"
-                    android:text="客户类别" />
+                    android:text="类别" />
 
                 <Spinner
                     android:id="@+id/spn_type"
@@ -47,7 +47,18 @@
                     android:text="地图" />
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_operator"
+                style="@style/TextOutLayout">
 
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="  运营商  " />
+
+                <Spinner
+                    android:id="@+id/operator_spinner"
+                    style="@style/MyText" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_company"
                 style="@style/TextOutLayout">
@@ -61,6 +72,7 @@
                     style="@style/MyText" />
             </LinearLayout>
 
+
             <LinearLayout
                 android:id="@+id/ll_depart"
                 style="@style/TextOutLayout">
@@ -73,19 +85,31 @@
                     android:id="@+id/street_spinner"
                     style="@style/MyText" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/ll_area"
                 style="@style/TextOutLayout">
 
                 <TextView
                     style="@style/MyTitle"
-                    android:text="镇／片区" />
+                    android:text="社区" />
 
                 <Spinner
                     android:id="@+id/community_spinner"
                     style="@style/MyText" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_business"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text=" 营业厅 " />
+
+                <Spinner
+                    android:id="@+id/business_spinner"
+                    style="@style/MyText" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_shop"
@@ -93,10 +117,94 @@
 
                 <TextView
                     style="@style/MyTitle"
-                    android:text="营业厅" />
+                    android:text="服务站" />
 
                 <Spinner
                     android:id="@+id/shop_spinner"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_box"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    android:id="@+id/box_name"
+                    style="@style/MyTitle"
+                    android:text="光配箱" />
+
+                <EditText
+                    android:hint="请输入光配箱代码"
+                    android:id="@+id/box_et"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_name"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="小区" />
+
+                <Spinner
+                    android:id="@+id/name_spinner"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/many_name"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="小区" />
+
+                <com.beessoft.dyyd.check.MySpinner
+                    android:id="@+id/many_plot_Spinner"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/adress"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="详细地址" />
+
+                <EditText
+                    android:hint="请输入光配箱的详细地址"
+                    android:id="@+id/tv_adress"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/zgdm"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="资管代码" />
+
+                <EditText
+                    android:hint="请输入小区资管代码"
+                    android:id="@+id/tv_zgdm"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/con_user"
+                style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text="接入用户" />
+
+                <EditText
+                    android:hint="请输入光配箱的接入用户"
+                    android:id="@+id/tv_con_user"
                     style="@style/MyText" />
 
             </LinearLayout>
@@ -128,24 +236,69 @@
                     style="@style/MyTitle"
                     android:text="照片信息" />
 
-                <ImageView
-                    android:id="@+id/photo_image"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_alignTop="@+id/title6"
-                    android:layout_centerHorizontal="true"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter" />
+                <LinearLayout
+                    android:id="@+id/take_view1"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/title6"
+                    android:layout_below="@+id/title6" >
+                    <TextView
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:id="@+id/take_photo1"
+                        android:layout_gravity="center"
+                        android:background="@color/blue"
+                        android:textColor="#FFF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="拍照1"/>
+                    <ImageView
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/photo_image"
+                        android:layout_width="130dp"
+                        android:layout_height="150dp"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/txt_take_photo"
-                    style="@style/TapText"
-                    android:layout_alignParentRight="true"
-                    android:text="照相" />
+                <LinearLayout
+                    android:layout_marginLeft="20dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title6"
+                    android:adjustViewBounds="true"
+                    android:layout_toRightOf="@id/take_view1"
+                    >
+                    <TextView
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:id="@+id/take_photo2"
+                        android:layout_gravity="center"
+                        android:textColor="#FFF"
+                        android:background="@color/blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="拍照2"/>
+
+                    <ImageView
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/photo_image2"
+                        android:layout_width="130dp"
+                        android:layout_height="150dp"
+                        android:scaleType="fitCenter"
+
+                        />
+                </LinearLayout>
+
+
 
             </RelativeLayout>
 
-            <LinearLayout style="@style/TextOutLayout">
+            <LinearLayout style="@style/TextOutLayout"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/MyTitle"

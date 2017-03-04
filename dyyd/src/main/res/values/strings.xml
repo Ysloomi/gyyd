@@ -77,7 +77,7 @@
     <string name="activity_changepassword">修改密码</string>
     <string name="activity_share">分享</string>
     <string name="activity_checkapprove">签到审批</string>
-    <string name="activity_collect">考勤点采集</string>
+    <string name="activity_collect">信息采集</string>
     <string name="activity_askleave">请假登记</string>
     <string name="activity_askleavequery">请假查询</string>
     <string name="activity_querymaplist">有效点距离</string>
@@ -115,9 +115,8 @@
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
-    
-    
-    
+
+
     <string name="check">考勤打卡</string>
     <string name="mywork">待办事项</string>
     <string name="visit">拜访记录</string>
@@ -127,5 +126,6 @@
     <string name="location">员工位置</string>
     <string name="note">一线记事本</string>
     <string name="mileage">我的里程</string>
+    <string name="nearby">附近</string>
 
 </resources>

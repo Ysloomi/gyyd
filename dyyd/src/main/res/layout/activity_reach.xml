@@ -15,7 +15,7 @@
             <TextView
                 android:id="@+id/TextView01"
                 style="@style/MyTitle"
-                android:text="客户类别" />
+                android:text="类别" />
 
             <Spinner
                 android:id="@+id/type_spinner"
@@ -23,7 +23,8 @@
 
         </LinearLayout>
 
-        <LinearLayout style="@style/TextOutLayout">
+        <LinearLayout style="@style/TextOutLayout"
+            android:id="@+id/view_visit_customer1">
 
             <TextView
                 style="@style/MyTitle"
@@ -41,6 +42,20 @@
                 android:text="筛选"
                 android:visibility="gone" />
 
+        </LinearLayout>
+        <LinearLayout style="@style/TextOutLayout"
+            android:id="@+id/view_visit_customer2">
+
+            <TextView
+                android:id="@+id/tv_visit_customer"
+                style="@style/MyTitle"
+                android:text="拜访客户" />
+
+
+            <EditText
+                android:id="@+id/et_visit_customer"
+                style="@style/MyText"
+                android:hint="请输入拜访客户中的人员" />
         </LinearLayout>
 
 
@@ -85,7 +100,11 @@
             <EditText
                 android:id="@+id/visit_aim"
                 style="@style/MyText"
-                android:hint="到达现场的目的（酬金沟通，业务培训，上门检查等），书写时要简要说明培训业务内容、酬金类型、检查内容等。" />
+                android:hint="
+
+
+
+                "                />
 
             <TextView
                 android:id="@+id/txt_preserve"

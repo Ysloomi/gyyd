@@ -50,6 +50,19 @@
                     style="@style/MyText" />
 
             </LinearLayout>
+            <LinearLayout style="@style/TextOutLayout">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:text=" 车牌号 " />
+
+
+                <EditText
+                    android:id="@+id/visitleave_cph"
+                    style="@style/MyText" />
+
+            </LinearLayout>
+
 
             <LinearLayout style="@style/TextOutLayout">
 
@@ -106,14 +119,28 @@
                     android:id="@+id/txt_photo_title"
                     style="@style/MyTitle"
                     android:text="照片信息" />
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/img_photo"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_centerHorizontal="true"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter" />
+                    <ImageView
+                        android:id="@+id/img_photo"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter" />
+
+                    <ImageView
+                        android:id="@+id/img_photo2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/txt_take_photo"

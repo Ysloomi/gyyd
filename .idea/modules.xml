@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/androidtimessquareidle_wulib_dejavu/androidtimessquareidle_wulib_dejavu.iml" filepath="$PROJECT_DIR$/androidtimessquareidle_wulib_dejavu/androidtimessquareidle_wulib_dejavu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dyyd.iml" filepath="$PROJECT_DIR$/dyyd.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dyyd/dyyd-dyyd.iml" filepath="$PROJECT_DIR$/dyyd/dyyd-dyyd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dyyd/dyyd.iml" filepath="$PROJECT_DIR$/dyyd/dyyd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gyyd.iml" filepath="$PROJECT_DIR$/gyyd.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>

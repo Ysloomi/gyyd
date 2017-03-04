@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.beessoft.dyyd.R;
+import com.beessoft.dyyd.check.CollectActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -155,21 +156,47 @@ public class PhotoHelper {
 	
 	/** 打开图片查看对话框 **/
 	@SuppressLint("InflateParams")
-	public static void openPictureDialog(Context context,String path) {
+	public static void openPictureDialog(final Context context, String path) {
 		final Dialog dialogPic = new Dialog(context, R.style.simple_dialog);
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.dialog_picture, null);
 		ImageView imgView = (ImageView) view.findViewById(R.id.img_weibo_img);
-		Button btnBig = (Button) view.findViewById(R.id.btn_big);
-		btnBig.setOnClickListener(new OnClickListener() {
+		Button btnSure = (Button) view.findViewById(R.id.btn_big);
+		btnSure.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialogPic.dismiss();
 			}
 		});
+
 		dialogPic.setContentView(view);
 		dialogPic.show();
-		displayForDlg(imgView, btnBig,path); // 显示内容到dialog中
+		displayForDlg(imgView, btnSure,path); // 显示内容到dialog中
+	}
+	public static void openPictureDialog2(final Context context, String path,final int i) {
+		final Dialog dialogPic = new Dialog(context, R.style.simple_dialog);
+		View view = LayoutInflater.from(context).inflate(
+				R.layout.dialog_picture2, null);
+		ImageView imgView = (ImageView) view.findViewById(R.id.img_weibo_img);
+		Button btnSure = (Button) view.findViewById(R.id.btn_sure);
+		btnSure.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialogPic.dismiss();
+			}
+		});
+		//点击重拍功能相当于点击了相机,然后覆盖本张图片
+		Button btnAgain = (Button) view.findViewById(R.id.btn_again);
+		btnAgain.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//调用相机的拍照方法,重新拍照;
+
+			}
+		});
+		dialogPic.setContentView(view);
+		dialogPic.show();
+		displayForDlg(imgView, btnSure,path); // 显示内容到dialog中
 	}
 
 	public static void displayForDlg(ImageView imgView, Button btnBig,String imgPath) {

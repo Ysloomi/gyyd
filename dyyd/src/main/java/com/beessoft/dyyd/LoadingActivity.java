@@ -38,6 +38,7 @@ public class LoadingActivity extends Activity {
 		TimerTask task = new TimerTask() {
 			public void run() {
 				startActivity(new Intent(LoadingActivity.this,LoginActivity.class));
+				finish();
 			}
 		};
 		// 2秒后执行TimerTask任务

@@ -17,6 +17,11 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="Theme_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="progressBarHorizontal_color" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:indeterminateOnly">false</item>
         <item name="android:progressDrawable">@drawable/progress_color_horizontal</item>
@@ -225,5 +230,16 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14sp</item>
         <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="nearby" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="Theme.FloatActivity" parent="android:style/Theme.Dialog">
+
     </style>
 </resources>

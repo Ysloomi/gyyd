@@ -81,10 +81,10 @@
         android:theme="@style/MyActionBarTheme"
         tools:replace="android:icon,android:theme">
 
-        <!-- meta-data需要写在application中 -->
+        <!-- meta-data需要写在application中 9vL0lAyT3tzBRVbxGDgiYwH1i5tB8zBA -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="XnstOzNoi695azCiU5ZeD8ut" />
+            android:value="Gs662GwRnqxYx0T2y6NNQRyNuk2xpNAK" />
 
         <!-- android:hardwareAccelerated = "false" -->
         <activity
@@ -94,6 +94,7 @@
             android:theme="@style/Loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -106,8 +107,8 @@
             android:name=".MainActivity"
             android:icon="@drawable/top_logo"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".check.CheckInActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -165,7 +166,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:icon="@drawable/top_logo"
             android:label="@string/activity_collect"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".check.AskLeaveActivity"
             android:icon="@drawable/top_logo"
@@ -332,7 +334,6 @@
             android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-
         <receiver android:name=".utils.AlarmReceiver">
             <intent-filter>
                 <action android:name="Test" />
@@ -360,7 +361,7 @@
             </intent-filter>
         </service>
 
-        <!-- 此处com.getui.demo.GtPushReceiver，需要替换成开发者自己的BroadcastReceiver文件全名-->
+        <!-- 此处com.getui.demo.GtPushReceiver，需要替换成开发者自己的BroadcastReceiver文件全名 -->
         <receiver
             android:name=".receiver.GtPushReceiver"
             android:exported="false">
@@ -369,6 +370,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".nearby.NearbyActivity" />
 
     </application>
 

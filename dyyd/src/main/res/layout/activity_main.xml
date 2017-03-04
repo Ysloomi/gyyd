@@ -119,6 +119,7 @@
                 android:text="@string/askleave" />
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/info_collect_btn"
                 style="@style/mainButton"
                 android:drawableTop="@drawable/main_info_collect"
@@ -128,7 +129,13 @@
                 android:id="@+id/check_collect_btn"
                 style="@style/mainButton"
                 android:drawableTop="@drawable/main_check_collect"
-                android:text="@string/check_collect" />
+                android:text="@string/info_collect" />
+
+            <Button
+                android:id="@+id/location_btn"
+                style="@style/mainButton"
+                android:drawableTop="@drawable/main_location"
+                android:text="@string/location" />
 
         </LinearLayout>
 
@@ -137,11 +144,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
 
-            <Button
-                android:id="@+id/location_btn"
-                style="@style/mainButton"
-                android:drawableTop="@drawable/main_location"
-                android:text="@string/location" />
 
             <Button
                 android:id="@+id/note_btn"
@@ -154,6 +156,11 @@
                 style="@style/mainButton"
                 android:drawableTop="@drawable/main_mileage"
                 android:text="@string/mileage" />
+            <Button
+                android:id="@+id/nearby_btn"
+                style="@style/mainButton"
+                android:drawableTop="@drawable/nearby"
+                android:text="@string/nearby" />
 
         </LinearLayout>
     </LinearLayout>

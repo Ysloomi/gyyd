@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -76,8 +77,13 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
     // 创建Bitmap对象
     private Bitmap bitmap;
     private String uploadBuffer = null;
+    private String uploadBuffer2 = null;
     private ImageView photoImage;
+    private ImageView photoImage2;
     private String imgPath = "";
+    private String imgPath2 = "";
+    private EditText etCph;
+    private String txtCph;
 
     private Thread mThread;
 
@@ -115,6 +121,10 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 //            Logger.e("拍摄异常，获取原来的shot_path");
             imgPath = savedInstanceState.getString("imgPath");
         }
+        if (savedInstanceState != null && !TextUtils.isEmpty(savedInstanceState.getString("imgPath2"))) {
+//            Logger.e("拍摄异常，获取原来的shot_path");
+            imgPath2 = savedInstanceState.getString("imgPath2");
+        }
         context = VisitLeaveActivity.this;
 
         initView();
@@ -148,13 +158,16 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         reachTimeTxt = (TextView) findViewById(R.id.reachtime_text);
         reachLocationText = (TextView) findViewById(R.id.reachlocation_text);
         insideText = (TextView) findViewById(R.id.inside_tv);
+        etCph = (EditText) findViewById(R.id.visitleave_cph);
 
         resultEdit = (EditText) findViewById(R.id.visitleave_result);
         questionEdit = (EditText) findViewById(R.id.edt_question);
 
         photoImage = (ImageView) findViewById(R.id.img_photo);
+        photoImage2 = (ImageView) findViewById(R.id.img_photo2);
 
         photoImage.setOnClickListener(this);
+        photoImage2.setOnClickListener(this);
         findViewById(R.id.txt_preserve).setOnClickListener(this);
         findViewById(R.id.txt_take_photo).setOnClickListener(this);
         findViewById(R.id.txt_refresh).setOnClickListener(this);
@@ -342,9 +355,10 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 });
     }
 
-    private void saveData(String person, String aim, String location, String question) {
+    private void saveData(String person, String aim, String location, String question,String txt) {
 
         String httpUrl = User.mainurl + "sf/offvisit_save";
+
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
@@ -358,13 +372,14 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         parameters_userInfo.put("visitperson", Escape.escape(person));
         parameters_userInfo.put("visitgoal", Escape.escape(aim));
         parameters_userInfo.put("visitresult", Escape.escape(result));
-        parameters_userInfo.put("image", uploadBuffer);
+        parameters_userInfo.put("image", uploadBuffer+","+uploadBuffer2);
         parameters_userInfo.put("startid", startid);
         parameters_userInfo.put("ccuscode", customerCode);
-        parameters_userInfo.put("question", Escape.escape(question));
-        parameters_userInfo.put("questiontype", questionTypeCode);
+        parameters_userInfo.put("question", Escape.escape(txt));
+        //parameters_userInfo.put("questiontype", questionTypeCode);
         parameters_userInfo.put("sf", ifSf);
         parameters_userInfo.put("inside", Escape.escape(leavetype));
+
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -450,9 +465,17 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 //    }
 
     public void takePhoto() {
-        imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
-        // 必须确保文件夹路径存在，否则拍照后无法完成回调
-        File vFile = new File(imgPath);
+        File vFile;
+        if (bitmap != null){
+            imgPath2 = Tools.getSDPath() + "/dyyd/photo2.jpg";
+            // 必须确保文件夹路径存在，否则拍照后无法完成回调
+            vFile = new File(imgPath2);
+        }else {
+            imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
+            // 必须确保文件夹路径存在，否则拍照后无法完成回调
+            vFile = new File(imgPath);
+        }
+
         if (!vFile.exists()) {
             File vDirPath = vFile.getParentFile();
             vDirPath.mkdirs();
@@ -467,22 +490,42 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
 
     // 相机返回处理
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            uploadBuffer = "";
-            switch (requestCode) {
-                case PHOTO_CODE:
-                    if (!Tools.isEmpty(imgPath)) {
-                        File imageFile = new File(imgPath);
-                        bitmap = PhotoUtil.imageEncode(imageFile, true);
-                        photoImage.setImageBitmap(bitmap);
-                        uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
-                        imgPath = "";
-                    }
-                    break;
-                default:
-                    break;
+        if (bitmap==null){
+            if (resultCode == Activity.RESULT_OK) {
+                uploadBuffer = "";
+                switch (requestCode) {
+                    case PHOTO_CODE:
+                        if (!Tools.isEmpty(imgPath)) {
+                            File imageFile = new File(imgPath);
+                            bitmap = PhotoUtil.imageEncode(imageFile, true);
+                            photoImage.setImageBitmap(bitmap);
+                            uploadBuffer = PhotoUtil.encodeTobase64(bitmap);
+                            imgPath = "";
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }else {
+            if (resultCode == Activity.RESULT_OK) {
+                uploadBuffer2 = "";
+                switch (requestCode) {
+                    case PHOTO_CODE:
+                        if (!Tools.isEmpty(imgPath2)) {
+                            File imageFile = new File(imgPath2);
+                            bitmap = PhotoUtil.imageEncode(imageFile, true);
+                            photoImage2.setImageBitmap(bitmap);
+                            uploadBuffer2 = PhotoUtil.encodeTobase64(bitmap);
+                            imgPath2 = "";
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+
     }
 
     public void getAddr(String longitude, String latitude) {
@@ -519,6 +562,9 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
         if (!TextUtils.isEmpty(imgPath)) {
             outState.putString("imgPath", imgPath);
         }
+        if (!TextUtils.isEmpty(imgPath2)) {
+            outState.putString("imgPath2", imgPath2);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -534,6 +580,12 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 String imgPath = Tools.getSDPath() + "/dyyd/photo.jpg";
                 if (!Tools.isEmpty(imgPath)) {
                     PhotoHelper.openPictureDialog(context, imgPath);
+                }
+                break;
+            case R.id.img_photo2:
+                String imgPath2 = Tools.getSDPath() + "/dyyd/photo2.jpg";
+                if (!Tools.isEmpty(imgPath2)) {
+                    PhotoHelper.openPictureDialog(context, imgPath2);
                 }
                 break;
             case R.id.txt_take_photo:
@@ -565,7 +617,8 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                 result = resultEdit.getText().toString();
                 String location = addrText.getText().toString();
                 String question = questionEdit.getText().toString();
-                if (TextUtils.isEmpty(uploadBuffer)) {
+                txtCph = etCph.getText().toString().trim();
+                if (TextUtils.isEmpty(uploadBuffer) && TextUtils.isEmpty(uploadBuffer2)) {
                     ToastUtil.toast(context, "请先照相再上传");
                 } else if (TextUtils.isEmpty(result.trim())) {
                     ToastUtil.toast(context, "数据不能为空");
@@ -577,13 +630,13 @@ public class VisitLeaveActivity extends BaseActivity implements View.OnClickList
                             ToastUtil.toast(context, "请选择问题类型");
                         } else {
                             ProgressDialogUtil.showProgressDialog(context);
-                            saveData(person, aim, location, question);
+                            saveData(person, aim, location, question,txtCph);
 //                            if (GetInfo.getIfSf(context))
 //                                saveData(person,aim,location,question);
                         }
                     } else {
                         ProgressDialogUtil.showProgressDialog(context);
-                        saveData(person, aim, location, question);
+                        saveData(person, aim, location, question,txtCph);
 //                        if (GetInfo.getIfSf(context))
 //                            saveData(person,aim,location,question);
                     }

@@ -25,6 +25,7 @@ import com.beessoft.dyyd.dailywork.NoteQueryActivity;
 import com.beessoft.dyyd.dailywork.PhotoActivity;
 import com.beessoft.dyyd.dailywork.WorkLocationActivity;
 import com.beessoft.dyyd.db.DistanceDatabaseHelper;
+import com.beessoft.dyyd.nearby.NearbyActivity;
 import com.beessoft.dyyd.update.UpdateManager;
 import com.beessoft.dyyd.utils.AlarmUtils;
 import com.beessoft.dyyd.utils.DateUtil;
@@ -79,6 +80,8 @@ public class MainActivity extends BaseActivity {
     Button noteBtn;
     @BindView(R.id.mileage_btn)
     Button mileageBtn;
+    @BindView(R.id.nearby_btn)
+    Button nearbyBtn;
 
     private ArrayList<String> typeList = new ArrayList<>();
     private UpdateManager mUpdateManager;
@@ -204,7 +207,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.check_btn, R.id.mywork_btn, R.id.visit_btn, R.id.askleave_btn,
+    @OnClick({R.id.check_btn, R.id.mywork_btn, R.id.visit_btn, R.id.askleave_btn,R.id.nearby_btn,
             R.id.info_collect_btn, R.id.check_collect_btn, R.id.location_btn, R.id.note_btn, R.id.mileage_btn})
     public void onClick(View view) {
         typeList.clear();
@@ -310,6 +313,9 @@ public class MainActivity extends BaseActivity {
                     ToastUtil.toast(context, "无权限");
                 }
                 break;
+            case R.id.nearby_btn:
+                intent.setClass(context, NearbyActivity.class);
+                startActivity(intent);
         }
     }
 

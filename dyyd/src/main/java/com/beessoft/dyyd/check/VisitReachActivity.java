@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -57,10 +59,14 @@ public class VisitReachActivity extends BaseActivity
     private Spinner customerSpn;
     private EditText personEdit;
     private EditText aimEdit;
+    private EditText etVisitCustomer;
 
 //    private TextView getCustomerTxt;
 
 //    private LinearLayout insideLl;
+
+    private LinearLayout spViewVisitCustomer;
+    private LinearLayout etViewisitCustomer;
 
     private Thread mThread;
     private Spinner typeSpinner;
@@ -155,6 +161,10 @@ public class VisitReachActivity extends BaseActivity
         aimEdit = (EditText) findViewById(R.id.visit_aim);
         typeSpinner = (Spinner) findViewById(R.id.type_spinner);
 
+        spViewVisitCustomer = (LinearLayout) findViewById(R.id.view_visit_customer1);
+        etViewisitCustomer = (LinearLayout) findViewById(R.id.view_visit_customer2);
+        etVisitCustomer = (EditText) findViewById(R.id.et_visit_customer);
+
 //        getCustomerTxt.setOnClickListener(onClickListener);
 
         findViewById(R.id.txt_preserve).setOnClickListener(this);
@@ -164,7 +174,10 @@ public class VisitReachActivity extends BaseActivity
 
         List<String> list = new ArrayList<>();
         list.add("渠道商家");
-        list.add("政企单位");
+        //list.add("政企单位");
+        list.add("小区");
+        list.add("村社");
+        list.add("其他");
 
         ArrayAdapter<String> adapterType = new ArrayAdapter<>(
                 context,
@@ -302,10 +315,29 @@ public class VisitReachActivity extends BaseActivity
 
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
+        etVisitCustomer.setText("");
+        personEdit.setText("");
+        switch (customerType){
+            case "1":
+                aimEdit.setText("巡店");
+                break;
+            case "3":
+                aimEdit.setText("小区驻点");
+                break;
+            case "4":
+                aimEdit.setText("扫村统谈");
+                break;
+            default:
+                aimEdit.setText("");
+                break;
+
+        }
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
         parameters_userInfo.put("jd", longitude);
+        //parameters_userInfo.put("jd", "104.059625");
+        //parameters_userInfo.put("wd", "30.562289");
         parameters_userInfo.put("wd", latitude);
         parameters_userInfo.put("type", customerType);
         parameters_userInfo.put("sf", ifSf);
@@ -327,7 +359,7 @@ public class VisitReachActivity extends BaseActivity
                                 for (int j = 0; j < array.length(); j++) {
                                     JSONObject obj = array.getJSONObject(j);
                                     ReachCustomer reachCustomer = new ReachCustomer();
-                                    list.add(obj.getString("ccusname"));
+                                    list.add(obj.getString("ccusname")+","+obj.getString("ccuscode"));
                                     reachCustomer.setName(obj.getString("ccusname"));
                                     reachCustomer.setCode(obj.getString("ccuscode"));
 //                                    reachCustomer.setAim(obj.getString("visitgoal"));
@@ -357,12 +389,20 @@ public class VisitReachActivity extends BaseActivity
 
         String httpUrl = User.mainurl + "sf/startvisit_save";
 
+        String visitCustomer;
+        if (customerType.equals("其他")){
+            visitCustomer = Escape.escape(etVisitCustomer.
+                    getText().toString().trim());
+        }else {
+            visitCustomer = Escape.escape(customer);
+        }
+
         AsyncHttpClient client_request = new AsyncHttpClient();
         RequestParams parameters_userInfo = new RequestParams();
 
         parameters_userInfo.put("mac", mac);
         parameters_userInfo.put("usercode", username);
-        parameters_userInfo.put("cus", Escape.escape(customer));
+        parameters_userInfo.put("cus", visitCustomer);
         parameters_userInfo.put("visitperson", Escape.escape(person));
         parameters_userInfo.put("visitgoal", Escape.escape(aim));
         parameters_userInfo.put("addr", Escape.escape(location));
@@ -373,6 +413,8 @@ public class VisitReachActivity extends BaseActivity
 //        parameters_userInfo.put("checkresult", Escape.escape(""));
 //        parameters_userInfo.put("leavetype", Escape.escape(""));
         parameters_userInfo.put("sf", ifSf);
+
+        Log.e("====reach",parameters_userInfo.toString());
 
         client_request.post(httpUrl, parameters_userInfo,
                 new AsyncHttpResponseHandler() {
@@ -491,7 +533,18 @@ public class VisitReachActivity extends BaseActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.type_spinner:
-                customerType = (position + 1) + "";
+                if (position==0)
+                    customerType = (position + 1) + "";
+                else {
+                  customerType = (position + 2) + "";
+                }
+                if (position==3){
+                    spViewVisitCustomer.setVisibility(View.GONE);
+                    etViewisitCustomer.setVisibility(View.VISIBLE);
+                }else {
+                    etViewisitCustomer.setVisibility(View.GONE);
+                    spViewVisitCustomer.setVisibility(View.VISIBLE);
+                }
                 if (ifGetCustomer)
                     getCustomer();
                 ifGetCustomer = true;
